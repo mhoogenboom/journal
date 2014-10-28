@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">Journal</string>
+
+    <string name="options_open">Open navigation drawer</string>
+    <string name="options_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="studyentries">Study</string>	
+    <string name="studyentry">Study Details</string>
+    <string name="studyentry_dayofstudy">Day of study</string>
+    <string name="studyentry_course">Course</string>
+    <string name="studyentry_description">Description</string>
+	<string name="studyentry_add">Add</string>
+    <string name="studyentry_delete">Delete</string>
+
+    <string name="courses">Select course</string>
+    <string name="course">Course details</string>
+    <string name="course_name">Name</string>
+    <string name="course_add">New course</string>
+    <string name="course_select">Select</string>
+    <string name="course_delete">Delete</string>
+
+    <string name="walkentries">Walks</string>
+    <string name="walkentry">Walk Details</string>
+    <string name="walkentry_dayofwalk">Day of walk</string>
+    <string name="walkentry_location">Near</string>
+    <string name="walkentry_add">Add</string>
+    <string name="walkentry_delete">Delete</string>
+
+    <string name="runentries">Runs</string>
+    <string name="runentry">Run Details</string>
+    <string name="runentry_dayofrun">Day of run</string>
+    <string name="runentry_distance">Distance</string>
+    <string name="runentry_timetaken">Time</string>
+    <string name="runentry_add">Add</string>
+    <string name="runentry_delete">Delete</string>
+
+    <string name="travelentries">Travel</string>
+    <string name="travelentry">Travel Details</string>
+    <string name="travelentry_dayoftravel">Day of travel</string>
+    <string name="travelentry_direction">Direction</string>
+    <string name="travelentry_away">To</string>
+    <string name="travelentry_back">From</string>
+    <string name="travelentry_place">Place</string>
+    <string name="travelentry_add">Add</string>
+    <string name="travelentry_delete">Delete</string>
+
+    <string name="login">Add account</string>
+    <string name="login_prompt_email">Email</string>
+    <string name="login_prompt_password">Password</string>
+    <string name="login_go">Sign in</string>
+    <string name="login_error_invalid_email">This email address is invalid</string>
+    <string name="login_error_invalid_password">This password is too short</string>
+    <string name="login_error_incorrect_password">This password is incorrect</string>
+    <string name="login_error_field_required">This field is required</string>
+
+</resources>

@@ -1,0 +1,12 @@
+apply plugin: 'war'
+
+dependencies {
+    providedCompile 'javax:javaee-web-api:7.0'
+    providedCompile 'org.eclipse.persistence:javax.persistence:2.0.0'
+    compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.4.3'
+}
+
+war {
+    baseName = "journal"
+}
+
