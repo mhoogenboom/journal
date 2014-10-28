@@ -3,11 +3,12 @@
     package="com.robinfinch.journal.app">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
@@ -23,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".StudyEntryActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
             android:name=".WalkEntryActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
@@ -34,6 +38,12 @@
         <activity
             android:name=".auth.LoginActivity"
             android:windowSoftInputMode="stateHidden"></activity>
+        <activity android:name=".settings.SettingsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service android:name=".auth.AuthenticatorService">
             <intent-filter>

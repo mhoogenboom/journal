@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/journal">
+    <Realm className="org.apache.catalina.realm.DataSourceRealm"
+        dataSourceName="java:openejb/Resource/journaldb"
+        userTable="JournalOwner" userNameCol="email" userCredCol="passwordHash" digest="MD5"
+        userRoleTable="JournalOwnerRole" roleNameCol="roleName"/>
+</Context>
