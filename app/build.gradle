@@ -1,3 +1,7 @@
+versionMajor = 1
+versionMinor = 0
+versionPatch = 1
+
 buildscript {
     repositories {
         mavenCentral()
@@ -16,14 +20,14 @@ dependencies {
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "20.0.0"
+    buildToolsVersion "21.0.2"
 
     defaultConfig {
         applicationId "com.robinfinch.journal.app"
         minSdkVersion 17
         targetSdkVersion 19
-        versionCode 100
-        versionName "1.0"
+        versionCode = (versionMajor * 100 + versionMinor) * 100 + versionPatch
+        versionName "$versionMajor.$versionMinor.$versionPatch"
     }
 
     compileOptions {
@@ -52,7 +56,8 @@ android {
 
         applicationVariants.all { variant ->
             def file = variant.outputFile
-            variant.outputFile = new File(file.parent, "Journal-$versionName-$variant.buildType.name" + ".apk")
+            variant.outputFile = new File(file.parent, "journal-$versionName-$variant.buildType.name" + ".apk")
         }
     }
 }
+
