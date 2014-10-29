@@ -27,6 +27,11 @@
             android:name=".StudyEntryActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
+            android:name=".CourseListActivity"></activity>
+        <activity
+            android:name=".CourseActivity"
+            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
             android:name=".WalkEntryActivity"
             android:windowSoftInputMode="stateHidden"></activity>
         <activity
