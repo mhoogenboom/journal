@@ -61,6 +61,7 @@ public class UserFacade extends AbstractFacade {
     public Response signin(
             @HeaderParam(HEADER_EMAIL) String email,
             @HeaderParam(HEADER_PASSWORD) String passwordHash,
+            @HeaderParam(HEADER_AUTH_TOKEN_TYPE) String authTokenType,
             @HeaderParam(HEADER_GCM_REGISTRATION_ID) String gcmRegistrationId) {
 
         JournalOwner owner = findOwnerByEmail(email);

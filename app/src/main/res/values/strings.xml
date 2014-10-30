@@ -46,6 +46,9 @@
     <string name="travelentry_add">Add</string>
     <string name="travelentry_delete">Delete</string>
 
+    <string name="sync_notification_title">Journal Update</string>
+    <string name="sync_notification_text">Your journal has been updated.</string>
+
     <string name="login">Add account</string>
     <string name="login_prompt_email">Email</string>
     <string name="login_prompt_password">Password</string>
