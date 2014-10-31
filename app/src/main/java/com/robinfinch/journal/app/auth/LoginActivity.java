@@ -36,7 +36,9 @@ import java.util.List;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 
-import static com.robinfinch.journal.app.util.Constants.*;
+import static com.robinfinch.journal.app.util.Constants.ARG_AUTH_TOKEN_TYPE;
+import static com.robinfinch.journal.app.util.Constants.ARG_PASSWORD;
+import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**
  * A login screen that offers login via email/password.

@@ -34,7 +34,7 @@ public class StudyEntry extends JournalEntry {
 
     @Override
     public String toPrettyString() {
-        return course.getName() + ", " + description + ".";
+        return ((course == null) ? "" : course.getName() + ", ") + description + ".";
     }
 
     @Override

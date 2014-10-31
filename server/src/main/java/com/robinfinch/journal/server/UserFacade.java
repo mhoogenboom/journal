@@ -3,11 +3,8 @@ package com.robinfinch.journal.server;
 import com.robinfinch.journal.domain.App;
 import com.robinfinch.journal.domain.JournalOwner;
 import com.robinfinch.journal.domain.JournalOwnerRole;
-import com.robinfinch.journal.domain.SyncLog;
-import com.robinfinch.journal.server.rest.DiffResponse;
 import com.robinfinch.journal.server.util.Utils;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
@@ -16,7 +13,6 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

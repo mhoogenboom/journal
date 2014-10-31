@@ -6,7 +6,7 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.robinfinch.journal.app.persistence.DbHelper;
+import com.robinfinch.journal.app.sync.SyncAdapter;
 import com.robinfinch.journal.domain.SyncableObject;
 
 import java.lang.reflect.Type;
@@ -30,9 +30,11 @@ public class SyncableObjectListDeserializer implements JsonDeserializer<List<Syn
         for (JsonElement entityJson : entitiesJsonArray) {
             JsonObject entityJsonObject = entityJson.getAsJsonObject();
 
-            for (String subClassName : DbHelper.CLASSES_BY_NAME.keySet()) {
-                if (entityJsonObject.has(subClassName)) {
-                    SyncableObject entity = context.deserialize(entityJsonObject.get(subClassName), DbHelper.CLASSES_BY_NAME.get(subClassName));
+            for (Class cls : SyncAdapter.SYNCABLE_OBJECT_CLASSES) {
+                String clsName = "." + cls.getSimpleName();
+
+                if (entityJsonObject.has(clsName)) {
+                    SyncableObject entity = context.deserialize(entityJsonObject.get(clsName), cls);
                     entities.add(entity);
                 }
             }

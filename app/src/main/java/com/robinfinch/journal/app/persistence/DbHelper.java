@@ -25,14 +25,6 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "journal.db";
     private static final int DATABASE_VERSION = 8;
 
-    public static Map<String, Class> CLASSES_BY_NAME = new HashMap<>();
-    static {
-        CLASSES_BY_NAME.put(".StudyEntry", StudyEntry.class);
-        CLASSES_BY_NAME.put(".WalkEntry", WalkEntry.class);
-        CLASSES_BY_NAME.put(".RunEntry", RunEntry.class);
-        CLASSES_BY_NAME.put(".TravelEntry", TravelEntry.class);
-    }
-
     public static final Map<Class, String> NAMES_BY_CLASS = new HashMap<>();
     static {
         NAMES_BY_CLASS.put(StudyEntry.class, StudyEntryContract.NAME);

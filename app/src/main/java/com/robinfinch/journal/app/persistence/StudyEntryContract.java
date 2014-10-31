@@ -3,7 +3,8 @@ package com.robinfinch.journal.app.persistence;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
 
-import static com.robinfinch.journal.app.util.Utils.*;
+import static com.robinfinch.journal.app.util.Utils.aliased;
+import static com.robinfinch.journal.app.util.Utils.aliasedId;
 
 /**
  * Data definition for {@link com.robinfinch.journal.domain.StudyEntry}.

@@ -10,7 +10,11 @@ import retrofit.http.POST;
 import retrofit.http.PUT;
 import retrofit.http.Path;
 
-import static com.robinfinch.journal.app.util.Constants.*;
+import static com.robinfinch.journal.app.util.Constants.HEADER_AUTH_TOKEN;
+import static com.robinfinch.journal.app.util.Constants.HEADER_AUTH_TOKEN_TYPE;
+import static com.robinfinch.journal.app.util.Constants.HEADER_EMAIL;
+import static com.robinfinch.journal.app.util.Constants.HEADER_GCM_REGISTRATION_ID;
+import static com.robinfinch.journal.app.util.Constants.HEADER_PASSWORD;
 
 /**
  * The server API.

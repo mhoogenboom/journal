@@ -4,7 +4,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
-import com.robinfinch.journal.app.persistence.DbHelper;
 
 import java.lang.reflect.Type;
 
@@ -19,12 +18,12 @@ public class SyncableObjectWrapperSerializer implements JsonSerializer<SyncableO
     public JsonElement serialize(SyncableObjectWrapper wrapper, Type type,
                                  JsonSerializationContext context) {
 
-        String subClassName = DbHelper.NAMES_BY_CLASS.get(wrapper.entity.getClass());
+        String clsName = "." + wrapper.entity.getClass().getSimpleName();
 
         JsonElement entityJson = context.serialize(wrapper.entity);
 
         JsonObject wrapperJson = new JsonObject();
-        wrapperJson.add(subClassName, entityJson);
+        wrapperJson.add(clsName, entityJson);
 
         return wrapperJson;
     }

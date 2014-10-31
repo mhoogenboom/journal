@@ -11,7 +11,7 @@ import android.os.Bundle;
 
 import com.robinfinch.journal.app.sync.SyncAdapter;
 
-import static com.robinfinch.journal.app.util.Constants.*;
+import static com.robinfinch.journal.app.util.Constants.ARG_AUTH_TOKEN_TYPE;
 
 /**
  * Account authenticator.

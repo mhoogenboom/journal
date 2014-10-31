@@ -48,9 +48,9 @@ public class JournalServlet extends HttpServlet {
 
         String email = request.getUserPrincipal().getName();
 
-        List<JournalEntry> entities = new ArrayList<>(findEntries(email));
+        List<JournalEntry> entries = new ArrayList<>(findEntries(email));
 
-        Collections.sort(entities);
+        Collections.sort(entries);
 
         response.setContentType("text/plain;charset=UTF-8");
 
@@ -62,8 +62,8 @@ public class JournalServlet extends HttpServlet {
             int month = -1;
             int day = -1;
 
-            for (JournalEntry entity : entities) {
-                c.setTime(entity.getDayOfEntry());
+            for (JournalEntry entry : entries) {
+                c.setTime(entry.getDayOfEntry());
 
                 if (month != c.get(Calendar.MONTH)) {
                     printMonthHeader(out, c);
@@ -75,7 +75,7 @@ public class JournalServlet extends HttpServlet {
                     day = c.get(Calendar.DAY_OF_MONTH);
                 }
 
-                printEntry(out, entity);
+                printEntry(out, entry);
             }
 
             printJournalFooter(out);

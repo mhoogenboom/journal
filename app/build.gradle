@@ -1,6 +1,9 @@
-versionMajor = 1
-versionMinor = 0
-versionPatch = 2
+
+ext {
+    versionMajor = 1
+    versionMinor = 0
+    versionPatch = 4
+}
 
 buildscript {
     repositories {

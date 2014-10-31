@@ -1,6 +1,5 @@
 package com.robinfinch.journal.app.rest;
 
-import com.robinfinch.journal.domain.JournalEntry;
 import com.robinfinch.journal.domain.SyncableObject;
 
 import java.util.List;

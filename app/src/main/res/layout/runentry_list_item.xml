@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/list_item_padding">
+
+    <TextView
+        android:id="@+id/runentry_dayofrun"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        style="@style/ListItem.Header" />
+
+    <TextView
+        android:id="@+id/runentry_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runentry_dayofrun"
+        android:layout_alignParentLeft="true"
+        style="@style/ListItem.Field" />
+
+    <TextView
+        android:id="@+id/runentry_timetaken"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runentry_distance"
+        android:layout_alignParentLeft="true"
+        style="@style/ListItem.Field" />
+
+    <TextView
+        android:id="@+id/runentry_avgpace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/runentry_distance"
+        android:layout_alignParentRight="true"
+        style="@style/ListItem.Field" />
+
+</RelativeLayout>

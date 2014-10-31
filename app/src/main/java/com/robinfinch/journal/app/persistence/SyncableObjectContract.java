@@ -1,7 +1,5 @@
 package com.robinfinch.journal.app.persistence;
 
-import android.provider.BaseColumns;
-
 /**
  * Base class of data definitions for {@link com.robinfinch.journal.domain.SyncableObject}.
  *
