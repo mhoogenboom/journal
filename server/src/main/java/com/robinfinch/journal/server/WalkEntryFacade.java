@@ -31,7 +31,7 @@ public class WalkEntryFacade extends SyncableObjectFacade<WalkEntry> {
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response createTravelEntry(
+    public Response createWalkEntry(
             @HeaderParam(HEADER_AUTH_TOKEN) String token,
             WalkEntry entity) {
         return createEntity(token, entity);
@@ -40,7 +40,7 @@ public class WalkEntryFacade extends SyncableObjectFacade<WalkEntry> {
     @POST
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response editTravelEntry(
+    public Response editWalkEntry(
             @HeaderParam(HEADER_AUTH_TOKEN) String token,
             @PathParam("id") Long id,
             WalkEntry entity) {
@@ -49,7 +49,7 @@ public class WalkEntryFacade extends SyncableObjectFacade<WalkEntry> {
 
     @DELETE
     @Path("{id}")
-    public Response removeTravelEntry(
+    public Response removeWalkEntry(
             @HeaderParam(HEADER_AUTH_TOKEN) String token,
             @PathParam("id") Long id) {
         return removeEntity(token, findEntity(id));
@@ -58,7 +58,7 @@ public class WalkEntryFacade extends SyncableObjectFacade<WalkEntry> {
     @GET
     @Path("{id}")
     @Produces({"application/json"})
-    public WalkEntry findTravelEntry(@PathParam("id") Long id) {
+    public WalkEntry findWalkEntry(@PathParam("id") Long id) {
         return findEntity(id);
     }
 }

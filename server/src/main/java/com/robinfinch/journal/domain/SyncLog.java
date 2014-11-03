@@ -1,7 +1,12 @@
 package com.robinfinch.journal.domain;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import static com.robinfinch.journal.server.util.Utils.LOG_TAG;
 
 /**
  * Keep track of changes to be synced.
@@ -16,6 +21,8 @@ public class SyncLog extends PersistableObject {
 
     @ManyToOne
     private SyncableObject changedEntity;
+
+    private String deletedEntityClass;
 
     private Long deletedEntityId;
 
@@ -35,6 +42,14 @@ public class SyncLog extends PersistableObject {
         this.changedEntity = changedEntity;
     }
 
+    public String getDeletedEntityClass() {
+        return deletedEntityClass;
+    }
+
+    public void setDeletedEntityClass(String deletedEntityClass) {
+        this.deletedEntityClass = deletedEntityClass;
+    }
+
     public Long getDeletedEntityId() {
         return deletedEntityId;
     }
@@ -43,11 +58,23 @@ public class SyncLog extends PersistableObject {
         this.deletedEntityId = deletedEntityId;
     }
 
+    public SyncableObject getDeletedEntity() {
+        SyncableObject object = null;
+        try {
+            object = (SyncableObject) Class.forName(deletedEntityClass).newInstance();
+            object.setId(deletedEntityId);
+        } catch (ClassNotFoundException| IllegalAccessException | InstantiationException | ClassCastException e) {
+            Logger.getLogger(LOG_TAG).log(Level.WARNING, "Can't instantiate " + deletedEntityClass, e);
+        }
+        return object;
+    }
+
     @Override
     public String toString() {
         return "com.robinfinch.journal.domain.SyncLog[id=" + getId()
                 + ";modifier=" + getModifier()
                 + ";changedEntity=" + getChangedEntity()
+                + ";deletedEntityClass=" + getDeletedEntityClass()
                 + ";deletedEntityId=" + getDeletedEntityId()
                 + "]";
     }

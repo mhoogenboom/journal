@@ -94,6 +94,7 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
         SyncLog log = new SyncLog();
         log.setModifier(app);
         log.setChangedEntity(entity);
+        log.setDeletedEntityClass(entityClass.getName());
         log.setDeletedEntityId(entityId);
         em.persist(log);
 
@@ -114,7 +115,11 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
         if (!apps.isEmpty()) {
             GcmMessage message = new GcmMessage();
             for (App app : apps) {
-                message.registrationId(app.getGcmRegistrationId());
+                if (app.getGcmRegistrationId() == null) {
+                    Logger.getLogger(LOG_TAG).info("Can't tickle " + app);
+                } else {
+                    message.registrationId(app.getGcmRegistrationId());
+                }
             }
             gcmClient.send(message);
         }

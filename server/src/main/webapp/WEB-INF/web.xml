@@ -6,4 +6,9 @@
         <auth-method>BASIC</auth-method>
         <realm-name>JournalRealm</realm-name>
     </login-config>
+    <env-entry>
+        <env-entry-name>gcm_api_key</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value></env-entry-value>
+    </env-entry>
 </web-app>

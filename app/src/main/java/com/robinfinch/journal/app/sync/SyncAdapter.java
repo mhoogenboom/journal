@@ -353,7 +353,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             for (SyncableObject entity : response.getChanges()) {
 
                 String entityName = DbHelper.NAMES_BY_CLASS.get(entity.getClass());
-
                 long remoteId = entity.getId();
 
                 values = entity.toValues();
@@ -365,6 +364,15 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     values.put(SyncableObjectContract.COL_REMOTE_ID, remoteId);
                     db.insert(entityName, null, values);
                 }
+            }
+
+            for (SyncableObject entity : response.getDeletes()) {
+
+                String entityName = DbHelper.NAMES_BY_CLASS.get(entity.getClass());
+                long remoteId = entity.getId();
+
+                db.delete(entityName, SyncableObjectContract.COL_REMOTE_ID + "= ?",
+                        new String[]{Long.toString(remoteId)});
             }
 
             values = new ContentValues();

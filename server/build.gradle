@@ -2,7 +2,7 @@ apply plugin: 'war'
 
 dependencies {
     providedCompile 'javax:javaee-web-api:7.0'
-    providedCompile 'org.eclipse.persistence:javax.persistence:2.0.0'
+    providedCompile 'org.apache.cxf:cxf-rt-frontend-jaxrs:2.6.14'
     compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.4.3'
 }
 

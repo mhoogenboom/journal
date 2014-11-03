@@ -31,7 +31,7 @@ public class RunEntryFacade extends SyncableObjectFacade<RunEntry> {
 
     @PUT
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response create(
+    public Response createRunEntry(
             @HeaderParam(HEADER_AUTH_TOKEN) String token,
             RunEntry entity) {
         return createEntity(token, entity);
@@ -40,7 +40,7 @@ public class RunEntryFacade extends SyncableObjectFacade<RunEntry> {
     @POST
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public Response edit(
+    public Response editRunEntry(
             @HeaderParam(HEADER_AUTH_TOKEN) String token,
             @PathParam("id") Long id,
             RunEntry entity) {
@@ -49,7 +49,7 @@ public class RunEntryFacade extends SyncableObjectFacade<RunEntry> {
 
     @DELETE
     @Path("{id}")
-    public Response remove(
+    public Response removeRunEntry(
             @HeaderParam(HEADER_AUTH_TOKEN) String token,
             @PathParam("id") Long id) {
         return removeEntity(token, findEntity(id));
@@ -58,7 +58,7 @@ public class RunEntryFacade extends SyncableObjectFacade<RunEntry> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_JSON})
-    public RunEntry find(@PathParam("id") Long id) {
+    public RunEntry findRunEntry(@PathParam("id") Long id) {
         return findEntity(id);
     }
 }

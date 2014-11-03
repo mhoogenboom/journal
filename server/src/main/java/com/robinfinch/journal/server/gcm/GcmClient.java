@@ -1,7 +1,18 @@
 package com.robinfinch.journal.server.gcm;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
+
+import org.apache.cxf.jaxrs.client.WebClient;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.annotation.Resource;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
+import static com.robinfinch.journal.server.util.Utils.LOG_TAG;
 
 /**
  * Google Cloud Messaging client.
@@ -15,29 +26,21 @@ public class GcmClient {
     private static final String HEADER_AUTHENTICATION = "Authentication";
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
 
-//    private Client client;
-
-    @PostConstruct
-    public void init() {
-//        if (client == null) {
-//            client = ClientBuilder.newClient();
-//        }
-    }
+    @Resource(name="gcm_api_key")
+    private String apiKey;
 
     public void send(GcmMessage message) {
 
-//        client.target(ENDPOINT)
-//                    .request()
-//                    .header(HEADER_AUTHENTICATION, "key=" + key)
-//                    .header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON)
-//                    .post(Entity.json(message));
-    }
+        Logger.getLogger(LOG_TAG).info("Send tickle to " + message.getRegistrationIds());
 
-    @PreDestroy
-    public void close() {
-//        if (client != null) {
-//            client.close();
-//            client = null;
-//        }
+        List<Object> providers = new ArrayList<>();
+        providers.add(new JacksonJaxbJsonProvider());
+
+        Response r = WebClient.create(ENDPOINT, providers)
+                .header(HEADER_AUTHENTICATION, "key=" + apiKey)
+                .header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .post(message);
+
+        Logger.getLogger(LOG_TAG).info("response=" + r);
     }
 }

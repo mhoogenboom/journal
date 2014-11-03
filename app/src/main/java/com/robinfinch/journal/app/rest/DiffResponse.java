@@ -14,7 +14,7 @@ public class DiffResponse {
 
     private long latestRevision;
     private List<SyncableObject> changes;
-    private List<Long> deletes;
+    private List<SyncableObject> deletes;
 
     public long getLatestRevision() {
         return latestRevision;
@@ -24,7 +24,7 @@ public class DiffResponse {
         return changes;
     }
 
-    public List<Long> getDeletes() {
+    public List<SyncableObject> getDeletes() {
         return deletes;
     }
 

@@ -16,7 +16,7 @@ public class DiffResponse {
 
     private long latestRevision;
     private final List<SyncableObject> changes;
-    private final List<Long> deletes;
+    private final List<SyncableObject> deletes;
 
     public DiffResponse(long latestRevision) {
         this.latestRevision = latestRevision;
@@ -29,8 +29,8 @@ public class DiffResponse {
             latestRevision = log.getId();
         }
         if (log.getChangedEntity() == null) {
-            if (!deletes.contains(log.getDeletedEntityId())) {
-                deletes.add(log.getDeletedEntityId());
+            if (!deletes.contains(log.getDeletedEntity())) {
+                deletes.add(log.getDeletedEntity());
             }
         } else {
             if (!changes.contains(log.getChangedEntity())) {
@@ -47,7 +47,7 @@ public class DiffResponse {
         return changes;
     }
 
-    public List<Long> getDeletes() {
+    public List<SyncableObject> getDeletes() {
         return deletes;
     }
 }
