@@ -34,8 +34,21 @@ public class RunEntry extends JournalEntry {
 
     @Override
     public String toPrettyString() {
-        return "Run " + Formatter.formatDistance(distance)
-                + " in " + Formatter.formatTime(timeTaken) + ".";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Run");
+        if (distance > 0) {
+            sb.append(" ");
+            sb.append(Formatter.formatDistance(distance));
+        }
+        if (timeTaken > 0) {
+            if (distance > 0) {
+                sb.append(" in");
+            }
+            sb.append(" ");
+            sb.append(Formatter.formatTime(timeTaken));
+        }
+        sb.append(".");
+        return sb.toString();
     }
 
     @Override

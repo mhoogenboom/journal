@@ -22,6 +22,7 @@ import android.util.Log;
 
 import com.robinfinch.journal.app.MainActivity;
 import com.robinfinch.journal.app.R;
+import com.robinfinch.journal.app.notifications.MyNotificationManager;
 import com.robinfinch.journal.app.persistence.DbHelper;
 import com.robinfinch.journal.app.persistence.RevisionContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
@@ -68,12 +69,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final String AUTH_TOKEN_TYPE_SYNC = "com.robinfinch.sync";
 
-    private static final int SYNC_NOTIFICATION_ID = 300;
-
     private DbHelper dbHelper;
     private ConnectivityChecker connectivityChecker;
     private JournalApi api;
     private int maxEntriesToSend;
+    private MyNotificationManager notificationManager;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
@@ -84,11 +84,16 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         super(context, autoInitialize, allowParallelSyncs);
     }
 
-    public SyncAdapter config(JournalApi api, int maxEntriesToSend) {
+    public SyncAdapter config(
+            ConnectivityChecker connectivityChecker,
+            JournalApi api,
+            int maxEntriesToSend,
+            MyNotificationManager notificationManager) {
         this.dbHelper = new DbHelper(getContext());
-        this.connectivityChecker = new ConnectivityChecker(getContext());
+        this.connectivityChecker = connectivityChecker;
         this.api = api;
         this.maxEntriesToSend = maxEntriesToSend;
+        this.notificationManager = notificationManager;
         return this;
     }
 
@@ -336,7 +341,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Log.d(LOG_TAG, "Synced to revision " + response.getLatestRevision());
 
-                notifyChanges();
+                notificationManager.onChangesReceived();
             }
         } catch (RetrofitError e) {
             Log.w(LOG_TAG, "Receive failed", e);
@@ -390,23 +395,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private void notifyChanges() {
-        Intent intent = new Intent(getContext(), MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(getContext(), 0, intent, 0);
-
-        Notification notification = new Notification.Builder(getContext())
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(getContext().getText(R.string.sync_notification_title))
-                .setContentText(getContext().getText(R.string.sync_notification_text))
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .build();
-
-        NotificationManager notificationManager =
-                (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-        notificationManager.notify(SYNC_NOTIFICATION_ID, notification);
-    }
 }
 

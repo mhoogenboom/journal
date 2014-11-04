@@ -90,9 +90,9 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
         return em.find(entityClass, id);
     }
 
-    private void log(final App app, T entity, Long entityId) {
+    private void log(final App modifier, T entity, Long entityId) {
         SyncLog log = new SyncLog();
-        log.setModifier(app);
+        log.setModifier(modifier);
         log.setChangedEntity(entity);
         log.setDeletedEntityClass(entityClass.getName());
         log.setDeletedEntityId(entityId);
@@ -100,7 +100,7 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
 
 //        executorService.submit(new Runnable() {
 //            public void run() {
-                tickle(app);
+                tickle(modifier);
 //            }
 //        });
     }

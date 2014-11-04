@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import static com.robinfinch.journal.server.util.Utils.LOG_TAG;
 
@@ -23,9 +23,6 @@ public class GcmClient {
 
     private static final String ENDPOINT = "https://android.googleapis.com/gcm/send";
 
-    private static final String HEADER_AUTHENTICATION = "Authentication";
-    private static final String HEADER_CONTENT_TYPE = "Content-Type";
-
     @Resource(name="gcm_api_key")
     private String apiKey;
 
@@ -36,11 +33,9 @@ public class GcmClient {
         List<Object> providers = new ArrayList<>();
         providers.add(new JacksonJaxbJsonProvider());
 
-        Response r = WebClient.create(ENDPOINT, providers)
-                .header(HEADER_AUTHENTICATION, "key=" + apiKey)
-                .header(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON)
-                .post(message);
-
-        Logger.getLogger(LOG_TAG).info("response=" + r);
+        WebClient.create(ENDPOINT, providers)
+                .header(HttpHeaders.AUTHORIZATION, "key=" + apiKey)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .post(message, String.class); // not interested in response
     }
 }

@@ -59,15 +59,22 @@ public class JournalServlet extends HttpServlet {
 
             Calendar c = Calendar.getInstance(TimeZone.getTimeZone("Europe/London"), Locale.UK);
 
+            int year = -1;
             int month = -1;
             int day = -1;
 
             for (JournalEntry entry : entries) {
                 c.setTime(entry.getDayOfEntry());
 
+                if (year != c.get(Calendar.YEAR)) {
+                    year = c.get(Calendar.YEAR);
+                    month = -1;
+                }
+
                 if (month != c.get(Calendar.MONTH)) {
                     printMonthHeader(out, c);
                     month = c.get(Calendar.MONTH);
+                    day = -1;
                 }
 
                 if (day != c.get(Calendar.DAY_OF_MONTH)) {

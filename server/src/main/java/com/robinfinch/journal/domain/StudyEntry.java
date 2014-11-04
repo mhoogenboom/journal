@@ -3,6 +3,8 @@ package com.robinfinch.journal.domain;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import static com.robinfinch.journal.server.util.Utils.isEmpty;
+
 /**
  * Journal entry describing a study session.
  *
@@ -34,7 +36,18 @@ public class StudyEntry extends JournalEntry {
 
     @Override
     public String toPrettyString() {
-        return ((course == null) ? "" : course.getName() + ", ") + description + ".";
+        StringBuilder sb = new StringBuilder();
+        if (course != null) {
+            sb.append(course.getName());
+        }
+        if (!isEmpty(description)) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append(description);
+        }
+        sb.append(".");
+        return sb.toString();
     }
 
     @Override

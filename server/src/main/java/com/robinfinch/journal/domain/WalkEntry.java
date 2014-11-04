@@ -2,6 +2,8 @@ package com.robinfinch.journal.domain;
 
 import javax.persistence.Entity;
 
+import static com.robinfinch.journal.server.util.Utils.isEmpty;
+
 /**
  * Journal entry describing a walk.
  *
@@ -22,7 +24,14 @@ public class WalkEntry extends JournalEntry {
 
     @Override
     public String toPrettyString() {
-        return "Walk near " + location + ".";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Walk");
+        if (!isEmpty(location)) {
+            sb.append(" near ");
+            sb.append(location);
+        }
+        sb.append(".");
+        return sb.toString();
     }
 
     @Override

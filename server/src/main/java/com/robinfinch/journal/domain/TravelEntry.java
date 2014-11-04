@@ -4,6 +4,8 @@ import com.robinfinch.journal.server.util.Formatter;
 
 import javax.persistence.Entity;
 
+import static com.robinfinch.journal.server.util.Utils.isEmpty;
+
 /**
  * Journal entry describing a journey.
  *
@@ -34,7 +36,14 @@ public class TravelEntry extends JournalEntry {
 
     @Override
     public String toPrettyString() {
-        return "Journey " + Formatter.formatTravelDescription(away, place) + ".";
+        StringBuilder sb = new StringBuilder();
+        sb.append("Journey");
+        if (!isEmpty(place)) {
+            sb.append(" ");
+            sb.append(Formatter.formatTravelDescription(away, place));
+        }
+        sb.append(".");
+        return sb.toString();
     }
 
     @Override

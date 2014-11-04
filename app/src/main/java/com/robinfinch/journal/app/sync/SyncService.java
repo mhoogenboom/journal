@@ -7,12 +7,15 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.robinfinch.journal.app.notifications.MyNotificationManager;
 import com.robinfinch.journal.app.rest.DiffResponse;
 import com.robinfinch.journal.app.rest.JournalApi;
 import com.robinfinch.journal.app.rest.SyncableObjectListDeserializer;
 import com.robinfinch.journal.app.rest.SyncableObjectWrapper;
 import com.robinfinch.journal.app.rest.SyncableObjectWrapperSerializer;
 import com.robinfinch.journal.app.util.Config;
+
+import org.apache.http.conn.ClientConnectionManager;
 
 import java.lang.reflect.Type;
 
@@ -28,6 +31,8 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  */
 public class SyncService extends Service {
 
+    private static final int MAX_ENTRIES_TO_SEND = 50;
+
     private static SyncAdapter syncAdapter;
 
     @Override
@@ -36,6 +41,8 @@ public class SyncService extends Service {
             Log.d(LOG_TAG, "Create sync adapter");
 
             Config config = new Config(this);
+
+            ConnectivityChecker connectivityChecker = new ConnectivityChecker(getApplicationContext());
 
             Type t;
             try {
@@ -58,8 +65,10 @@ public class SyncService extends Service {
 
             JournalApi api = restAdapter.create(JournalApi.class);
 
+            MyNotificationManager connectionManager = new MyNotificationManager(getApplicationContext());
+
             syncAdapter = new SyncAdapter(getApplicationContext(), true)
-                    .config(api, 50);
+                    .config(connectivityChecker, api, MAX_ENTRIES_TO_SEND, connectionManager);
         }
     }
 

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.robinfinch.journal.app.notifications.MyNotificationManager;
 import com.robinfinch.journal.app.settings.SettingsActivity;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
@@ -42,6 +43,7 @@ public class MainActivity extends Activity implements
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private ListView optionsList;
+    private MyNotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,8 @@ public class MainActivity extends Activity implements
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+        notificationManager = new MyNotificationManager(this);
 
         onDrawerOptionSelected(getText(R.string.studyentries));
     }
@@ -162,6 +166,12 @@ public class MainActivity extends Activity implements
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        notificationManager.onMainActivityResumed();
     }
 
     @Override

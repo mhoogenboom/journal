@@ -4,6 +4,7 @@ dependencies {
     providedCompile 'javax:javaee-web-api:7.0'
     providedCompile 'org.apache.cxf:cxf-rt-frontend-jaxrs:2.6.14'
     compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.4.3'
+    testCompile 'junit:junit:4.11'
 }
 
 war {
