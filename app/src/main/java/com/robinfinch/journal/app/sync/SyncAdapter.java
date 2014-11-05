@@ -170,6 +170,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     };
                     break;
 
+                case CourseContract.NAME:
+                    cursor = query(db, CourseContract.DIR_URI_TYPE, CourseContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return Course.from(cursor, "");
+                        }
+                    };
+                    break;
+
                 case WalkEntryContract.NAME:
                     cursor = query(db, WalkEntryContract.DIR_URI_TYPE, WalkEntryContract.COLS, log.getEntityId());
 
@@ -330,10 +341,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     }
 
     private void receive(Revision revision, String token) {
-        Log.d(LOG_TAG, "Receive diff");
+        Log.d(LOG_TAG, "Receive sync");
 
         try {
-            DiffResponse response = api.diff(token, revision.getLatestRevision());
+            DiffResponse response = api.sync(token, revision.getLatestRevision());
 
             if (response.getLatestRevision() == revision.getLatestRevision()) {
                 Log.d(LOG_TAG, "No remote changes to sync");

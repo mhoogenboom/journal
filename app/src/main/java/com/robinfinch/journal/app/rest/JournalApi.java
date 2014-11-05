@@ -59,7 +59,7 @@ public interface JournalApi {
             "Accept: application/json",
     })
     @GET("/sync/{revision}")
-    public DiffResponse diff(
+    public DiffResponse sync(
             @Header(HEADER_AUTH_TOKEN) String token,
             @Path("revision") long latestRevision);
 }

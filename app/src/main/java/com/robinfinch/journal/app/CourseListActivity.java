@@ -17,7 +17,8 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  */
 public class CourseListActivity extends BaseActivity implements
         CourseListFragment.Parent,
-        CourseFragment.Parent {
+        CourseFragment.Parent,
+        EmptyFragment.Parent {
 
     private static final int REQUEST_SELECT_COURSE = 1;
 
