@@ -34,7 +34,7 @@ public class StudyEntry extends JournalEntry {
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(prefix + StudyEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(StudyEntryContract.COL_DAY_OF_ENTRY);
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 

@@ -2,8 +2,8 @@ package com.robinfinch.journal.server.gcm;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * A tickle send to the Google Cloud Messaging service.
@@ -15,11 +15,11 @@ public class GcmMessage {
     private static final String COLLAPSE_KEY = "com.robinfinch.journal.tickle";
 
     private final String collapseKey;
-    private final List<String> registrationIds;
+    private final Collection<String> registrationIds;
 
     public GcmMessage() {
         collapseKey = COLLAPSE_KEY;
-        registrationIds = new ArrayList<>();
+        registrationIds = new HashSet<>();
     }
 
     @JsonProperty("collapse_key")
@@ -33,7 +33,7 @@ public class GcmMessage {
     }
 
     @JsonProperty("registration_ids")
-    public List<String> getRegistrationIds() {
+    public Collection<String> getRegistrationIds() {
         return registrationIds;
     }
 }

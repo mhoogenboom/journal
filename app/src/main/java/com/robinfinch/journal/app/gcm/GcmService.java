@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.robinfinch.journal.app.persistence.MyContentProvider;
 import com.robinfinch.journal.app.util.UriType;
 
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;

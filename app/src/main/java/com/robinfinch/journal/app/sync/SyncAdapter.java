@@ -5,14 +5,10 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.accounts.AuthenticatorException;
 import android.accounts.OperationCanceledException;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,9 +16,8 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.robinfinch.journal.app.MainActivity;
-import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
+import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.DbHelper;
 import com.robinfinch.journal.app.persistence.RevisionContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
@@ -45,6 +40,9 @@ import com.robinfinch.journal.domain.TravelEntry;
 import com.robinfinch.journal.domain.WalkEntry;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import retrofit.RetrofitError;
@@ -59,13 +57,16 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-    public static final Class[] SYNCABLE_OBJECT_CLASSES = {
-            StudyEntry.class,
-            Course.class,
-            WalkEntry.class,
-            RunEntry.class,
-            TravelEntry.class
-    };
+    private static final Map<Class, DirUriType> URI_TYPES_BY_CLASS = new HashMap<>();
+    static {
+        URI_TYPES_BY_CLASS.put(StudyEntry.class, StudyEntryContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(Course.class, CourseContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(WalkEntry.class, WalkEntryContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(RunEntry.class, RunEntryContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(TravelEntry.class, TravelEntryContract.DIR_URI_TYPE);
+    }
+
+    public static final Set<Class> SYNCABLE_OBJECT_CLASSES = URI_TYPES_BY_CLASS.keySet();
 
     public static final String AUTH_TOKEN_TYPE_SYNC = "com.robinfinch.sync";
 
@@ -207,11 +208,11 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             if (cursor.moveToFirst()) {
-                SyncableObject entry = from.apply(cursor);
-                if (entry.getRemoteId() == 0) {
-                    sendCreate(log, entry, token);
+                SyncableObject obj = from.apply(cursor);
+                if (obj.getRemoteId() == 0) {
+                    sendCreate(log, obj, token);
                 } else {
-                    sendUpdate(log, entry, token);
+                    sendUpdate(log, obj, token);
                 }
             } else {
                 sendDelete(log, token);
@@ -357,27 +358,31 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             for (SyncableObject entity : response.getChanges()) {
 
-                String entityName = DbHelper.NAMES_BY_CLASS.get(entity.getClass());
+                DirUriType uriType = URI_TYPES_BY_CLASS.get(entity.getClass());
                 long remoteId = entity.getId();
 
                 values = entity.toValues();
 
-                int updatedRows = db.update(entityName, values, SyncableObjectContract.COL_REMOTE_ID + "= ?",
+                int updatedRows = db.update(uriType.getEntityName(), values, SyncableObjectContract.COL_REMOTE_ID + "= ?",
                         new String[]{Long.toString(remoteId)});
 
                 if (updatedRows == 0) {
                     values.put(SyncableObjectContract.COL_REMOTE_ID, remoteId);
-                    db.insert(entityName, null, values);
+                    db.insert(uriType.getEntityName(), null, values);
                 }
+
+                getContext().getContentResolver().notifyChange(uriType.uri(), null);
             }
 
             for (SyncableObject entity : response.getDeletes()) {
 
-                String entityName = DbHelper.NAMES_BY_CLASS.get(entity.getClass());
+                DirUriType uriType = URI_TYPES_BY_CLASS.get(entity.getClass());
                 long remoteId = entity.getId();
 
-                db.delete(entityName, SyncableObjectContract.COL_REMOTE_ID + "= ?",
+                db.delete(uriType.getEntityName(), SyncableObjectContract.COL_REMOTE_ID + "= ?",
                         new String[]{Long.toString(remoteId)});
+
+                getContext().getContentResolver().notifyChange(uriType.uri(), null);
             }
 
             values = new ContentValues();
@@ -394,7 +399,5 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             db.endTransaction();
         }
     }
-
-
 }
 

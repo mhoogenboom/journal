@@ -15,8 +15,6 @@ import com.robinfinch.journal.app.rest.SyncableObjectWrapper;
 import com.robinfinch.journal.app.rest.SyncableObjectWrapperSerializer;
 import com.robinfinch.journal.app.util.Config;
 
-import org.apache.http.conn.ClientConnectionManager;
-
 import java.lang.reflect.Type;
 
 import retrofit.RestAdapter;

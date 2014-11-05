@@ -17,8 +17,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
 
+import com.robinfinch.journal.app.adapter.JournalEntryListAdapter;
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.WalkEntry;
@@ -48,9 +50,9 @@ public class WalkEntryListFragment extends Fragment {
     }
 
     @InjectView(R.id.walkentry_list)
-    protected ListView list;
+    protected ExpandableListView list;
 
-    private CursorAdapter adapter;
+    private JournalEntryListAdapter adapter;
 
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
@@ -68,7 +70,7 @@ public class WalkEntryListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new CursorAdapter(getActivity(), null, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
+        adapter = new JournalEntryListAdapter(new CursorAdapter(getActivity(), null, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER) {
 
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -87,7 +89,7 @@ public class WalkEntryListFragment extends Fragment {
                 WalkEntryViewHolder viewHolder = (WalkEntryViewHolder) view.getTag();
                 viewHolder.bind(walkEntry);
             }
-        };
+        });
     }
 
     @Override
@@ -98,13 +100,16 @@ public class WalkEntryListFragment extends Fragment {
 
         list.setAdapter(adapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) adapter.getItem(position);
-                if (cursor != null) {
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Cursor cursor = (Cursor) adapter.getChild(groupPosition, childPosition);
+                if (cursor == null) {
+                    return false;
+                } else {
                     int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
                     WalkEntryListFragment.this.parent.onWalkEntryItemSelected(WalkEntryContract.ITEM_URI_TYPE.uri(cursor.getLong(i)));
+                    return false;
                 }
             }
         });
@@ -129,6 +134,10 @@ public class WalkEntryListFragment extends Fragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 adapter.swapCursor(cursor);
+
+                if (adapter.getGroupCount() > 0) {
+                    list.expandGroup(adapter.getGroupCount() - 1);
+                }
             }
 
             @Override

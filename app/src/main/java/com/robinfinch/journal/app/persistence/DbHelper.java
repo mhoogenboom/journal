@@ -5,14 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.robinfinch.journal.domain.RunEntry;
-import com.robinfinch.journal.domain.StudyEntry;
-import com.robinfinch.journal.domain.TravelEntry;
-import com.robinfinch.journal.domain.WalkEntry;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**
@@ -24,14 +16,6 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "journal.db";
     private static final int DATABASE_VERSION = 8;
-
-    public static final Map<Class, String> NAMES_BY_CLASS = new HashMap<>();
-    static {
-        NAMES_BY_CLASS.put(StudyEntry.class, StudyEntryContract.NAME);
-        NAMES_BY_CLASS.put(WalkEntry.class, WalkEntryContract.NAME);
-        NAMES_BY_CLASS.put(RunEntry.class, RunEntryContract.NAME);
-        NAMES_BY_CLASS.put(TravelEntry.class, TravelEntryContract.NAME);
-    }
 
     // Revision
 

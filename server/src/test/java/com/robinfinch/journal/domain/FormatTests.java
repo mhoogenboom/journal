@@ -2,7 +2,7 @@ package com.robinfinch.journal.domain;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests text representations of {@link com.robinfinch.journal.domain.JournalEntry journal entries}.

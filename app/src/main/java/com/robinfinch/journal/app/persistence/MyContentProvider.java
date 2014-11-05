@@ -65,7 +65,7 @@ public class MyContentProvider extends ContentProvider {
 
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        int code =  URI_MATCHER.match(uri);
+        int code = URI_MATCHER.match(uri);
 
         UriType type = URI_TYPES[code];
 
@@ -86,7 +86,7 @@ public class MyContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         Log.d(LOG_TAG, "Insert " + uri);
 
-        int code =  URI_MATCHER.match(uri);
+        int code = URI_MATCHER.match(uri);
 
         DirUriType type = (DirUriType) URI_TYPES[code];
 
@@ -115,7 +115,7 @@ public class MyContentProvider extends ContentProvider {
                       String[] selectionArgs) {
         Log.d(LOG_TAG, "Update " + uri);
 
-        int code =  URI_MATCHER.match(uri);
+        int code = URI_MATCHER.match(uri);
 
         ItemUriType type = (ItemUriType) URI_TYPES[code];
 
@@ -146,7 +146,7 @@ public class MyContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.d(LOG_TAG, "Delete " + uri);
 
-        int code =  URI_MATCHER.match(uri);
+        int code = URI_MATCHER.match(uri);
 
         ItemUriType type = (ItemUriType) URI_TYPES[code];
 

@@ -12,7 +12,7 @@
         android:text="@string/walkentries"
         style="@style/Header" />
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/walkentry_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"

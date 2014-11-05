@@ -2,7 +2,7 @@
 ext {
     versionMajor = 1
     versionMinor = 0
-    versionPatch = 7
+    versionPatch = System.getenv("BUILD_NUMBER") as Integer ?: 8
 }
 
 buildscript {
@@ -32,6 +32,7 @@ android {
         targetSdkVersion 19
         versionCode = (versionMajor * 100 + versionMinor) * 100 + versionPatch
         versionName "$versionMajor.$versionMinor.$versionPatch"
+        project.ext.archivesBaseName = "journal-" + versionName
     }
 
     compileOptions {
@@ -56,11 +57,6 @@ android {
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.robinfinch
-        }
-
-        applicationVariants.all { variant ->
-            def file = variant.outputFile
-            variant.outputFile = new File(file.parent, "journal-$versionName-$variant.buildType.name" + ".apk")
         }
     }
 }

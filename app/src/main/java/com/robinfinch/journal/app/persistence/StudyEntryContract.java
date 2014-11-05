@@ -21,7 +21,7 @@ public interface StudyEntryContract extends JournalEntryContract {
     String[] COLS = {
             aliasedId(NAME, COL_ID),
             aliased(NAME, COL_REMOTE_ID),
-            aliased(NAME, COL_DAY_OF_ENTRY),
+            COL_DAY_OF_ENTRY,
             aliased(NAME, COL_COURSE_ID),
             aliased(NAME, COL_DESCRIPTION),
             aliased(NAME, COL_LOG_ID),
