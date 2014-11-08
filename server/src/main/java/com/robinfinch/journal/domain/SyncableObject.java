@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 
 /**
@@ -25,5 +26,11 @@ public abstract class SyncableObject extends PersistableObject {
 
     public void setOwner(JournalOwner owner) {
         this.owner = owner;
+    }
+
+    public void prepareBeforeSend() {}
+
+    public void prepareAfterReceive(EntityManager em, JournalOwner owner) {
+        setOwner(owner);
     }
 }

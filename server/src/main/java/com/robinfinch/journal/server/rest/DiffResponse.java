@@ -34,6 +34,7 @@ public class DiffResponse {
             }
         } else {
             if (!changes.contains(log.getChangedEntity())) {
+                log.getChangedEntity().prepareBeforeSend();
                 changes.add(log.getChangedEntity());
             }
         }

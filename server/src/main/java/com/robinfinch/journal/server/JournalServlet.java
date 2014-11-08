@@ -90,7 +90,7 @@ public class JournalServlet extends HttpServlet {
     }
 
     private List<JournalEntry> findEntries(String email) {
-        return em.createQuery("SELECT e FROM JournalEntry e WHERE e.owner.email = ?1")
+        return em.createQuery("SELECT e FROM JournalEntry e WHERE e.owner.email = ?1", JournalEntry.class)
                 .setParameter(1, email)
                 .getResultList();
     }

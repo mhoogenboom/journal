@@ -43,7 +43,7 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
         Logger.getLogger(LOG_TAG).info("Create " + entity);
 
         entity.setId(null); // overwrite the client's id
-        entity.setOwner(app.getOwner());
+        entity.prepareAfterReceive(em, app.getOwner());
         em.persist(entity);
         em.flush();
 
@@ -58,13 +58,17 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        Logger.getLogger(LOG_TAG).info("Edit " + entity);
+        if (em.find(entity.getClass(), id) == null) {
+            // already deleted
+        } else {
+            Logger.getLogger(LOG_TAG).info("Edit " + entity);
 
-        entity.setId(id); // overwrite the client's id
-        entity.setOwner(app.getOwner());
-        em.merge(entity);
+            entity.setId(id); // overwrite the client's id
+            entity.prepareAfterReceive(em, app.getOwner());
+            em.merge(entity);
 
-        log(app, entity, entity.getId());
+            log(app, entity, entity.getId());
+        }
 
         return Response.ok().build();
     }
@@ -75,9 +79,11 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
 
-        Logger.getLogger(LOG_TAG).info("Remove " + entity);
+        if (entity == null) {
+            // already deleted
+        } else {
+            Logger.getLogger(LOG_TAG).info("Remove " + entity);
 
-        if (entity != null) {
             log(app, null, entity.getId());
 
             em.remove(entity);
@@ -107,7 +113,7 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
 
     private void tickle(App modifier) {
         List<App> apps = em.createQuery("SELECT a FROM App a" +
-                " WHERE a.owner.id = ?1 AND NOT a.id = ?2")
+                " WHERE a.owner.id = ?1 AND NOT a.id = ?2", App.class)
                 .setParameter(1, modifier.getOwner().getId())
                 .setParameter(2, modifier.getId())
                 .getResultList();

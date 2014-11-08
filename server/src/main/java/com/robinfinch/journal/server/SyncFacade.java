@@ -50,7 +50,8 @@ public class SyncFacade extends AbstractFacade {
 
     private List<SyncLog> findLogs(Long ownerId, Long appId, Long latestRevision) {
         return em.createQuery("SELECT l FROM SyncLog l" +
-                " WHERE l.id > ?1 AND l.modifier.owner.id = ?2 AND NOT l.modifier.id = ?3 ORDER BY l.id ASC")
+                " WHERE l.id > ?1 AND l.modifier.owner.id = ?2 AND NOT l.modifier.id = ?3" +
+                " ORDER BY l.id ASC", SyncLog.class)
                 .setParameter(1, latestRevision)
                 .setParameter(2, ownerId)
                 .setParameter(3, appId)

@@ -2,6 +2,7 @@ package com.robinfinch.journal.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -13,6 +14,13 @@ import com.robinfinch.journal.app.settings.SettingsActivity;
  * @author Mark Hoogenboom
  */
 public class BaseActivity extends Activity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

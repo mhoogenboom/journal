@@ -95,7 +95,6 @@ public class MainActivity extends Activity implements
         drawerLayout.setDrawerListener(drawerToggle);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
 
         notificationManager = new MyNotificationManager(this);
 

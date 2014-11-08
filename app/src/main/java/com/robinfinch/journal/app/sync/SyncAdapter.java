@@ -220,10 +220,14 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
             if (cursor.moveToFirst()) {
                 SyncableObject obj = from.apply(cursor);
-                if (obj.getRemoteId() == 0) {
-                    sendCreate(log, obj, token);
+                if (obj.prepareBeforeSend()) {
+                    if (obj.getRemoteId() == 0) {
+                        sendCreate(log, obj, token);
+                    } else {
+                        sendUpdate(log, obj, token);
+                    }
                 } else {
-                    sendUpdate(log, obj, token);
+                    postpone(log, obj);
                 }
             } else {
                 sendDelete(log, token);
@@ -340,8 +344,51 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
+    private void postpone(SyncLog log, SyncableObject entity) {
+        Log.d(LOG_TAG, "Postpone send");
+
+        if (log.getId() < entity.getLogId()) {
+            // more logs after this one, so delete all logs except the last
+
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            try {
+                db.beginTransaction();
+
+                db.delete(SyncLogContract.NAME,
+                        SyncLogContract.COL_ENTITY_NAME + " = ? AND " +
+                                SyncLogContract.COL_ENTITY_ID + " = ? AND " +
+                                SyncLogContract.COL_ID + " < ?",
+                        new String[]{log.getEntityName(), Long.toString(log.getEntityId()), Long.toString(entity.getLogId())}
+                );
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } else {
+            // this log is the last one, so delete and insert
+
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            try {
+                db.beginTransaction();
+
+                db.delete(SyncLogContract.NAME,
+                                SyncLogContract.COL_ID + " = ?",
+                        new String[]{Long.toString(log.getId())}
+                );
+
+                ContentValues values = log.toValues();
+                db.insert(SyncLogContract.NAME, null, values);
+
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        }
+    }
+
     private void receive(Revision revision, String token) {
-        Log.d(LOG_TAG, "Receive sync");
+        Log.d(LOG_TAG, "Receive changes");
 
         try {
             DiffResponse response = api.sync(token, revision.getLatestRevision());
@@ -367,12 +414,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             db.beginTransaction();
 
-            for (SyncableObject entity : response.getChanges()) {
+            for (SyncableObject obj : response.getChanges()) {
+                obj.prepareAfterReceive(db);
 
-                DirUriType uriType = URI_TYPES_BY_CLASS.get(entity.getClass());
-                long remoteId = entity.getId();
+                DirUriType uriType = URI_TYPES_BY_CLASS.get(obj.getClass());
+                long remoteId = obj.getId();
 
-                values = entity.toValues();
+                values = obj.toValues();
 
                 int updatedRows = db.update(uriType.getEntityName(), values, SyncableObjectContract.COL_REMOTE_ID + "= ?",
                         new String[]{Long.toString(remoteId)});
@@ -385,10 +433,10 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 getContext().getContentResolver().notifyChange(uriType.uri(), null);
             }
 
-            for (SyncableObject entity : response.getDeletes()) {
+            for (SyncableObject obj : response.getDeletes()) {
 
-                DirUriType uriType = URI_TYPES_BY_CLASS.get(entity.getClass());
-                long remoteId = entity.getId();
+                DirUriType uriType = URI_TYPES_BY_CLASS.get(obj.getClass());
+                long remoteId = obj.getId();
 
                 db.delete(uriType.getEntityName(), SyncableObjectContract.COL_REMOTE_ID + "= ?",
                         new String[]{Long.toString(remoteId)});

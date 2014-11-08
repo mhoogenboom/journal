@@ -1,5 +1,7 @@
 package com.robinfinch.journal.domain;
 
+import android.database.sqlite.SQLiteDatabase;
+
 /**
  * Base class of all classes that are synced to the server.
  *
@@ -34,4 +36,10 @@ public abstract class SyncableObject extends PersistableObject {
     public boolean hasChanged() {
         return changed;
     }
+
+    public boolean prepareBeforeSend() {
+        return true;
+    }
+
+    public void prepareAfterReceive(SQLiteDatabase db) {}
 }

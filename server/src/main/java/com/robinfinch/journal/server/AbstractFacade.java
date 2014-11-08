@@ -25,14 +25,14 @@ public abstract class AbstractFacade {
     protected EntityManager em;
 
     protected JournalOwner findOwnerByEmail(String email) {
-        List<JournalOwner> owners = em.createQuery("SELECT o FROM JournalOwner o WHERE o.email = ?1")
+        List<JournalOwner> owners = em.createQuery("SELECT o FROM JournalOwner o WHERE o.email = ?1", JournalOwner.class)
                 .setParameter(1, email)
                 .getResultList();
         return (owners.isEmpty() ? null : owners.get(0));
     }
 
     protected App findAppByToken(String token) {
-        List<App> apps = em.createQuery("SELECT a FROM App a WHERE a.token = ?1")
+        List<App> apps = em.createQuery("SELECT a FROM App a WHERE a.token = ?1", App.class)
                 .setParameter(1, token)
                 .getResultList();
         return (apps.isEmpty() ? null : apps.get(0));

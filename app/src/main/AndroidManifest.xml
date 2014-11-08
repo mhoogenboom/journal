@@ -28,7 +28,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,21 +37,27 @@
         </activity>
         <activity
             android:name=".StudyEntryActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
-            android:name=".CourseListActivity"></activity>
+            android:name=".CourseListActivity"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".CourseActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".WalkEntryActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".RunEntryActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".TravelEntryActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".auth.LoginActivity"
             android:windowSoftInputMode="stateHidden"></activity>
