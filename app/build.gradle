@@ -1,10 +1,4 @@
 
-ext {
-    versionMajor = 1
-    versionMinor = 0
-    versionPatch = System.getenv("BUILD_NUMBER") as Integer ?: 10
-}
-
 buildscript {
     repositories {
         mavenCentral()
@@ -30,14 +24,18 @@ android {
         applicationId "com.robinfinch.journal.app"
         minSdkVersion 16
         targetSdkVersion 19
-        versionCode = (versionMajor * 100 + versionMinor) * 100 + versionPatch
-        versionName "$versionMajor.$versionMinor.$versionPatch"
+        versionCode = (rootProject.ext.versionMajor * 100 + rootProject.ext.versionMinor) * 100 + rootProject.ext.versionPatch
+        versionName "$rootProject.ext.versionMajor.$rootProject.ext.versionMinor.$rootProject.ext.versionPatch"
         project.ext.archivesBaseName = "journal-" + versionName
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    dexOptions {
+        preDexLibraries = !rootProject.hasProperty('disablePreDex')
     }
 
     signingConfigs {

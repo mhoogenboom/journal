@@ -16,7 +16,7 @@ import javax.persistence.InheritanceType;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class PersistableObject implements Serializable {
+public abstract class PersistableObject implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

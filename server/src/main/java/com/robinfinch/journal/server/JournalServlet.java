@@ -62,6 +62,7 @@ public class JournalServlet extends HttpServlet {
             int year = -1;
             int month = -1;
             int day = -1;
+            int i = 0;
 
             for (JournalEntry entry : entries) {
                 c.setTime(entry.getDayOfEntry());
@@ -80,9 +81,10 @@ public class JournalServlet extends HttpServlet {
                 if (day != c.get(Calendar.DAY_OF_MONTH)) {
                     printDayHeader(out, c);
                     day = c.get(Calendar.DAY_OF_MONTH);
+                    i = 0;
                 }
 
-                printEntry(out, entry);
+                printEntry(out, i++, entry);
             }
 
             printJournalFooter(out);
@@ -109,9 +111,11 @@ public class JournalServlet extends HttpServlet {
         out.println(String.format("%1$tA %1$te", c));
     }
 
-    private void printEntry(PrintWriter out, JournalEntry entity) {
+    private void printEntry(PrintWriter out, int i, JournalEntry entity) {
+        if (i > 0) {
+            out.print(" ");
+        }
         out.print(entity.toPrettyString());
-        out.print(" ");
     }
 
     private void printJournalFooter(PrintWriter out) {

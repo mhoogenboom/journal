@@ -3,3 +3,9 @@ subprojects {
         mavenCentral()
     }
 }
+
+ext {
+    versionMajor = 1
+    versionMinor = 0
+    versionPatch = System.getenv("BUILD_NUMBER") as Integer ?: 10
+}
