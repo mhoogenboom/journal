@@ -92,6 +92,9 @@
         <service
             android:name=".gcm.GcmService">
         </service>
+        <service
+            android:name=".widget.JournalWidgetService">
+        </service>
 
         <provider
             android:name=".persistence.MyContentProvider"
@@ -107,6 +110,16 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <category android:name="com.robinfinch.journal.app" />
             </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".widget.JournalWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
         </receiver>
     </application>
 </manifest>

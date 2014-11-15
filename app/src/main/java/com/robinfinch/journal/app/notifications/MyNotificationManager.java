@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 
 import com.robinfinch.journal.app.MainActivity;
 import com.robinfinch.journal.app.R;
@@ -33,9 +32,7 @@ public class MyNotificationManager {
     }
 
     public void onChangesReceived() {
-        Intent intent = new Intent(context, MainActivity.class);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent = MainActivity.intentFor(context);
 
         Notification notification = new Notification.Builder(context)
                 .setSmallIcon(R.drawable.ic_launcher)

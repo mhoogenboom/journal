@@ -13,6 +13,7 @@ public interface Constants {
     String ARG_PASSWORD = "password";
     String ARG_URI = "com.robinfinch.journal.arg_uri";
     String ARG_SELECTED_ID = "com.robinfinch.journal.arg_selected_id";
+    String ARG_WIDGET_IDS = "com.robinfinch.journal.arg_widget_ids";
 
     String HEADER_EMAIL = "X-Journal-Email";
     String HEADER_PASSWORD = "X-Journal-Password";

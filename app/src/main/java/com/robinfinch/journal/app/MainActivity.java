@@ -2,6 +2,8 @@ package com.robinfinch.journal.app;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -38,6 +40,11 @@ public class MainActivity extends Activity implements
         TravelEntryListFragment.Parent,
         TravelEntryFragment.Parent,
         EmptyFragment.Parent {
+
+    public static PendingIntent intentFor(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return PendingIntent.getActivity(context, 0, intent, 0);
+    }
 
     private boolean singlePaneLayout;
     private DrawerLayout drawerLayout;
