@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,14 +10,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
+import com.robinfinch.journal.app.ui.DetailsFragment;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.WalkEntry;
@@ -27,7 +24,6 @@ import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 
@@ -36,7 +32,7 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class WalkEntryFragment extends Fragment {
+public class WalkEntryFragment extends DetailsFragment {
 
     private static final int LOAD_WALK_ENTRY = 1;
     private static final int UPDATE_WALK_ENTRY = 2;
@@ -73,23 +69,11 @@ public class WalkEntryFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.walkentry_fragment, container, false);
         ButterKnife.inject(this, view);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(Menu.CATEGORY_CONTAINER, R.id.walkentry_delete, 0, R.string.walkentry_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @Override
@@ -146,24 +130,14 @@ public class WalkEntryFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.walkentry_delete:
-                deleteWalkEntry();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void updateWalkEntry() {
+    public void update() {
         if (entry != null) {
             entry.resetChanged();
 
             Date dayOfEntry = Parser.parseDay(dayOfWalkView.getText());
             entry.setDayOfEntry(dayOfEntry);
 
-            String location = locationView.getText().toString();
+            String location = Parser.parseText(locationView.getText());
             entry.setLocation(location);
 
             if (entry.hasChanged()) {
@@ -175,17 +149,11 @@ public class WalkEntryFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.walkentry_delete)
-    public void deleteWalkEntry() {
+    @Override
+    public void delete() {
         Uri uri = getArguments().getParcelable(ARG_URI);
 
         queryHandler.startDelete(DELETE_WALK_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
-    }
-
-    @Override
-    public void onPause() {
-        updateWalkEntry();
-        super.onPause();
     }
 
     @Override

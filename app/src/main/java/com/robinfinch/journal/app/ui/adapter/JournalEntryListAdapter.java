@@ -1,4 +1,4 @@
-package com.robinfinch.journal.app.adapter;
+package com.robinfinch.journal.app.ui.adapter;
 
 import android.content.Context;
 import android.database.Cursor;

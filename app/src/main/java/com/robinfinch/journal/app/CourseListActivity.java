@@ -6,6 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.robinfinch.journal.app.ui.BaseActivity;
+import com.robinfinch.journal.app.ui.EmptyFragment;
+import com.robinfinch.journal.app.ui.ListActivity;
+
 import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
@@ -15,30 +19,16 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  *
  * @author Mark Hoogenboom
  */
-public class CourseListActivity extends BaseActivity implements
+public class CourseListActivity extends ListActivity implements
         CourseListFragment.Parent,
         CourseFragment.Parent,
         EmptyFragment.Parent {
 
     private static final int REQUEST_SELECT_COURSE = 1;
 
-    private boolean singlePaneLayout;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.list_activity);
-
-        Log.d(LOG_TAG, "Create course list activity");
-
-        singlePaneLayout = (findViewById(R.id.container_details) == null);
-
-        if (!singlePaneLayout) {
-            showDetails(EmptyFragment.newInstance());
-        }
-
-        Fragment fragment = CourseListFragment.newInstance();
-        getFragmentManager().beginTransaction().replace(R.id.container_list, fragment).commit();
+    protected Fragment newFragment() {
+        return CourseListFragment.newInstance();
     }
 
     @Override
@@ -85,7 +75,4 @@ public class CourseListActivity extends BaseActivity implements
         showDetails(EmptyFragment.newInstance());
     }
 
-    private void showDetails(Fragment fragment) {
-        getFragmentManager().beginTransaction().replace(R.id.container_details, fragment).commit();
-    }
 }

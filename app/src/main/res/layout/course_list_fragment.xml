@@ -13,13 +13,13 @@
         style="@style/Header" />
 
     <ListView
-        android:id="@+id/course_list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/course_add"
+        android:id="@+id/entity_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/details_fragment_padding"

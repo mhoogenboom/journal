@@ -31,6 +31,31 @@ public class FormatTests {
     }
 
     @Test
+    public void formatReadEntry() {
+
+        Author ianMcEwan = new Author();
+        ianMcEwan.setName("Ian McEwan");
+
+        Title theChildrenAct = new Title();
+        theChildrenAct.setTitle("The Children Act");
+
+        ReadEntry entry = new ReadEntry();
+        assertEquals("Read.", entry.toPrettyString());
+
+        entry.setTitle(theChildrenAct);
+        assertEquals("Read The Children Act.", entry.toPrettyString());
+
+        theChildrenAct.setYear("2014");
+        assertEquals("Read The Children Act (2014).", entry.toPrettyString());
+
+        theChildrenAct.setAuthor(ianMcEwan);
+        assertEquals("Read Ian McEwan: The Children Act (2014).", entry.toPrettyString());
+
+        entry.setPart("chapter 1");
+        assertEquals("Read Ian McEwan: The Children Act (2014), chapter 1.", entry.toPrettyString());
+    }
+
+    @Test
     public void formatWalkEntry() {
 
         WalkEntry entry = new WalkEntry();

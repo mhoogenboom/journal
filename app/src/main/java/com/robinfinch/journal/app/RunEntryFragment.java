@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,14 +10,12 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
+import com.robinfinch.journal.app.ui.DetailsFragment;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.RunEntry;
@@ -27,7 +24,6 @@ import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 
@@ -36,7 +32,7 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class RunEntryFragment extends Fragment {
+public class RunEntryFragment extends DetailsFragment {
 
     private static final int LOAD_RUN_ENTRY = 1;
     private static final int UPDATE_RUN_ENTRY = 2;
@@ -76,23 +72,11 @@ public class RunEntryFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.runentry_fragment, container, false);
         ButterKnife.inject(this, view);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(Menu.CATEGORY_CONTAINER, R.id.runentry_delete, 0, R.string.runentry_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @Override
@@ -152,17 +136,7 @@ public class RunEntryFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.runentry_delete:
-                deleteRunEntry();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void updateRunEntry() {
+    public void update() {
         if (entry != null) {
             entry.resetChanged();
 
@@ -184,17 +158,11 @@ public class RunEntryFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.runentry_delete)
-    public void deleteRunEntry() {
+    @Override
+    public void delete() {
         Uri uri = getArguments().getParcelable(ARG_URI);
 
         queryHandler.startDelete(DELETE_RUN_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
-    }
-
-    @Override
-    public void onPause() {
-        updateRunEntry();
-        super.onPause();
     }
 
     @Override

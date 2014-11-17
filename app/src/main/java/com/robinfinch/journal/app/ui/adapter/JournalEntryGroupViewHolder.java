@@ -1,4 +1,4 @@
-package com.robinfinch.journal.app.adapter;
+package com.robinfinch.journal.app.ui.adapter;
 
 import android.view.View;
 import android.widget.TextView;

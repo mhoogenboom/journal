@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,9 +10,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -21,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
+import com.robinfinch.journal.app.ui.DetailsFragment;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.TravelEntry;
@@ -29,7 +26,6 @@ import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 
@@ -38,7 +34,7 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class TravelEntryFragment extends Fragment {
+public class TravelEntryFragment extends DetailsFragment {
 
     private static final int LOAD_TRAVEL_ENTRY = 1;
     private static final int UPDATE_TRAVEL_ENTRY = 2;
@@ -78,23 +74,11 @@ public class TravelEntryFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.travelentry_fragment, container, false);
         ButterKnife.inject(this, view);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(Menu.CATEGORY_CONTAINER, R.id.travelentry_delete, 0, R.string.travelentry_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @Override
@@ -161,17 +145,7 @@ public class TravelEntryFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.travelentry_delete:
-                deleteTravelEntry();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void updateTravelEntry() {
+    public void update() {
         if (entry != null) {
             entry.resetChanged();
 
@@ -181,7 +155,7 @@ public class TravelEntryFragment extends Fragment {
             CharSequence direction = (CharSequence) awayView.getSelectedItem();
             entry.setAway(getText(R.string.travelentry_away).equals(direction));
 
-            String place = placeView.getText().toString();
+            String place = Parser.parseText(placeView.getText());
             entry.setPlace(place);
 
             if (entry.hasChanged()) {
@@ -193,17 +167,11 @@ public class TravelEntryFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.travelentry_delete)
-    public void deleteTravelEntry() {
+    @Override
+    public void delete() {
         Uri uri = getArguments().getParcelable(ARG_URI);
 
         queryHandler.startDelete(DELETE_TRAVEL_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
-    }
-
-    @Override
-    public void onPause() {
-        updateTravelEntry();
-        super.onPause();
     }
 
     @Override

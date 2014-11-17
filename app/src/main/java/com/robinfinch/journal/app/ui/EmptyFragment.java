@@ -1,4 +1,4 @@
-package com.robinfinch.journal.app;
+package com.robinfinch.journal.app.ui;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.robinfinch.journal.app.R;
 
 import butterknife.ButterKnife;
 

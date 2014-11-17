@@ -41,9 +41,9 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/walkentry_delete"
+        android:id="@+id/entity_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/walkentry_delete" />
+        android:text="@string/entity_delete" />
 
 </LinearLayout>

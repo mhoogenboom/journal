@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import static com.robinfinch.journal.server.util.Utils.isEmpty;
+import static com.robinfinch.journal.server.util.Utils.*;
 
 /**
  * Journal entry describing a study session.
@@ -56,12 +56,7 @@ public class StudyEntry extends JournalEntry {
         if (course != null) {
             sb.append(course.getName());
         }
-        if (!isEmpty(description)) {
-            if (sb.length() > 0) {
-                sb.append(", ");
-            }
-            sb.append(description);
-        }
+        appendIfNotEmpty(sb, ", ", description);
         sb.append(".");
         return sb.toString();
     }

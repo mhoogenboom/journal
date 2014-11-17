@@ -3,11 +3,7 @@ package com.robinfinch.journal.app.widget;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.ContentObserver;
 import android.database.Cursor;
 import android.util.Log;
 import android.widget.RemoteViews;
@@ -16,13 +12,12 @@ import com.robinfinch.journal.app.MainActivity;
 import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.StudyEntryRemoteViewHolder;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
-import com.robinfinch.journal.app.util.Constants;
 import com.robinfinch.journal.domain.StudyEntry;
 
 import java.util.Arrays;
-import java.util.Date;
 
-import static com.robinfinch.journal.app.util.Constants.*;
+import static com.robinfinch.journal.app.util.Constants.ARG_WIDGET_IDS;
+import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**
  * Updates widgets in the background.

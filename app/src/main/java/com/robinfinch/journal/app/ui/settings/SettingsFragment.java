@@ -1,4 +1,4 @@
-package com.robinfinch.journal.app.settings;
+package com.robinfinch.journal.app.ui.settings;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;

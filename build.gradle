@@ -6,6 +6,6 @@ subprojects {
 
 ext {
     versionMajor = 1
-    versionMinor = 0
-    versionPatch = System.getenv("BUILD_NUMBER") as Integer ?: 11
+    versionMinor = 1
+    versionPatch = System.getenv("BUILD_NUMBER") as Integer ?: 12
 }

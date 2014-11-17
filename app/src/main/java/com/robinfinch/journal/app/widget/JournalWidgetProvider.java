@@ -6,12 +6,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.database.ContentObserver;
-import android.util.Log;
 
 import com.robinfinch.journal.app.MainActivity;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
 
-import static com.robinfinch.journal.app.util.Constants.*;
+import static com.robinfinch.journal.app.util.Constants.ARG_WIDGET_IDS;
 
 /**
  * Manages the home screen widget.

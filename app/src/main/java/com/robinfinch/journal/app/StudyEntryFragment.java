@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -12,15 +11,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
+import com.robinfinch.journal.app.ui.DetailsFragment;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.Course;
@@ -30,7 +27,6 @@ import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
@@ -40,7 +36,7 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class StudyEntryFragment extends Fragment {
+public class StudyEntryFragment extends DetailsFragment {
 
     private static final int LOAD_STUDY_ENTRY = 1;
     private static final int LOAD_COURSE = 2;
@@ -83,12 +79,6 @@ public class StudyEntryFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.studyentry_fragment, container, false);
@@ -101,12 +91,6 @@ public class StudyEntryFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(Menu.CATEGORY_CONTAINER, R.id.studyentry_delete, 0, R.string.studyentry_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @Override
@@ -197,17 +181,7 @@ public class StudyEntryFragment extends Fragment {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.studyentry_delete:
-                deleteStudyEntry();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    private void updateStudyEntry() {
+    public void update() {
         if (entry != null) {
             entry.resetChanged();
 
@@ -217,7 +191,7 @@ public class StudyEntryFragment extends Fragment {
             Course course = courseView.getCourse();
             entry.setCourse(course);
 
-            String description = descriptionView.getText().toString();
+            String description = Parser.parseText(descriptionView.getText());
             entry.setDescription(description);
 
             if (entry.hasChanged()) {
@@ -229,8 +203,8 @@ public class StudyEntryFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.studyentry_delete)
-    public void deleteStudyEntry() {
+    @Override
+    public void delete() {
         Uri uri = getArguments().getParcelable(ARG_URI);
 
         queryHandler.startDelete(DELETE_STUDY_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
@@ -266,12 +240,6 @@ public class StudyEntryFragment extends Fragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onPause() {
-        updateStudyEntry();
-        super.onPause();
     }
 
     @Override

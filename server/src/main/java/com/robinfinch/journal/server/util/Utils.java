@@ -53,4 +53,17 @@ public class Utils {
     public static boolean isEmpty(String s) {
         return (s == null) || s.trim().isEmpty();
     }
+
+    public static void appendIfNotEmpty(StringBuilder sb, String prefix, String s, String ... postfixes) {
+
+        if (!isEmpty(s)) {
+            if (sb.length() > 0) {
+                sb.append(prefix);
+            }
+            sb.append(s);
+            for (String postfix : postfixes) {
+                sb.append(postfix);
+            }
+        }
+    }
 }

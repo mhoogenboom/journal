@@ -13,15 +13,15 @@
         style="@style/Header" />
 
     <ExpandableListView
-        android:id="@+id/studyentry_list"
+        android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/studyentry_add"
+        android:id="@+id/entity_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/details_fragment_padding"
-        android:text="@string/studyentry_add" />
+        android:text="@string/entity_add" />
 </LinearLayout>

@@ -20,6 +20,7 @@ import android.widget.CursorAdapter;
 import android.widget.ListView;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
+import com.robinfinch.journal.app.ui.ListFragment;
 import com.robinfinch.journal.domain.Course;
 
 import butterknife.ButterKnife;
@@ -32,7 +33,7 @@ import butterknife.OnClick;
  *
  * @author Mark Hogenboom
  */
-public class CourseListFragment extends Fragment {
+public class CourseListFragment extends ListFragment {
 
     private static final int LOAD_COURSES = 1;
     private static final int INSERT_COURSE = 2;
@@ -46,16 +47,16 @@ public class CourseListFragment extends Fragment {
         return fragment;
     }
 
-    @InjectView(R.id.course_list)
-    protected ListView list;
-
-    private CursorAdapter adapter;
-
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
     private AsyncQueryHandler queryHandler;
 
     private Parent parent;
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.course_list_fragment;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -87,28 +88,6 @@ public class CourseListFragment extends Fragment {
                 viewHolder.bind(course);
             }
         };
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.course_list_fragment, container, false);
-        ButterKnife.inject(this, view);
-
-        list.setAdapter(adapter);
-
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) adapter.getItem(position);
-                if (cursor != null) {
-                    int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-                    CourseListFragment.this.parent.onCourseItemSelected(CourseContract.ITEM_URI_TYPE.uri(cursor.getLong(i)));
-                }
-            }
-        });
-
-        return view;
     }
 
     @Override
@@ -147,17 +126,16 @@ public class CourseListFragment extends Fragment {
         getLoaderManager().initLoader(LOAD_COURSES, null, loaderCallbacks);
     }
 
-    @OnClick(R.id.course_add)
-    public void addCourse() {
+    @Override
+    protected void add() {
         ContentValues initialValues = new ContentValues();
 
         queryHandler.startInsert(INSERT_COURSE, null, CourseContract.DIR_URI_TYPE.uri(), initialValues);
     }
 
     @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
+    protected void select(long id) {
+        parent.onCourseItemSelected(CourseContract.ITEM_URI_TYPE.uri(id));
     }
 
     @Override

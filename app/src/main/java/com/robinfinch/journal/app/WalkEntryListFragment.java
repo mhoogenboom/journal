@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,21 +10,16 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.ExpandableListView;
 
-import com.robinfinch.journal.app.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
+import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.WalkEntry;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 
 /**
@@ -33,7 +27,7 @@ import butterknife.OnClick;
  *
  * @author Mark Hogenboom
  */
-public class WalkEntryListFragment extends Fragment {
+public class WalkEntryListFragment extends ExpandableListFragment {
 
     private static final int LOAD_WALK_ENTRIES = 1;
     private static final int INSERT_WALK_ENTRY = 2;
@@ -47,16 +41,16 @@ public class WalkEntryListFragment extends Fragment {
         return fragment;
     }
 
-    @InjectView(R.id.walkentry_list)
-    protected ExpandableListView list;
-
-    private JournalEntryListAdapter adapter;
-
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
     private AsyncQueryHandler queryHandler;
 
     private Parent parent;
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.walkentry_list_fragment;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -88,31 +82,6 @@ public class WalkEntryListFragment extends Fragment {
                 viewHolder.bind(walkEntry);
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.walkentry_list_fragment, container, false);
-        ButterKnife.inject(this, view);
-
-        list.setAdapter(adapter);
-
-        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Cursor cursor = (Cursor) adapter.getChild(groupPosition, childPosition);
-                if (cursor == null) {
-                    return false;
-                } else {
-                    int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-                    WalkEntryListFragment.this.parent.onWalkEntryItemSelected(WalkEntryContract.ITEM_URI_TYPE.uri(cursor.getLong(i)));
-                    return false;
-                }
-            }
-        });
-
-        return view;
     }
 
     @Override
@@ -155,8 +124,8 @@ public class WalkEntryListFragment extends Fragment {
         getLoaderManager().initLoader(LOAD_WALK_ENTRIES, null, loaderCallbacks);
     }
 
-    @OnClick(R.id.walkentry_add)
-    public void addWalkEntry() {
+    @Override
+    protected void add() {
         ContentValues initialValues = new ContentValues();
         initialValues.put(WalkEntryContract.COL_DAY_OF_ENTRY, Utils.getToday());
         initialValues.put(WalkEntryContract.COL_LOCATION, "");
@@ -165,9 +134,8 @@ public class WalkEntryListFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
+    protected void select(long id) {
+        parent.onWalkEntryItemSelected(WalkEntryContract.ITEM_URI_TYPE.uri(id));
     }
 
     @Override

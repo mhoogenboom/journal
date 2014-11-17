@@ -1,5 +1,6 @@
 package com.robinfinch.journal.app.util;
 
+import com.robinfinch.journal.domain.Author;
 import com.robinfinch.journal.domain.Course;
 
 import java.util.Date;
@@ -32,6 +33,13 @@ public class Formatter {
             return "";
         }
         return course.getName();
+    }
+
+    public static final CharSequence formatAuthor(Author author) {
+        if (author == null) {
+            return "";
+        }
+        return author.getName();
     }
 
     public static final CharSequence formatWalkDescription(String place) {

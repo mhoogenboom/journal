@@ -47,6 +47,13 @@
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity
+            android:name=".AuthorListActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".AuthorActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".WalkEntryActivity"
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
@@ -61,7 +68,7 @@
         <activity
             android:name=".auth.LoginActivity"
             android:windowSoftInputMode="stateHidden"></activity>
-        <activity android:name=".settings.SettingsActivity">
+        <activity android:name=".ui.settings.SettingsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
                 <category android:name="android.intent.category.DEFAULT" />

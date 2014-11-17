@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,21 +10,16 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.ExpandableListView;
 
-import com.robinfinch.journal.app.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
+import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.TravelEntry;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 
 /**
@@ -33,7 +27,7 @@ import butterknife.OnClick;
  *
  * @author Mark Hogenboom
  */
-public class TravelEntryListFragment extends Fragment {
+public class TravelEntryListFragment extends ExpandableListFragment {
 
     private static final int LOAD_TRAVEL_ENTRIES = 1;
     private static final int INSERT_TRAVEL_ENTRY = 2;
@@ -47,16 +41,16 @@ public class TravelEntryListFragment extends Fragment {
         return fragment;
     }
 
-    @InjectView(R.id.travelentry_list)
-    protected ExpandableListView list;
-
-    private JournalEntryListAdapter adapter;
-
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
     private AsyncQueryHandler queryHandler;
 
     private Parent parent;
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.travelentry_list_fragment;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -88,31 +82,6 @@ public class TravelEntryListFragment extends Fragment {
                 viewHolder.bind(travelEntry);
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.travelentry_list_fragment, container, false);
-        ButterKnife.inject(this, view);
-
-        list.setAdapter(adapter);
-
-        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Cursor cursor = (Cursor) adapter.getChild(groupPosition, childPosition);
-                if (cursor == null) {
-                    return false;
-                } else {
-                    int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-                    TravelEntryListFragment.this.parent.onTravelEntryItemSelected(TravelEntryContract.ITEM_URI_TYPE.uri(cursor.getLong(i)));
-                    return true;
-                }
-            }
-        });
-
-        return view;
     }
 
     @Override
@@ -155,8 +124,8 @@ public class TravelEntryListFragment extends Fragment {
         getLoaderManager().initLoader(LOAD_TRAVEL_ENTRIES, null, loaderCallbacks);
     }
 
-    @OnClick(R.id.travelentry_add)
-    public void addTravelEntry() {
+    @Override
+    protected void add() {
         ContentValues initialValues = new ContentValues();
         initialValues.put(TravelEntryContract.COL_DAY_OF_ENTRY, Utils.getToday());
         initialValues.put(TravelEntryContract.COL_PLACE, "");
@@ -165,9 +134,8 @@ public class TravelEntryListFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
+    protected void select(long id) {
+        parent.onTravelEntryItemSelected(TravelEntryContract.ITEM_URI_TYPE.uri(id));
     }
 
     @Override

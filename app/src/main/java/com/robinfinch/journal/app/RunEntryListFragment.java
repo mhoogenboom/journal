@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,28 +10,23 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
-import android.widget.ExpandableListView;
 
-import com.robinfinch.journal.app.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
+import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.RunEntry;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
  * List of run entries fragment.
  *
  * @author Mark Hogenboom
  */
-public class RunEntryListFragment extends Fragment {
+public class RunEntryListFragment extends ExpandableListFragment {
 
     private static final int LOAD_RUN_ENTRIES = 1;
     private static final int INSERT_RUN_ENTRY = 2;
@@ -46,16 +40,16 @@ public class RunEntryListFragment extends Fragment {
         return fragment;
     }
 
-    @InjectView(R.id.runentry_list)
-    protected ExpandableListView list;
-
-    private JournalEntryListAdapter adapter;
-
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
     private AsyncQueryHandler queryHandler;
 
     private Parent parent;
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.runentry_list_fragment;
+    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -87,31 +81,6 @@ public class RunEntryListFragment extends Fragment {
                 viewHolder.bind(runEntry);
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.runentry_list_fragment, container, false);
-        ButterKnife.inject(this, view);
-
-        list.setAdapter(adapter);
-
-        list.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Cursor cursor = (Cursor) adapter.getChild(groupPosition, childPosition);
-                if (cursor == null) {
-                    return false;
-                } else {
-                    int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-                    RunEntryListFragment.this.parent.onRunEntryItemSelected(RunEntryContract.ITEM_URI_TYPE.uri(cursor.getLong(i)));
-                    return true;
-                }
-            }
-        });
-
-        return view;
     }
 
     @Override
@@ -154,8 +123,8 @@ public class RunEntryListFragment extends Fragment {
         getLoaderManager().initLoader(LOAD_RUN_ENTRIES, null, loaderCallbacks);
     }
 
-    @OnClick(R.id.runentry_add)
-    public void addRunEntry() {
+    @Override
+    protected void add() {
         ContentValues initialValues = new ContentValues();
         initialValues.put(RunEntryContract.COL_DAY_OF_ENTRY, Utils.getToday());
 
@@ -163,9 +132,8 @@ public class RunEntryListFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
+    protected void select(long id) {
+        parent.onRunEntryItemSelected(RunEntryContract.ITEM_URI_TYPE.uri(id));
     }
 
     @Override

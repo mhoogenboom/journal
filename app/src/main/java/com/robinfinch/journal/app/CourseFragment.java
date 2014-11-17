@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.AsyncQueryHandler;
 import android.content.ContentValues;
@@ -11,14 +10,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
+import com.robinfinch.journal.app.ui.DetailsFragment;
+import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.Course;
 
 import butterknife.ButterKnife;
@@ -32,7 +30,7 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class CourseFragment extends Fragment {
+public class CourseFragment extends DetailsFragment {
 
     private static final int LOAD_COURSE = 1;
     private static final int UPDATE_COURSE = 2;
@@ -66,23 +64,11 @@ public class CourseFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.course_fragment, container, false);
         ButterKnife.inject(this, view);
         return view;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        menu.add(0, R.id.course_delete, 0, R.string.course_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
     }
 
     @Override
@@ -135,27 +121,17 @@ public class CourseFragment extends Fragment {
         getLoaderManager().initLoader(LOAD_COURSE, null, loaderCallbacks);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.course_delete:
-                deleteCourse();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
     @OnClick(R.id.course_select)
-    public void selectCourse() {
+    public void select() {
         parent.onCourseSelected(course.getId());
     }
 
-    private void updateCourse() {
+    @Override
+    public void update() {
         if (course != null) {
             course.resetChanged();
 
-            String name = nameView.getText().toString();
+            String name = Parser.parseText(nameView.getText());
             course.setName(name);
 
             if (course.hasChanged()) {
@@ -167,17 +143,11 @@ public class CourseFragment extends Fragment {
         }
     }
 
-    @OnClick(R.id.course_delete)
-    public void deleteCourse() {
+    @Override
+    public void delete() {
         Uri uri = getArguments().getParcelable(ARG_URI);
 
         queryHandler.startDelete(DELETE_COURSE, null, uri, Long.toString(course.getRemoteId()), null);
-    }
-
-    @Override
-    public void onPause() {
-        updateCourse();
-        super.onPause();
     }
 
     @Override

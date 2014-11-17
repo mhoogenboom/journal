@@ -1,32 +1,34 @@
-package com.robinfinch.journal.app.settings;
+package com.robinfinch.journal.app.ui;
 
-import android.app.Activity;
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.robinfinch.journal.app.R;
 
+import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**
- * Settings activity.
+ * Base class for details activities.
  *
  * @author Mark Hoogenboom
  */
-public class SettingsActivity extends Activity {
+public abstract class DetailsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.details_activity);
 
-        Log.d(LOG_TAG, "Create settings activity");
+        Uri uri = getIntent().getParcelableExtra(ARG_URI);
 
-        PreferenceManager.setDefaultValues(this, R.xml.settings, false);
+        Log.d(LOG_TAG, "Create details activity for " + uri);
 
-        Fragment fragment = SettingsFragment.newInstance();
+        Fragment fragment = newFragmentFor(uri);
         getFragmentManager().beginTransaction().replace(R.id.container_details, fragment).commit();
     }
+
+    protected abstract Fragment newFragmentFor(Uri uri);
 }

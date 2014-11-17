@@ -1,4 +1,4 @@
-package com.robinfinch.journal.app;
+package com.robinfinch.journal.app.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,7 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.robinfinch.journal.app.settings.SettingsActivity;
+import com.robinfinch.journal.app.R;
+import com.robinfinch.journal.app.ui.settings.SettingsActivity;
 
 /**
  * Base class for activities.

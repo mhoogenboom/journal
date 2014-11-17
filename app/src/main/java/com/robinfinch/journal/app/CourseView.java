@@ -18,10 +18,12 @@ public class CourseView extends EditText {
 
     public CourseView(Context context) {
         super(context);
+        setFocusable(false);
     }
 
     public CourseView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setFocusable(false);
     }
 
     public void setCourse(Course course) {

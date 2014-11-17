@@ -17,6 +17,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
+import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.DbHelper;
 import com.robinfinch.journal.app.persistence.RevisionContract;
@@ -31,6 +32,7 @@ import com.robinfinch.journal.app.rest.JournalApi;
 import com.robinfinch.journal.app.rest.SyncableObjectWrapper;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.Function;
+import com.robinfinch.journal.domain.Author;
 import com.robinfinch.journal.domain.Course;
 import com.robinfinch.journal.domain.RunEntry;
 import com.robinfinch.journal.domain.StudyEntry;
@@ -61,6 +63,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     static {
         URI_TYPES_BY_CLASS.put(StudyEntry.class, StudyEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(Course.class, CourseContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(Author.class, AuthorContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(WalkEntry.class, WalkEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(RunEntry.class, RunEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(TravelEntry.class, TravelEntryContract.DIR_URI_TYPE);

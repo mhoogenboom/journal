@@ -1,4 +1,4 @@
-package com.robinfinch.journal.app.adapter;
+package com.robinfinch.journal.app.ui.adapter;
 
 /**
  * Grouping of journal entries in an expandable list adapter.

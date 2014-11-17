@@ -20,7 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
-import com.robinfinch.journal.app.settings.SettingsActivity;
+import com.robinfinch.journal.app.ui.settings.SettingsActivity;
+import com.robinfinch.journal.app.ui.EmptyFragment;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;

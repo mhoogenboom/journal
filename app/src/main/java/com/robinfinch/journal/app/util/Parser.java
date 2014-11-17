@@ -51,4 +51,9 @@ public class Parser {
         }
         return time;
     }
+
+    public static String parseText(Editable text) {
+        String s = text.toString().trim();
+        return (s.isEmpty() ? null : s);
+    }
 }

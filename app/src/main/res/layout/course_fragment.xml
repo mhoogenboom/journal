@@ -43,11 +43,11 @@
             android:text="@string/course_select" />
 
         <Button
-            android:id="@+id/course_delete"
+            android:id="@+id/entity_delete"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/course_delete" />
+            android:text="@string/entity_delete" />
 
     </LinearLayout>
 

@@ -11,30 +11,29 @@
     <string name="studyentry_dayofstudy">Day of study</string>
     <string name="studyentry_course">Course</string>
     <string name="studyentry_description">Description</string>
-	<string name="studyentry_add">Add</string>
-    <string name="studyentry_delete">Delete</string>
 
     <string name="courses">Select course</string>
     <string name="course">Course details</string>
     <string name="course_name">Name</string>
     <string name="course_add">New course</string>
     <string name="course_select">Select</string>
-    <string name="course_delete">Delete</string>
+
+    <string name="authors">Select author</string>
+    <string name="author">Author</string>
+    <string name="author_name">Name</string>
+    <string name="author_add">New author</string>
+    <string name="author_select">Select</string>
 
     <string name="walkentries">Walks</string>
     <string name="walkentry">Walk Details</string>
     <string name="walkentry_dayofwalk">Day of walk</string>
     <string name="walkentry_location">Near</string>
-    <string name="walkentry_add">Add</string>
-    <string name="walkentry_delete">Delete</string>
 
     <string name="runentries">Runs</string>
     <string name="runentry">Run Details</string>
     <string name="runentry_dayofrun">Day of run</string>
     <string name="runentry_distance">Distance</string>
     <string name="runentry_timetaken">Time</string>
-    <string name="runentry_add">Add</string>
-    <string name="runentry_delete">Delete</string>
 
     <string name="travelentries">Travel</string>
     <string name="travelentry">Travel Details</string>
@@ -43,8 +42,9 @@
     <string name="travelentry_away">To</string>
     <string name="travelentry_back">From</string>
     <string name="travelentry_place">Place</string>
-    <string name="travelentry_add">Add</string>
-    <string name="travelentry_delete">Delete</string>
+
+    <string name="entity_add">Add</string>
+    <string name="entity_delete">Delete</string>
 
     <string name="sync_notification_title">Journal Update</string>
     <string name="sync_notification_text">Your journal has been updated.</string>
