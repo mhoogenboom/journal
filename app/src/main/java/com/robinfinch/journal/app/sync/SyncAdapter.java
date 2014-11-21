@@ -16,17 +16,22 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
+import com.robinfinch.journal.app.notifications.NotificationModule;
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.DbHelper;
+import com.robinfinch.journal.app.persistence.PersistenceModule;
 import com.robinfinch.journal.app.persistence.RevisionContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
 import com.robinfinch.journal.app.persistence.SyncLogContract;
 import com.robinfinch.journal.app.persistence.SyncableObjectContract;
+import com.robinfinch.journal.app.persistence.TitleContract;
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
+import com.robinfinch.journal.app.rest.ApiModule;
 import com.robinfinch.journal.app.rest.DiffResponse;
 import com.robinfinch.journal.app.rest.JournalApi;
 import com.robinfinch.journal.app.rest.SyncableObjectWrapper;
@@ -38,6 +43,7 @@ import com.robinfinch.journal.domain.RunEntry;
 import com.robinfinch.journal.domain.StudyEntry;
 import com.robinfinch.journal.domain.SyncLog;
 import com.robinfinch.journal.domain.SyncableObject;
+import com.robinfinch.journal.domain.Title;
 import com.robinfinch.journal.domain.TravelEntry;
 import com.robinfinch.journal.domain.WalkEntry;
 
@@ -47,6 +53,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 import retrofit.RetrofitError;
 
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
@@ -58,6 +67,8 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  * @author Mark Hoogenboom
  */
 public class SyncAdapter extends AbstractThreadedSyncAdapter {
+
+    private static final int MAX_ENTRIES_TO_SEND = 50;
 
     private static final Map<Class, DirUriType> URI_TYPES_BY_CLASS = new HashMap<>();
     static {
@@ -73,32 +84,34 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
     public static final String AUTH_TOKEN_TYPE_SYNC = "com.robinfinch.sync";
 
-    private DbHelper dbHelper;
-    private ConnectivityChecker connectivityChecker;
-    private JournalApi api;
-    private int maxEntriesToSend;
-    private MyNotificationManager notificationManager;
+    @Inject
+    DbHelper dbHelper;
+
+    @Inject
+    ConnectivityChecker connectivityChecker;
+
+    @Inject
+    JournalApi api;
+
+    private int maxEntriesToSend = MAX_ENTRIES_TO_SEND;
+
+    @Inject
+    MyNotificationManager notificationManager;
 
     public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
+
+        ObjectGraph.create(
+                new ContextModule(context),
+                new PersistenceModule(),
+                new SyncModule(),
+                new ApiModule()
+        ).inject(this);
     }
 
     public SyncAdapter(Context context, boolean autoInitialize,
                        boolean allowParallelSyncs) {
         super(context, autoInitialize, allowParallelSyncs);
-    }
-
-    public SyncAdapter config(
-            ConnectivityChecker connectivityChecker,
-            JournalApi api,
-            int maxEntriesToSend,
-            MyNotificationManager notificationManager) {
-        this.dbHelper = new DbHelper(getContext());
-        this.connectivityChecker = connectivityChecker;
-        this.api = api;
-        this.maxEntriesToSend = maxEntriesToSend;
-        this.notificationManager = notificationManager;
-        return this;
     }
 
     @Override
@@ -180,6 +193,28 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
                             return Course.from(cursor, "");
+                        }
+                    };
+                    break;
+
+                case TitleContract.NAME:
+                    cursor = query(db, TitleContract.DIR_URI_TYPE, TitleContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return Title.from(cursor, TitleContract.NAME + "_");
+                        }
+                    };
+                    break;
+
+                case AuthorContract.NAME:
+                    cursor = query(db, AuthorContract.DIR_URI_TYPE, AuthorContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return Author.from(cursor, "");
                         }
                     };
                     break;

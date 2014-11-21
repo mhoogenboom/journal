@@ -11,9 +11,14 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
 
+import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
 import com.robinfinch.journal.app.util.UriType;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
@@ -29,6 +34,8 @@ public class MyContentProvider extends ContentProvider {
             StudyEntryContract.ITEM_URI_TYPE,
             CourseContract.DIR_URI_TYPE,
             CourseContract.ITEM_URI_TYPE,
+            TitleContract.DIR_URI_TYPE,
+            TitleContract.ITEM_URI_TYPE,
             AuthorContract.DIR_URI_TYPE,
             AuthorContract.ITEM_URI_TYPE,
             WalkEntryContract.DIR_URI_TYPE,
@@ -46,11 +53,15 @@ public class MyContentProvider extends ContentProvider {
         }
     }
 
-    private DbHelper dbHelper;
+    @Inject
+    DbHelper dbHelper;
 
     @Override
     public boolean onCreate() {
-        dbHelper = new DbHelper(getContext());
+        ObjectGraph.create(
+                new ContextModule(getContext()),
+                new PersistenceModule()
+        ).inject(this);
         return true;
     }
 

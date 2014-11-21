@@ -18,6 +18,14 @@
     <string name="course_add">New course</string>
     <string name="course_select">Select</string>
 
+    <string name="titles">Select title</string>
+    <string name="title">Title</string>
+    <string name="title_title">Title</string>
+    <string name="title_author">Author</string>
+    <string name="title_year">Year</string>
+    <string name="title_add">New title</string>
+    <string name="title_select">Select</string>
+
     <string name="authors">Select author</string>
     <string name="author">Author</string>
     <string name="author_name">Name</string>

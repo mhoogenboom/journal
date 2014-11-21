@@ -15,7 +15,7 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "journal.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     // Revision
 
@@ -54,6 +54,21 @@ public class DbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_DROP_COURSE =
             "DROP TABLE IF EXISTS " + CourseContract.NAME;
+
+    // Author
+
+    private static final String SQL_CREATE_TITLE =
+            "CREATE TABLE " + TitleContract.NAME + " (" +
+                    TitleContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    TitleContract.COL_REMOTE_ID + " INTEGER," +
+                    TitleContract.COL_TITLE + " TEXT," +
+                    TitleContract.COL_AUTHOR_ID + " INTEGER," +
+                    TitleContract.COL_YEAR + " TEXT," +
+                    TitleContract.COL_LOG_ID + " INTEGER" +
+                    ")";
+
+    private static final String SQL_DROP_TITLE =
+            "DROP TABLE IF EXISTS " + TitleContract.NAME;
 
     // Author
 
@@ -135,6 +150,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_REVISION);
         db.execSQL(SQL_CREATE_STUDY_ENTRY);
         db.execSQL(SQL_CREATE_COURSE);
+        db.execSQL(SQL_CREATE_TITLE);
         db.execSQL(SQL_CREATE_AUTHOR);
         db.execSQL(SQL_CREATE_WALK_ENTRY);
         db.execSQL(SQL_CREATE_RUN_ENTRY);
@@ -146,15 +162,15 @@ public class DbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
         if ((oldVersion == 8) && (8 < newVersion)) {
-            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version 8 to 9");
+            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version " + oldVersion);
             db.execSQL(SQL_CREATE_AUTHOR);
             oldVersion++;
         }
 
-//        if ((oldVersion == 9) && (9 < newVersion)) {
-//            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version 9 to 10");
-//
-//            oldVersion++;
-//        }
+        if ((oldVersion == 9) && (9 < newVersion)) {
+            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version " + oldVersion);
+            db.execSQL(SQL_CREATE_TITLE);
+            oldVersion++;
+        }
     }
 }

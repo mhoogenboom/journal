@@ -5,6 +5,12 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.robinfinch.journal.app.ContextModule;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
+
 /**
  * Checks if the connectivity is ok for sync.
  *
@@ -14,8 +20,16 @@ public class ConnectivityChecker {
 
     private final Context context;
 
+    @Inject
+    ConnectivityManager connectivityManager;
+
     public ConnectivityChecker(Context context) {
         this.context = context;
+
+        ObjectGraph.create(
+                new ContextModule(context),
+                new SyncModule()
+        ).inject(this);
     }
 
     public boolean isOk() {
@@ -26,9 +40,6 @@ public class ConnectivityChecker {
 
         boolean connectivityOk;
         if (onlyOverWifi) {
-            ConnectivityManager connectivityManager = (ConnectivityManager)
-                    context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
             NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
             connectivityOk = networkInfo.isConnected();
         } else {

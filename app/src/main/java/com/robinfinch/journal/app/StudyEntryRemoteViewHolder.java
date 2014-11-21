@@ -20,7 +20,7 @@ public class StudyEntryRemoteViewHolder {
 
     public void bind(StudyEntry entry) {
         views.setTextViewText(R.id.studyentry_dayofstudy, Formatter.formatDay(entry.getDayOfEntry()));
-        views.setTextViewText(R.id.studyentry_course, Formatter.formatCourse(entry.getCourse()));
+        views.setTextViewText(R.id.studyentry_course, Formatter.formatNamedObject(entry.getCourse()));
         views.setTextViewText(R.id.studyentry_description, entry.getDescription());
     }
 }

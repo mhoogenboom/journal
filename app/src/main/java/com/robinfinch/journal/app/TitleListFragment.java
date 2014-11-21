@@ -15,23 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 
-import com.robinfinch.journal.app.persistence.CourseContract;
+import com.robinfinch.journal.app.persistence.AuthorContract;
+import com.robinfinch.journal.app.persistence.TitleContract;
 import com.robinfinch.journal.app.ui.ListFragment;
-import com.robinfinch.journal.domain.Course;
-
+import com.robinfinch.journal.domain.Title;
 
 /**
- * List of courses fragment.
+ * List of titles fragment.
  *
- * @author Mark Hogenboom
+ * @title Mark Hogenboom
  */
-public class CourseListFragment extends ListFragment {
+public class TitleListFragment extends ListFragment {
 
-    private static final int LOAD_COURSES = 1;
-    private static final int INSERT_COURSE = 2;
+    private static final int LOAD_TITLES = 1;
+    private static final int INSERT_TITLE = 2;
 
-    public static CourseListFragment newInstance() {
-        CourseListFragment fragment = new CourseListFragment();
+    public static TitleListFragment newInstance() {
+        TitleListFragment fragment = new TitleListFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -47,7 +47,7 @@ public class CourseListFragment extends ListFragment {
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.course_list_fragment;
+        return R.layout.title_list_fragment;
     }
 
     @Override
@@ -64,9 +64,9 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                View view = LayoutInflater.from(context).inflate(R.layout.course_list_item, parent, false);
+                View view = LayoutInflater.from(context).inflate(R.layout.title_list_item, parent, false);
 
-                CourseViewHolder viewHolder = new CourseViewHolder(view);
+                TitleViewHolder viewHolder = new TitleViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -74,10 +74,10 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Course course = Course.from(cursor, "");
+                Title title = Title.from(cursor, TitleContract.NAME + "_");
 
-                CourseViewHolder viewHolder = (CourseViewHolder) view.getTag();
-                viewHolder.bind(course);
+                TitleViewHolder viewHolder = (TitleViewHolder) view.getTag();
+                viewHolder.bind(title);
             }
         };
     }
@@ -92,8 +92,8 @@ public class CourseListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        CourseContract.DIR_URI_TYPE.uri(),
-                        CourseContract.COLS, null, null, CourseContract.COL_NAME + " ASC");
+                        TitleContract.DIR_URI_TYPE.uri(),
+                        TitleContract.COLS, null, null, AuthorContract.COL_NAME + ", " + TitleContract.COL_YEAR +  " ASC");
             }
 
             @Override
@@ -111,23 +111,23 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public void onInsertComplete(int token, Object cookie, Uri uri) {
-                parent.onCourseItemSelected(uri);
+                parent.onTitleItemSelected(uri);
             }
         };
 
-        getLoaderManager().initLoader(LOAD_COURSES, null, loaderCallbacks);
+        getLoaderManager().initLoader(LOAD_TITLES, null, loaderCallbacks);
     }
 
     @Override
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_COURSE, null, CourseContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_TITLE, null, TitleContract.DIR_URI_TYPE.uri(), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onCourseItemSelected(CourseContract.ITEM_URI_TYPE.uri(id));
+        parent.onTitleItemSelected(TitleContract.ITEM_URI_TYPE.uri(id));
     }
 
     @Override
@@ -137,6 +137,6 @@ public class CourseListFragment extends ListFragment {
     }
 
     public interface Parent {
-        void onCourseItemSelected(Uri uri);
+        void onTitleItemSelected(Uri uri);
     }
 }

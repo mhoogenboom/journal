@@ -24,7 +24,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.R;
+import com.robinfinch.journal.app.rest.ApiModule;
 import com.robinfinch.journal.app.rest.JournalApi;
 import com.robinfinch.journal.app.util.Config;
 import com.robinfinch.journal.app.util.Utils;
@@ -33,7 +35,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit.RestAdapter;
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 import retrofit.RetrofitError;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_AUTH_TOKEN_TYPE;
@@ -50,7 +54,8 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
     private String accountType;
     private String authTokenType;
 
-    private JournalApi api;
+    @Inject
+    JournalApi api;
 
     private UserLoginTask authTask;
 
@@ -64,6 +69,11 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.login_activity);
+
+        ObjectGraph.create(
+                new ContextModule(this),
+                new ApiModule()
+        ).inject(this);
 
         accountType = getIntent().getStringExtra(AccountManager.KEY_ACCOUNT_TYPE);
         authTokenType = getIntent().getStringExtra(ARG_AUTH_TOKEN_TYPE);
@@ -85,15 +95,6 @@ public class LoginActivity extends AccountAuthenticatorActivity implements Loade
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-
-        Config config = new Config(this);
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(config.getServerUri().toString())
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
-
-        api = restAdapter.create(JournalApi.class);
     }
 
     private void populateAutoComplete() {

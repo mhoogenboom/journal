@@ -15,39 +15,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.robinfinch.journal.app.persistence.CourseContract;
-import com.robinfinch.journal.app.persistence.StudyEntryContract;
+import com.robinfinch.journal.app.persistence.AuthorContract;
+import com.robinfinch.journal.app.persistence.TitleContract;
 import com.robinfinch.journal.app.ui.DetailsFragment;
 import com.robinfinch.journal.app.ui.NamedObjectView;
-import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
-import com.robinfinch.journal.domain.Course;
-import com.robinfinch.journal.domain.StudyEntry;
-
-import java.util.Date;
+import com.robinfinch.journal.domain.Author;
+import com.robinfinch.journal.domain.Title;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 
 /**
- * Study entry details fragment.
+ * Title details fragment.
  *
  * @author Mark Hoogenboom
  */
-public class StudyEntryFragment extends DetailsFragment {
+public class TitleFragment extends DetailsFragment {
 
-    private static final int LOAD_STUDY_ENTRY = 1;
-    private static final int LOAD_COURSE = 2;
-    private static final int UPDATE_STUDY_ENTRY = 3;
-    private static final int DELETE_STUDY_ENTRY = 4;
+    private static final int LOAD_TITLE = 1;
+    private static final int LOAD_AUTHOR = 2;
+    private static final int UPDATE_TITLE = 3;
+    private static final int DELETE_TITLE = 4;
 
-    private static final int REQUEST_SELECT_COURSE = 1;
+    private static final int REQUEST_SELECT_AUTHOR = 1;
 
-    public static StudyEntryFragment newInstance(Uri uri) {
-        StudyEntryFragment fragment = new StudyEntryFragment();
+    public static TitleFragment newInstance(Uri uri) {
+        TitleFragment fragment = new TitleFragment();
 
         Bundle args = new Bundle();
         args.putParcelable(ARG_URI, uri);
@@ -56,16 +54,16 @@ public class StudyEntryFragment extends DetailsFragment {
         return fragment;
     }
 
-    @InjectView(R.id.studyentry_dayofstudy)
-    protected EditText dayOfStudyView;
+    @InjectView(R.id.title_title)
+    protected EditText titleView;
 
-    @InjectView(R.id.studyentry_course)
-    protected NamedObjectView<Course> courseView;
+    @InjectView(R.id.title_author)
+    protected NamedObjectView<Author> authorView;
 
-    @InjectView(R.id.studyentry_description)
-    protected EditText descriptionView;
+    @InjectView(R.id.title_year)
+    protected EditText yearView;
 
-    private StudyEntry entry;
+    private Title title;
 
     private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
 
@@ -82,13 +80,13 @@ public class StudyEntryFragment extends DetailsFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.studyentry_fragment, container, false);
+        View view = inflater.inflate(R.layout.title_fragment, container, false);
         ButterKnife.inject(this, view);
 
-        courseView.setOnClickListener(new View.OnClickListener() {
+        authorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectCourse();
+                selectAuthor();
             }
         });
         return view;
@@ -104,19 +102,19 @@ public class StudyEntryFragment extends DetailsFragment {
 
                 Uri uri;
                 switch (id) {
-                    case LOAD_STUDY_ENTRY:
+                    case LOAD_TITLE:
                         uri = getArguments().getParcelable(ARG_URI);
                         return new CursorLoader(
                                 getActivity(),
                                 uri,
-                                StudyEntryContract.COLS, null, null, null);
+                                TitleContract.COLS, null, null, null);
 
-                    case LOAD_COURSE:
+                    case LOAD_AUTHOR:
                         uri = args.getParcelable(ARG_URI);
                         return new CursorLoader(
                                 getActivity(),
                                 uri,
-                                CourseContract.COLS, null, null, null);
+                                AuthorContract.COLS, null, null, null);
 
                     default:
                         return null;
@@ -127,22 +125,22 @@ public class StudyEntryFragment extends DetailsFragment {
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
-                        case LOAD_STUDY_ENTRY:
-                            entry = StudyEntry.from(cursor, StudyEntryContract.NAME + "_");
+                        case LOAD_TITLE:
+                            title = Title.from(cursor, TitleContract.NAME + "_");
 
-                            CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                            dayOfStudyView.setText(dayOfEntry);
+                            CharSequence t = title.getTitle();
+                            titleView.setText(t);
 
-                            courseView.setObject(entry.getCourse());
+                            authorView.setObject(title.getAuthor());
 
-                            CharSequence description = entry.getDescription();
-                            descriptionView.setText(description);
+                            CharSequence year = title.getYear();
+                            yearView.setText(year);
                             break;
 
-                        case LOAD_COURSE:
-                            Course course = Course.from(cursor, "");
+                        case LOAD_AUTHOR:
+                            Author author = Author.from(cursor, "");
 
-                            courseView.setObject(course);
+                            authorView.setObject(author);
                     }
                 } else {
                     onLoaderReset(loader);
@@ -152,13 +150,13 @@ public class StudyEntryFragment extends DetailsFragment {
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
                 switch (loader.getId()) {
-                    case LOAD_STUDY_ENTRY:
-                        entry = null;
+                    case LOAD_TITLE:
+                        title = null;
                         break;
 
-                    case LOAD_COURSE:
-                        if (courseView != null) {
-                            courseView.setObject(null);
+                    case LOAD_AUTHOR:
+                        if (authorView != null) {
+                            authorView.setObject(null);
                         }
                         break;
                 }
@@ -174,32 +172,37 @@ public class StudyEntryFragment extends DetailsFragment {
 
             @Override
             public void onDeleteComplete(int token, Object cookie, int result) {
-                parent.onStudyEntryDeleted();
+                parent.onTitleDeleted();
             }
         };
 
-        getLoaderManager().initLoader(LOAD_STUDY_ENTRY, null, loaderCallbacks);
+        getLoaderManager().initLoader(LOAD_TITLE, null, loaderCallbacks);
+    }
+
+    @OnClick(R.id.title_select)
+    public void select() {
+        parent.onTitleSelected(title.getId());
     }
 
     @Override
     public void update() {
-        if (entry != null) {
-            entry.resetChanged();
+        if (title != null) {
+            title.resetChanged();
 
-            Date dayOfEntry = Parser.parseDay(dayOfStudyView.getText());
-            entry.setDayOfEntry(dayOfEntry);
+            String t = Parser.parseText(titleView.getText());
+            title.setTitle(t);
 
-            Course course = courseView.getObject();
-            entry.setCourse(course);
+            Author author = authorView.getObject();
+            title.setAuthor(author);
 
-            String description = Parser.parseText(descriptionView.getText());
-            entry.setDescription(description);
+            String year = Parser.parseText(yearView.getText());
+            title.setYear(year);
 
-            if (entry.hasChanged()) {
+            if (title.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = entry.toValues();
-                queryHandler.startUpdate(UPDATE_STUDY_ENTRY, null, uri, values, null, null);
+                ContentValues values = title.toValues();
+                queryHandler.startUpdate(UPDATE_TITLE, null, uri, values, null, null);
             }
         }
     }
@@ -208,19 +211,19 @@ public class StudyEntryFragment extends DetailsFragment {
     public void delete() {
         Uri uri = getArguments().getParcelable(ARG_URI);
 
-        queryHandler.startDelete(DELETE_STUDY_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
+        queryHandler.startDelete(DELETE_TITLE, null, uri, Long.toString(title.getRemoteId()), null);
     }
 
-    private void selectCourse() {
-        Intent intent = new Intent(getActivity(), CourseListActivity.class);
-        startActivityForResult(intent, REQUEST_SELECT_COURSE);
+    private void selectAuthor() {
+        Intent intent = new Intent(getActivity(), AuthorListActivity.class);
+        startActivityForResult(intent, REQUEST_SELECT_AUTHOR);
     }
 
     @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_SELECT_COURSE:
-                onCourseActivityResult(resultCode, data);
+            case REQUEST_SELECT_AUTHOR:
+                onAuthorActivityResult(resultCode, data);
                 break;
 
             default:
@@ -228,16 +231,16 @@ public class StudyEntryFragment extends DetailsFragment {
         }
     }
 
-    private void onCourseActivityResult(int resultCode, Intent data) {
+    private void onAuthorActivityResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
-            long courseId = data.getLongExtra(ARG_SELECTED_ID, 0L);
-            if (courseView.getObjectId() != courseId) {
-                if (courseId == 0L) {
-                    courseView.setObject(null);
+            long authorId = data.getLongExtra(ARG_SELECTED_ID, 0L);
+            if (authorView.getObjectId() != authorId) {
+                if (authorId == 0L) {
+                    authorView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, CourseContract.ITEM_URI_TYPE.uri(courseId));
-                    getLoaderManager().initLoader(LOAD_COURSE, args, loaderCallbacks);
+                    args.putParcelable(ARG_URI, AuthorContract.ITEM_URI_TYPE.uri(authorId));
+                    getLoaderManager().initLoader(LOAD_AUTHOR, args, loaderCallbacks);
                 }
             }
         }
@@ -256,6 +259,7 @@ public class StudyEntryFragment extends DetailsFragment {
     }
 
     public interface Parent {
-        void onStudyEntryDeleted();
+        void onTitleSelected(long id);
+        void onTitleDeleted();
     }
 }

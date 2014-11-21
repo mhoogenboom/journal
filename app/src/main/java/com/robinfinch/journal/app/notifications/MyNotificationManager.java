@@ -5,8 +5,13 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 
+import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.MainActivity;
 import com.robinfinch.journal.app.R;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 /**
  * Manages notifications.
@@ -19,14 +24,19 @@ public class MyNotificationManager {
 
     private final Context context;
 
+    @Inject
+    NotificationManager notificationManager;
+
     public MyNotificationManager(Context context) {
         this.context = context;
+
+        ObjectGraph.create(
+                new ContextModule(context),
+                new NotificationModule()
+        ).inject(this);
     }
 
     public void onMainActivityResumed() {
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.cancel(NOTIFICATION_ID);
     }
@@ -41,9 +51,6 @@ public class MyNotificationManager {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();
-
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(NOTIFICATION_ID, notification);
     }

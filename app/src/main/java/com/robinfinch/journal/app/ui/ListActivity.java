@@ -1,13 +1,11 @@
 package com.robinfinch.journal.app.ui;
 
 import android.app.Fragment;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.robinfinch.journal.app.R;
 
-import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**

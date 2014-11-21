@@ -1,7 +1,8 @@
 package com.robinfinch.journal.app.util;
 
-import com.robinfinch.journal.domain.Author;
-import com.robinfinch.journal.domain.Course;
+import android.text.TextUtils;
+
+import com.robinfinch.journal.domain.NamedObject;
 
 import java.util.Date;
 
@@ -28,18 +29,11 @@ public class Formatter {
         return String.format("%1$tA %1$td/%1$tm", day);
     }
 
-    public static final CharSequence formatCourse(Course course) {
-        if (course == null) {
+    public static final CharSequence formatNamedObject(NamedObject obj) {
+        if (obj == null) {
             return "";
         }
-        return course.getName();
-    }
-
-    public static final CharSequence formatAuthor(Author author) {
-        if (author == null) {
-            return "";
-        }
-        return author.getName();
+        return obj.getName();
     }
 
     public static final CharSequence formatWalkDescription(String place) {
@@ -73,10 +67,14 @@ public class Formatter {
     }
 
     public static final CharSequence formatTravelDescription(boolean away, String place) {
-        if (away) {
-            return "To " + place;
+        if (TextUtils.isEmpty(place)) {
+            return "";
         } else {
-            return "From " + place;
+            if (away) {
+                return "To " + place;
+            } else {
+                return "From " + place;
+            }
         }
     }
 }

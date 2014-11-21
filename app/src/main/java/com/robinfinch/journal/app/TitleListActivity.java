@@ -11,27 +11,27 @@ import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 
 /**
- * List of courses activity.
+ * List of titles activity.
  *
- * @author Mark Hoogenboom
+ * @title Mark Hoogenboom
  */
-public class CourseListActivity extends ListActivity implements
-        CourseListFragment.Parent,
-        CourseFragment.Parent,
+public class TitleListActivity extends ListActivity implements
+        TitleListFragment.Parent,
+        TitleFragment.Parent,
         EmptyFragment.Parent {
 
-    private static final int REQUEST_SELECT_COURSE = 1;
+    private static final int REQUEST_SELECT_TITLE = 1;
 
     @Override
     protected Fragment newFragment() {
-        return CourseListFragment.newInstance();
+        return TitleListFragment.newInstance();
     }
-
+    
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case REQUEST_SELECT_COURSE:
-                onCourseActivityResult(resultCode, data);
+            case REQUEST_SELECT_TITLE:
+                onTitleActivityResult(resultCode, data);
                 break;
 
             default:
@@ -39,26 +39,26 @@ public class CourseListActivity extends ListActivity implements
         }
     }
 
-    private void onCourseActivityResult(int resultCode, Intent data) {
+    private void onTitleActivityResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             long id = data.getLongExtra(ARG_SELECTED_ID, 0L);
-            onCourseSelected(id);
+            onTitleSelected(id);
         }
     }
 
     @Override
-    public void onCourseItemSelected(Uri uri) {
+    public void onTitleItemSelected(Uri uri) {
         if (singlePaneLayout) {
-            Intent intent = new Intent(this, CourseActivity.class)
+            Intent intent = new Intent(this, TitleActivity.class)
                     .putExtra(ARG_URI, uri);
-            startActivityForResult(intent, REQUEST_SELECT_COURSE);
+            startActivityForResult(intent, REQUEST_SELECT_TITLE);
         } else {
-            showDetails(CourseFragment.newInstance(uri));
+            showDetails(TitleFragment.newInstance(uri));
         }
     }
 
     @Override
-    public void onCourseSelected(long id) {
+    public void onTitleSelected(long id) {
         Intent result = new Intent();
         result.putExtra(ARG_SELECTED_ID, id);
 
@@ -67,7 +67,7 @@ public class CourseListActivity extends ListActivity implements
     }
 
     @Override
-    public void onCourseDeleted() {
+    public void onTitleDeleted() {
         showDetails(EmptyFragment.newInstance());
     }
 

@@ -13,3 +13,11 @@
 -dontwarn retrofit.appengine.**
 -dontwarn retrofit.client.OkClient
 
+#Dagger
+-keepclassmembers,allowobfuscation class * {
+    @javax.inject.* *;
+    @dagger.* *;
+}
+-keep class **$$ModuleAdapter
+-keep class **$$InjectAdapter
+-dontwarn dagger.internal.codegen.**

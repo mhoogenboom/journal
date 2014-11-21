@@ -3,9 +3,12 @@ package com.robinfinch.journal.app.auth;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
-import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
+import com.robinfinch.journal.app.ContextModule;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 /**
  * Service that provides an account authenticator.
@@ -14,15 +17,17 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  */
 public class AuthenticatorService extends Service {
 
-    private static Authenticator authenticator;
+    @Inject
+    Authenticator authenticator;
 
     @Override
     public void onCreate() {
-        if (authenticator == null) {
-            Log.d(LOG_TAG, "Create authenticator");
+        super.onCreate();
 
-            authenticator = new Authenticator(getApplicationContext());
-        }
+        ObjectGraph.create(
+                new ContextModule(this),
+                new AuthenticatorModule()
+        ).inject(this);
     }
 
     @Override

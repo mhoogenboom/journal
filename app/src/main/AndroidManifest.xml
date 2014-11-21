@@ -47,6 +47,13 @@
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity
+            android:name=".TitleListActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".TitleActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".AuthorListActivity"
             android:parentActivityName=".MainActivity"></activity>
         <activity
@@ -118,7 +125,6 @@
                 <category android:name="com.robinfinch.journal.app" />
             </intent-filter>
         </receiver>
-
         <receiver
             android:name=".widget.JournalWidgetProvider" >
             <intent-filter>

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.MainActivity;
 import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.StudyEntryRemoteViewHolder;
@@ -15,6 +16,10 @@ import com.robinfinch.journal.app.persistence.StudyEntryContract;
 import com.robinfinch.journal.domain.StudyEntry;
 
 import java.util.Arrays;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_WIDGET_IDS;
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
@@ -26,14 +31,25 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  */
 public class JournalWidgetService extends IntentService {
 
+    @Inject
+    AppWidgetManager appWidgetManager;
+
     public JournalWidgetService() {
         super("JournalWidgetService");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public void onCreate() {
+        super.onCreate();
 
-        AppWidgetManager manager = AppWidgetManager.getInstance(getApplicationContext());
+        ObjectGraph.create(
+                new ContextModule(this),
+                new JournalWidgetModule()
+        ).inject(this);
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
 
         int[] widgetIds = intent.getIntArrayExtra(ARG_WIDGET_IDS);
 
@@ -55,7 +71,7 @@ public class JournalWidgetService extends IntentService {
                 StudyEntryRemoteViewHolder viewHolder = new StudyEntryRemoteViewHolder(views);
                 viewHolder.bind(entry);
 
-                manager.updateAppWidget(widgetId, views);
+                appWidgetManager.updateAppWidget(widgetId, views);
             }
         } else {
             Log.d(LOG_TAG, "Not updating widgets, no data");

@@ -13,7 +13,7 @@ import static com.robinfinch.journal.app.util.Utils.differs;
  *
  * @author Mark Hoogenboom
  */
-public class Author extends SyncableObject {
+public class Author extends SyncableObject implements NamedObject {
 
     private String name;
 

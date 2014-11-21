@@ -20,8 +20,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
-import com.robinfinch.journal.app.ui.settings.SettingsActivity;
+import com.robinfinch.journal.app.notifications.NotificationModule;
 import com.robinfinch.journal.app.ui.EmptyFragment;
+import com.robinfinch.journal.app.ui.settings.SettingsActivity;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
@@ -51,12 +56,19 @@ public class MainActivity extends Activity implements
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     private ListView optionsList;
-    private MyNotificationManager notificationManager;
+
+    @Inject
+    MyNotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+        ObjectGraph.create(
+                new ContextModule(getApplicationContext()),
+                new NotificationModule()
+        ).inject(this);
 
         Log.d(LOG_TAG, "Create main activity");
 
@@ -103,8 +115,6 @@ public class MainActivity extends Activity implements
         drawerLayout.setDrawerListener(drawerToggle);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        notificationManager = new MyNotificationManager(this);
 
         onDrawerOptionSelected(getText(R.string.studyentries));
     }

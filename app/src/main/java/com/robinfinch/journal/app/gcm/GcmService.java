@@ -7,7 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.util.UriType;
+
+import javax.inject.Inject;
+
+import dagger.ObjectGraph;
 
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
@@ -18,14 +23,25 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  */
 public class GcmService extends IntentService {
 
+    @Inject
+    GoogleCloudMessaging gcm;
+
     public GcmService() {
         super("gcmservice");
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public void onCreate() {
+        super.onCreate();
 
-        GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
+        ObjectGraph.create(
+                new ContextModule(this),
+                new GcmModule()
+        ).inject(this);
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
 
         String messageType = gcm.getMessageType(intent);
 

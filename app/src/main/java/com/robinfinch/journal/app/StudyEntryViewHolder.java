@@ -31,7 +31,7 @@ class StudyEntryViewHolder {
 
     public void bind(StudyEntry entry) {
         dayOfStudyView.setText(Formatter.formatDay(entry.getDayOfEntry()));
-        courseView.setText(Formatter.formatCourse(entry.getCourse()));
+        courseView.setText(Formatter.formatNamedObject(entry.getCourse()));
         descriptionView.setText(entry.getDescription());
     }
 }
