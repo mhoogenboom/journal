@@ -17,7 +17,7 @@ import butterknife.InjectView;
 class TravelEntryViewHolder {
 
     @InjectView(R.id.travelentry_dayoftravel)
-    protected TextView dayOfTravelView;
+    protected TextView dayOfEntryView;
 
     @InjectView(R.id.travelentry_description)
     protected TextView descriptionView;
@@ -27,9 +27,7 @@ class TravelEntryViewHolder {
     }
 
     public void bind(TravelEntry entry) {
-
-        dayOfTravelView.setText(Formatter.formatDay(entry.getDayOfEntry()));
-
+        dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
         descriptionView.setText(Formatter.formatTravelDescription(entry.isAway(), entry.getPlace()));
     }
 }

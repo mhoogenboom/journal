@@ -34,6 +34,8 @@ public class MyContentProvider extends ContentProvider {
             StudyEntryContract.ITEM_URI_TYPE,
             CourseContract.DIR_URI_TYPE,
             CourseContract.ITEM_URI_TYPE,
+            ReadEntryContract.DIR_URI_TYPE,
+            ReadEntryContract.ITEM_URI_TYPE,
             TitleContract.DIR_URI_TYPE,
             TitleContract.ITEM_URI_TYPE,
             AuthorContract.DIR_URI_TYPE,

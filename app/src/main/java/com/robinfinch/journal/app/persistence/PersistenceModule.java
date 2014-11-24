@@ -2,8 +2,6 @@ package com.robinfinch.journal.app.persistence;
 
 import android.content.Context;
 
-import com.robinfinch.journal.app.sync.SyncAdapter;
-
 import dagger.Module;
 import dagger.Provides;
 

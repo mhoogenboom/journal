@@ -17,7 +17,7 @@ import butterknife.InjectView;
 class StudyEntryViewHolder {
 
     @InjectView(R.id.studyentry_dayofstudy)
-    protected TextView dayOfStudyView;
+    protected TextView dayOfEntryView;
 
     @InjectView(R.id.studyentry_course)
     protected TextView courseView;
@@ -30,7 +30,7 @@ class StudyEntryViewHolder {
     }
 
     public void bind(StudyEntry entry) {
-        dayOfStudyView.setText(Formatter.formatDay(entry.getDayOfEntry()));
+        dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
         courseView.setText(Formatter.formatNamedObject(entry.getCourse()));
         descriptionView.setText(entry.getDescription());
     }

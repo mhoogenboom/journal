@@ -47,6 +47,10 @@
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity
+            android:name=".ReadEntryActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".TitleListActivity"
             android:parentActivityName=".MainActivity"></activity>
         <activity

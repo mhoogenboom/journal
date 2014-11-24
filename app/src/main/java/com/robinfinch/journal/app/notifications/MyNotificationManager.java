@@ -20,7 +20,8 @@ import dagger.ObjectGraph;
  */
 public class MyNotificationManager {
 
-    private static final int NOTIFICATION_ID = 300;
+    private static final int NOTIFICATION_SYNC_ID = 300;
+    private static final int NOTIFICATION_OUT_OF_DATE_ID = 301;
 
     private final Context context;
 
@@ -38,7 +39,7 @@ public class MyNotificationManager {
 
     public void onMainActivityResumed() {
 
-        notificationManager.cancel(NOTIFICATION_ID);
+        notificationManager.cancel(NOTIFICATION_SYNC_ID);
     }
 
     public void onChangesReceived() {
@@ -46,12 +47,28 @@ public class MyNotificationManager {
 
         Notification notification = new Notification.Builder(context)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle(context.getText(R.string.sync_notification_title))
-                .setContentText(context.getText(R.string.sync_notification_text))
+                .setContentTitle(context.getText(R.string.notification_sync_title))
+                .setContentText(context.getText(R.string.notification_sync_text))
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();
 
-        notificationManager.notify(NOTIFICATION_ID, notification);
+        notificationManager.notify(NOTIFICATION_SYNC_ID, notification);
+    }
+
+    public void onClientOutOfDate() {
+
+        PendingIntent pendingIntent = MainActivity.intentFor(context);
+
+        Notification notification = new Notification.Builder(context)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle(context.getText(R.string.notification_out_of_date_title))
+                .setContentText(context.getText(R.string.notification_out_of_date_text))
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true)
+                .build();
+
+        notificationManager.notify(NOTIFICATION_OUT_OF_DATE_ID, notification);
     }
 }

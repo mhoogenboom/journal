@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.Context;
 
 import com.robinfinch.journal.app.MainActivity;
-import com.robinfinch.journal.app.sync.SyncAdapter;
 
 import dagger.Module;
 import dagger.Provides;

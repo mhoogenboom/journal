@@ -8,7 +8,7 @@
 
     <string name="studyentries">Study</string>	
     <string name="studyentry">Study Details</string>
-    <string name="studyentry_dayofstudy">Day of study</string>
+    <string name="studyentry_dayofstudy">Day finished</string>
     <string name="studyentry_course">Course</string>
     <string name="studyentry_description">Description</string>
 
@@ -17,6 +17,12 @@
     <string name="course_name">Name</string>
     <string name="course_add">New course</string>
     <string name="course_select">Select</string>
+
+    <string name="readentries">Reading</string>
+    <string name="readentry">Read Details</string>
+    <string name="readentry_dayread">Day finished</string>
+    <string name="readentry_title">Title</string>
+    <string name="readentry_part">Part</string>
 
     <string name="titles">Select title</string>
     <string name="title">Title</string>
@@ -54,8 +60,10 @@
     <string name="entity_add">Add</string>
     <string name="entity_delete">Delete</string>
 
-    <string name="sync_notification_title">Journal Update</string>
-    <string name="sync_notification_text">Your journal has been updated.</string>
+    <string name="notification_sync_title">Journal Update</string>
+    <string name="notification_sync_text">Your journal has been updated.</string>
+    <string name="notification_out_of_date_title">Journal app out of date</string>
+    <string name="notification_out_of_date_text">Your journal will not be synced until the app is updated</string>
 
     <string name="login">Add account</string>
     <string name="login_prompt_email">Email</string>

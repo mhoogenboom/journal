@@ -49,7 +49,7 @@ public class WalkEntryFragment extends DetailsFragment {
     }
 
     @InjectView(R.id.walkentry_dayofwalk)
-    protected EditText dayOfWalkView;
+    protected EditText dayOfEntryView;
 
     @InjectView(R.id.walkentry_location)
     protected EditText locationView;
@@ -98,7 +98,7 @@ public class WalkEntryFragment extends DetailsFragment {
                     entry = WalkEntry.from(cursor);
 
                     CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                    dayOfWalkView.setText(dayOfEntry);
+                    dayOfEntryView.setText(dayOfEntry);
 
                     CharSequence location = entry.getLocation();
                     locationView.setText(location);
@@ -134,7 +134,7 @@ public class WalkEntryFragment extends DetailsFragment {
         if (entry != null) {
             entry.resetChanged();
 
-            Date dayOfEntry = Parser.parseDay(dayOfWalkView.getText());
+            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
             entry.setDayOfEntry(dayOfEntry);
 
             String location = Parser.parseText(locationView.getText());

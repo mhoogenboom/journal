@@ -1,6 +1,5 @@
 package com.robinfinch.journal.app.sync;
 
-import android.app.NotificationManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 

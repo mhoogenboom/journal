@@ -39,6 +39,8 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 public class MainActivity extends Activity implements
         StudyEntryListFragment.Parent,
         StudyEntryFragment.Parent,
+        ReadEntryListFragment.Parent,
+        ReadEntryFragment.Parent,
         WalkEntryListFragment.Parent,
         WalkEntryFragment.Parent,
         RunEntryListFragment.Parent,
@@ -80,6 +82,7 @@ public class MainActivity extends Activity implements
 
         final ArrayAdapter<CharSequence> optionsAdapter = new ArrayAdapter<>(this, R.layout.option_list_item);
         optionsAdapter.add(getText(R.string.studyentries));
+        optionsAdapter.add(getText(R.string.readentries));
         optionsAdapter.add(getText(R.string.walkentries));
         optionsAdapter.add(getText(R.string.runentries));
         optionsAdapter.add(getText(R.string.travelentries));
@@ -122,6 +125,8 @@ public class MainActivity extends Activity implements
     private void onDrawerOptionSelected(Object option) {
         if (getText(R.string.studyentries).equals(option)) {
             showList(StudyEntryListFragment.newInstance());
+        } else if (getText(R.string.readentries).equals(option)) {
+            showList(ReadEntryListFragment.newInstance());
         } else if (getText(R.string.walkentries).equals(option)) {
             showList(WalkEntryListFragment.newInstance());
         } else if (getText(R.string.runentries).equals(option)) {
@@ -202,6 +207,20 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onStudyEntryDeleted() {
+        showDetails(EmptyFragment.newInstance());
+    }
+
+    @Override
+    public void onReadEntryItemSelected(Uri uri) {
+        if (singlePaneLayout) {
+            startDetailsActivity(ReadEntryActivity.class, uri);
+        } else {
+            showDetails(ReadEntryFragment.newInstance(uri));
+        }
+    }
+
+    @Override
+    public void onReadEntryDeleted() {
         showDetails(EmptyFragment.newInstance());
     }
 

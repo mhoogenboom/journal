@@ -6,34 +6,34 @@
     android:padding="@dimen/medium_padding">
 
     <TextView
-        android:id="@+id/runentry_dayofrun"
+        android:id="@+id/readentry_dayread"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         style="@style/ListItem.Header" />
 
     <TextView
-        android:id="@+id/runentry_distance"
+        android:id="@+id/readentry_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/runentry_dayofrun"
+        android:layout_below="@id/readentry_dayread"
         android:layout_alignParentLeft="true"
         style="@style/ListItem.Field" />
 
     <TextView
-        android:id="@+id/runentry_timetaken"
+        android:id="@+id/readentry_part"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/runentry_distance"
+        android:layout_below="@id/readentry_title"
         android:layout_alignParentLeft="true"
         style="@style/ListItem.Field" />
 
     <TextView
-        android:id="@+id/runentry_avgpace"
+        android:id="@+id/readentry_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/runentry_distance"
-        android:layout_alignParentRight="true"
+        android:layout_below="@id/readentry_part"
+        android:layout_alignParentLeft="true"
         style="@style/ListItem.Field" />
 
 </RelativeLayout>

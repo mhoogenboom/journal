@@ -28,14 +28,12 @@ public interface TitleContract extends SyncableObjectContract {
             aliased(NAME, COL_LOG_ID),
             aliased(AuthorContract.NAME, AuthorContract.COL_ID),
             aliased(AuthorContract.NAME, AuthorContract.COL_REMOTE_ID),
-            aliased(AuthorContract.NAME, AuthorContract.COL_NAME),
-            aliased(AuthorContract.NAME, AuthorContract.COL_LOG_ID)
+            aliased(AuthorContract.NAME, AuthorContract.COL_NAME)
     };
 
-    DirUriType DIR_URI_TYPE = new DirUriType(NAME,
-            " LEFT JOIN " + AuthorContract.NAME + " ON (" + NAME + "." + COL_AUTHOR_ID + " = " + AuthorContract.NAME + "." + AuthorContract.COL_ID + ")");
+    String JOINS = " LEFT JOIN " + AuthorContract.NAME + " ON (" + NAME + "." + COL_AUTHOR_ID + " = " + AuthorContract.NAME + "." + AuthorContract.COL_ID + ")";
 
-    ItemUriType ITEM_URI_TYPE = new ItemUriType(NAME,
-            " LEFT JOIN " + AuthorContract.NAME + " ON (" + NAME + "." + COL_AUTHOR_ID + " = " + AuthorContract.NAME + "." + AuthorContract.COL_ID + ")");
+    DirUriType DIR_URI_TYPE = new DirUriType(NAME, JOINS);
 
+    ItemUriType ITEM_URI_TYPE = new ItemUriType(NAME, JOINS);
 }

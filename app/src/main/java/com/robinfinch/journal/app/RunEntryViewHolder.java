@@ -17,7 +17,7 @@ import butterknife.InjectView;
 class RunEntryViewHolder {
 
     @InjectView(R.id.runentry_dayofrun)
-    protected TextView dayOfRunView;
+    protected TextView dayOfEntryView;
 
     @InjectView(R.id.runentry_distance)
     protected TextView distanceView;
@@ -33,13 +33,9 @@ class RunEntryViewHolder {
     }
 
     public void bind(RunEntry entry) {
-
-        dayOfRunView.setText(Formatter.formatDay(entry.getDayOfEntry()));
-
+        dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
         distanceView.setText(Formatter.formatDistance(entry.getDistance()));
-
         timeTakenView.setText(Formatter.formatTime(entry.getTimeTaken()));
-
         avgPaceView.setText(Formatter.formatPace(entry.getAvgPace()));
     }
 }

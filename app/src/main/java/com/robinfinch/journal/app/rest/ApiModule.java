@@ -5,7 +5,6 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.robinfinch.journal.app.auth.LoginActivity;
-import com.robinfinch.journal.app.sync.SyncAdapter;
 import com.robinfinch.journal.app.util.Config;
 
 import java.lang.reflect.Type;

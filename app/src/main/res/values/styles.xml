@@ -8,7 +8,7 @@
     </style>
 
     <style name="Label" parent="android:TextAppearance.DeviceDefault.Medium">
-        <item name="android:layout_marginTop">@dimen/details_fragment_padding</item>
+        <item name="android:layout_marginTop">@dimen/large_padding</item>
     </style>
 
     <style name="ListItem.Header" parent="android:TextAppearance.DeviceDefault.Medium">

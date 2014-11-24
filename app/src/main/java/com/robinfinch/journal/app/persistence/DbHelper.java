@@ -15,20 +15,19 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "journal.db";
-    private static final int DATABASE_VERSION = 10;
+    public static final int DATABASE_VERSION = 11;
 
-    // Revision
-
+    /*
+     * Revision
+     */
     private static final String SQL_CREATE_REVISION =
             "CREATE TABLE " + RevisionContract.NAME + " (" +
-                    RevisionContract.COL_LATEST_REVISION + " INTEGER" +
+                    RevisionContract.COL_DATA_VERSION + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_REVISION =
-            "DROP TABLE IF EXISTS " + RevisionContract.NAME;
-
-    // Study entry
-
+    /*
+     * Study entry
+     */
     private static final String SQL_CREATE_STUDY_ENTRY =
             "CREATE TABLE " + StudyEntryContract.NAME + " (" +
                     StudyEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -39,11 +38,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     StudyEntryContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_STUDY_ENTRY =
-            "DROP TABLE IF EXISTS " + StudyEntryContract.NAME;
-
-    // Course
-
+    /*
+     * Course
+     */
     private static final String SQL_CREATE_COURSE =
             "CREATE TABLE " + CourseContract.NAME + " (" +
                     CourseContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -52,11 +49,22 @@ public class DbHelper extends SQLiteOpenHelper {
                     CourseContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_COURSE =
-            "DROP TABLE IF EXISTS " + CourseContract.NAME;
+    /*
+     * Read entry
+     */
+    private static final String SQL_CREATE_READ_ENTRY =
+            "CREATE TABLE " + ReadEntryContract.NAME + " (" +
+                    ReadEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    ReadEntryContract.COL_REMOTE_ID + " INTEGER," +
+                    ReadEntryContract.COL_DAY_OF_ENTRY + " INTEGER," +
+                    ReadEntryContract.COL_TITLE_ID + " INTEGER," +
+                    ReadEntryContract.COL_PART + " TEXT," +
+                    ReadEntryContract.COL_LOG_ID + " INTEGER" +
+                    ")";    
 
-    // Author
-
+    /*
+     * Title
+     */
     private static final String SQL_CREATE_TITLE =
             "CREATE TABLE " + TitleContract.NAME + " (" +
                     TitleContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -67,11 +75,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     TitleContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_TITLE =
-            "DROP TABLE IF EXISTS " + TitleContract.NAME;
-
-    // Author
-
+    /*
+     * Author
+     */
     private static final String SQL_CREATE_AUTHOR =
             "CREATE TABLE " + AuthorContract.NAME + " (" +
                     AuthorContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -80,11 +86,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     AuthorContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_AUTHOR =
-            "DROP TABLE IF EXISTS " + AuthorContract.NAME;    
-    
-    // Walk entry
-
+    /*
+     * Walk entry
+     */
     private static final String SQL_CREATE_WALK_ENTRY =
             "CREATE TABLE " + WalkEntryContract.NAME + " (" +
                     WalkEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -94,11 +98,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     WalkEntryContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_WALK_ENTRY =
-            "DROP TABLE IF EXISTS " + WalkEntryContract.NAME;
-
-    // Run entry
-
+    /*
+     * Run entry
+     */
     private static final String SQL_CREATE_RUN_ENTRY =
             "CREATE TABLE " + RunEntryContract.NAME + " (" +
                     RunEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -109,11 +111,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     RunEntryContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_RUN_ENTRY =
-            "DROP TABLE IF EXISTS " + RunEntryContract.NAME;
-
-    // Travel entry
-
+    /*
+     * Travel entry
+     */
     private static final String SQL_CREATE_TRAVEL_ENTRY =
             "CREATE TABLE " + TravelEntryContract.NAME + " (" +
                     TravelEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -124,11 +124,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     TravelEntryContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
-    private static final String SQL_DROP_TRAVEL_ENTRY =
-            "DROP TABLE IF EXISTS " + TravelEntryContract.NAME;
-
-    // Sync log
-
+    /*
+     * Sync log
+     */
     private static final String SQL_CREATE_SYNC_LOG =
             "CREATE TABLE " + SyncLogContract.NAME + " (" +
                     SyncLogContract.COL_ID + " INTEGER PRIMARY KEY," +
@@ -136,9 +134,6 @@ public class DbHelper extends SQLiteOpenHelper {
                     SyncLogContract.COL_ENTITY_ID + " INTEGER," +
                     SyncLogContract.COL_ENTITY_REMOTE_ID + " INTEGER" +
                     ")";
-
-    private static final String SQL_DROP_ENTRY_LOG =
-            "DROP TABLE IF EXISTS " + SyncLogContract.NAME;
 
     public DbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -150,6 +145,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_REVISION);
         db.execSQL(SQL_CREATE_STUDY_ENTRY);
         db.execSQL(SQL_CREATE_COURSE);
+        db.execSQL(SQL_CREATE_READ_ENTRY);
         db.execSQL(SQL_CREATE_TITLE);
         db.execSQL(SQL_CREATE_AUTHOR);
         db.execSQL(SQL_CREATE_WALK_ENTRY);
@@ -170,6 +166,12 @@ public class DbHelper extends SQLiteOpenHelper {
         if ((oldVersion == 9) && (9 < newVersion)) {
             Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version " + oldVersion);
             db.execSQL(SQL_CREATE_TITLE);
+            oldVersion++;
+        }
+
+        if ((oldVersion == 10) && (10 < newVersion)) {
+            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version " + oldVersion);
+            db.execSQL(SQL_CREATE_READ_ENTRY);
             oldVersion++;
         }
     }

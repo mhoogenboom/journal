@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.robinfinch.journal.app.R;
+import com.robinfinch.journal.app.util.Formatter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -15,8 +16,8 @@ import butterknife.InjectView;
  */
 class JournalEntryGroupViewHolder {
 
-    @InjectView(R.id.year)
-    protected TextView yearView;
+    @InjectView(R.id.group)
+    protected TextView groupView;
 
     public JournalEntryGroupViewHolder(View view) {
         ButterKnife.inject(this, view);
@@ -24,6 +25,6 @@ class JournalEntryGroupViewHolder {
 
     public void bind(JournalEntryGroup group) {
 
-        yearView.setText("" + group.year);
+        groupView.setText(Formatter.formatGroup(group));
     }
 }

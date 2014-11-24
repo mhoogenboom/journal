@@ -17,7 +17,7 @@ import static com.robinfinch.journal.app.util.Utils.differs;
  *
  * @author Mark Hoogenboom
  */
-public class Title extends SyncableObject {
+public class Title extends SyncableObject implements NamedObject {
 
     private String title;
     
@@ -52,13 +52,17 @@ public class Title extends SyncableObject {
             entry.setAuthor(author);
         }
 
-        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_YEAR);
-        String year = cursor.getString(i);
-        entry.setYear(year);
+        i = cursor.getColumnIndex(prefix + TitleContract.COL_YEAR);
+        if (i != -1) {
+            String year = cursor.getString(i);
+            entry.setYear(year);
+        }
 
-        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_LOG_ID);
-        long logId = cursor.getLong(i);
-        entry.setLogId(logId);
+        i = cursor.getColumnIndex(prefix + TitleContract.COL_LOG_ID);
+        if (i != -1) {
+            long logId = cursor.getLong(i);
+            entry.setLogId(logId);
+        }
 
         return entry;
     }
@@ -102,6 +106,11 @@ public class Title extends SyncableObject {
             this.year = year;
             this.changed = true;
         }
+    }
+
+    @Override
+    public String getName() {
+        return getTitle();
     }
 
     @Override

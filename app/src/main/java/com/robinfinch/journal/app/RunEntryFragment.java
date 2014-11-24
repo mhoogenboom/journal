@@ -49,7 +49,7 @@ public class RunEntryFragment extends DetailsFragment {
     }
 
     @InjectView(R.id.runentry_dayofrun)
-    protected EditText dayOfRunView;
+    protected EditText dayOfEntryView;
 
     @InjectView(R.id.runentry_distance)
     protected EditText distanceView;
@@ -101,7 +101,7 @@ public class RunEntryFragment extends DetailsFragment {
                     entry = RunEntry.from(cursor);
 
                     CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                    dayOfRunView.setText(dayOfEntry);
+                    dayOfEntryView.setText(dayOfEntry);
 
                     CharSequence distance = Formatter.formatDistanceForInput(entry.getDistance());
                     distanceView.setText(distance);
@@ -140,7 +140,7 @@ public class RunEntryFragment extends DetailsFragment {
         if (entry != null) {
             entry.resetChanged();
 
-            Date dayOfEntry = Parser.parseDay(dayOfRunView.getText());
+            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
             entry.setDayOfEntry(dayOfEntry);
 
             int distance = Parser.parseDistance(distanceView.getText());

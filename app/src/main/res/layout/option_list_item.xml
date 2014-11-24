@@ -4,5 +4,5 @@
     android:id="@+id/option"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/list_item_padding"
+    android:padding="@dimen/large_padding"
     style="@style/Header" />

@@ -33,13 +33,16 @@ public class Course extends SyncableObject implements NamedObject {
         String name = cursor.getString(i);
         course.setName(name);
 
-        i = cursor.getColumnIndexOrThrow(prefix + CourseContract.COL_LOG_ID);
-        long logId = cursor.getLong(i);
-        course.setLogId(logId);
+        i = cursor.getColumnIndex(prefix + CourseContract.COL_LOG_ID);
+        if (i != -1) {
+            long logId = cursor.getLong(i);
+            course.setLogId(logId);
+        }
 
         return course;
     }
 
+    @Override
     public String getName() {
         return name;
     }

@@ -2,6 +2,7 @@ package com.robinfinch.journal.server.rest;
 
 import com.robinfinch.journal.domain.SyncLog;
 import com.robinfinch.journal.domain.SyncableObject;
+import com.robinfinch.journal.server.Revision;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,19 +15,19 @@ import java.util.List;
  */
 public class DiffResponse {
 
-    private long latestRevision;
+    private Revision latestRevision;
     private final List<SyncableObject> changes;
     private final List<SyncableObject> deletes;
 
-    public DiffResponse(long latestRevision) {
+    public DiffResponse(Revision latestRevision) {
         this.latestRevision = latestRevision;
         this.changes = new ArrayList<>();
         this.deletes = new ArrayList<>();
     }
 
     public void include(SyncLog log) {
-        if (log.getId() > latestRevision) {
-            latestRevision = log.getId();
+        if (log.getId() > latestRevision.getDataVersion()) {
+            latestRevision.setDataVersion(log.getId());
         }
         if (log.getChangedEntity() == null) {
             if (!deletes.contains(log.getDeletedEntity())) {
@@ -40,7 +41,7 @@ public class DiffResponse {
         }
     }
 
-    public long getLatestRevision() {
+    public Revision getLatestRevision() {
         return latestRevision;
     }
 

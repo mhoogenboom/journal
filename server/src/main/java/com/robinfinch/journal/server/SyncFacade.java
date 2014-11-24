@@ -7,6 +7,7 @@ import com.robinfinch.journal.server.rest.DiffResponse;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -25,6 +26,10 @@ import static com.robinfinch.journal.server.util.Utils.LOG_TAG;
 @Path("sync")
 public class SyncFacade extends AbstractFacade {
 
+    @Resource(name="version_code")
+    private Integer versionCode;
+
+
     @GET
     @Path("/{latestRevision}")
     public Response diff(
@@ -38,7 +43,12 @@ public class SyncFacade extends AbstractFacade {
 
         Logger.getLogger(LOG_TAG).info("Diff for " + app);
 
-        DiffResponse response = new DiffResponse(latestRevision);
+        Revision revision = new Revision();
+        revision.setCodeVersion(versionCode);
+        revision.setDataDefinitionVersion(PERSISTENT_CONTEXT_VERSION);
+        revision.setDataVersion(latestRevision);
+
+        DiffResponse response = new DiffResponse(revision);
 
         List<SyncLog> logs = findLogs(app.getOwner().getId(), app.getId(), latestRevision);
         for (SyncLog log : logs) {

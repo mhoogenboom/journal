@@ -2,8 +2,10 @@ package com.robinfinch.journal.app.util;
 
 import android.text.TextUtils;
 
+import com.robinfinch.journal.app.ui.adapter.JournalEntryGroup;
 import com.robinfinch.journal.domain.NamedObject;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import static com.robinfinch.journal.app.util.Parser.DAY_INPUT;
@@ -14,6 +16,17 @@ import static com.robinfinch.journal.app.util.Parser.DAY_INPUT;
  * @author Mark Hoogenboom
  */
 public class Formatter {
+
+    public static final CharSequence formatGroup(JournalEntryGroup group) {
+        if (group == null) {
+            return "";
+        }
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, group.year);
+        c.set(Calendar.MONTH, group.month);
+        c.set(Calendar.DAY_OF_MONTH, 1);
+        return String.format("%1$tB %1$tY", c);
+    }
 
     public static final CharSequence formatDayForInput(Date day) {
         if (day == null) {
@@ -26,7 +39,7 @@ public class Formatter {
         if (day == null) {
             return "";
         }
-        return String.format("%1$tA %1$td/%1$tm", day);
+        return String.format("%1$tA %1$td", day);
     }
 
     public static final CharSequence formatNamedObject(NamedObject obj) {

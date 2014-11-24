@@ -27,14 +27,12 @@ public interface StudyEntryContract extends JournalEntryContract {
             aliased(NAME, COL_LOG_ID),
             aliased(CourseContract.NAME, CourseContract.COL_ID),
             aliased(CourseContract.NAME, CourseContract.COL_REMOTE_ID),
-            aliased(CourseContract.NAME, CourseContract.COL_NAME),
-            aliased(CourseContract.NAME, CourseContract.COL_LOG_ID)
+            aliased(CourseContract.NAME, CourseContract.COL_NAME)
     };
 
-    DirUriType DIR_URI_TYPE = new DirUriType(NAME,
-            " LEFT JOIN " + CourseContract.NAME + " ON (" + NAME + "." + COL_COURSE_ID + " = " + CourseContract.NAME + "." + CourseContract.COL_ID + ")");
+    String JOINS = " LEFT JOIN " + CourseContract.NAME + " ON (" + NAME + "." + COL_COURSE_ID + " = " + CourseContract.NAME + "." + CourseContract.COL_ID + ")";
 
-    ItemUriType ITEM_URI_TYPE = new ItemUriType(NAME,
-            " LEFT JOIN " + CourseContract.NAME + " ON (" + NAME + "." + COL_COURSE_ID + " = " + CourseContract.NAME + "." + CourseContract.COL_ID + ")");
+    DirUriType DIR_URI_TYPE = new DirUriType(NAME, JOINS);
 
+    ItemUriType ITEM_URI_TYPE = new ItemUriType(NAME, JOINS);
 }

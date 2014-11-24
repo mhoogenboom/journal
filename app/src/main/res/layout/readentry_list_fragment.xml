@@ -9,10 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/medium_padding"
-        android:text="@string/titles"
+        android:text="@string/readentries"
         style="@style/Header" />
 
-    <ListView
+    <ExpandableListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -23,5 +23,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/large_padding"
-        android:text="@string/title_add" />
+        android:text="@string/entity_add" />
 </LinearLayout>

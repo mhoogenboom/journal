@@ -9,10 +9,10 @@ public interface RevisionContract {
 
     String NAME = "revision";
 
-    String COL_LATEST_REVISION = "latest_revision";
+    String COL_DATA_VERSION = "latest_revision";
 
     String[] COLS = {
-            COL_LATEST_REVISION
+            COL_DATA_VERSION
     };
 }
 

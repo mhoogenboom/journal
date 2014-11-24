@@ -18,11 +18,11 @@ import android.util.Log;
 
 import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
-import com.robinfinch.journal.app.notifications.NotificationModule;
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.DbHelper;
 import com.robinfinch.journal.app.persistence.PersistenceModule;
+import com.robinfinch.journal.app.persistence.ReadEntryContract;
 import com.robinfinch.journal.app.persistence.RevisionContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
@@ -39,6 +39,7 @@ import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.Function;
 import com.robinfinch.journal.domain.Author;
 import com.robinfinch.journal.domain.Course;
+import com.robinfinch.journal.domain.ReadEntry;
 import com.robinfinch.journal.domain.RunEntry;
 import com.robinfinch.journal.domain.StudyEntry;
 import com.robinfinch.journal.domain.SyncLog;
@@ -74,6 +75,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
     static {
         URI_TYPES_BY_CLASS.put(StudyEntry.class, StudyEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(Course.class, CourseContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(ReadEntry.class, ReadEntryContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(Title.class, TitleContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(Author.class, AuthorContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(WalkEntry.class, WalkEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(RunEntry.class, RunEntryContract.DIR_URI_TYPE);
@@ -154,9 +157,9 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
                 Revision latestRevision;
                 if (cursor.moveToFirst()) {
-                    latestRevision = Revision.from(cursor);
+                    latestRevision = Revision.from(getContext(), cursor);
                 } else {
-                    latestRevision = new Revision();
+                    latestRevision = new Revision(getContext());
                 }
 
                 receive(latestRevision, token);
@@ -193,6 +196,17 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
                             return Course.from(cursor, "");
+                        }
+                    };
+                    break;
+
+                case ReadEntryContract.NAME:
+                    cursor = query(db, ReadEntryContract.DIR_URI_TYPE, ReadEntryContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return ReadEntry.from(cursor, ReadEntryContract.NAME + "_");
                         }
                     };
                     break;
@@ -425,20 +439,32 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         }
     }
 
-    private void receive(Revision revision, String token) {
+    private void receive(Revision clientRevision, String token) {
         Log.d(LOG_TAG, "Receive changes");
 
         try {
-            DiffResponse response = api.sync(token, revision.getLatestRevision());
+            DiffResponse response = api.sync(token, clientRevision.getDataVersion());
 
-            if (response.getLatestRevision() == revision.getLatestRevision()) {
-                Log.d(LOG_TAG, "No remote changes to sync");
+            Revision serverRevision = response.getLatestRevision();
+
+            Log.d(LOG_TAG, "Server: " + serverRevision + " Client: " + clientRevision);
+
+            if (serverRevision.getDataDefinitionVersion() > clientRevision.getDataDefinitionVersion()) {
+                notificationManager.onClientOutOfDate();
             } else {
-                receiveChanges(revision.getLatestRevision(), response);
+                if (serverRevision.getCodeVersion() > clientRevision.getCodeVersion()) {
+                    Log.w(LOG_TAG, "Newer version of client available");
+                }
 
-                Log.d(LOG_TAG, "Synced to revision " + response.getLatestRevision());
+                if (serverRevision.getDataVersion() > clientRevision.getDataVersion()) {
+                    receiveChanges(clientRevision.getDataVersion(), response);
 
-                notificationManager.onChangesReceived();
+                    Log.d(LOG_TAG, "Synced to revision " + serverRevision.getDataVersion());
+
+                    notificationManager.onChangesReceived();
+                } else {
+                    Log.d(LOG_TAG, "No remote changes to sync");
+                }
             }
         } catch (RetrofitError e) {
             Log.w(LOG_TAG, "Receive failed", e);
@@ -483,7 +509,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
             }
 
             values = new ContentValues();
-            values.put(RevisionContract.COL_LATEST_REVISION, response.getLatestRevision());
+            values.put(RevisionContract.COL_DATA_VERSION, response.getLatestRevision().getDataVersion());
 
             if (previousRevision == 0) {
                 db.insert(RevisionContract.NAME, null, values);

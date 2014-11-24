@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,17 +9,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/walkentry"
+        android:text="@string/readentry"
         style="@style/Header" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/walkentry_dayofwalk"
+        android:text="@string/readentry_dayread"
         style="@style/Label" />
 
     <EditText
-        android:id="@+id/walkentry_dayofwalk"
+        android:id="@+id/readentry_dayread"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true" />
@@ -26,11 +27,23 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/walkentry_location"
+        android:text="@string/readentry_title"
+        style="@style/Label" />
+
+    <com.robinfinch.journal.app.ui.NamedObjectView
+        android:id="@+id/readentry_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/readentry_part"
         style="@style/Label" />
 
     <EditText
-        android:id="@+id/walkentry_location"
+        android:id="@+id/readentry_part"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true" />

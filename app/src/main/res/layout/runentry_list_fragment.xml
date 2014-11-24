@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/list_item_padding"
+        android:layout_margin="@dimen/medium_padding"
         android:text="@string/runentries"
         style="@style/Header" />
 
@@ -22,6 +22,6 @@
         android:id="@+id/entity_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/details_fragment_padding"
+        android:layout_margin="@dimen/large_padding"
         android:text="@string/entity_add" />
 </LinearLayout>

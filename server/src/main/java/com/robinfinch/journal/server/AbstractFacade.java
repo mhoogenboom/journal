@@ -21,6 +21,8 @@ public abstract class AbstractFacade {
     protected static final String HEADER_AUTH_TOKEN = "X-Journal-Auth-Token";
     protected static final String HEADER_GCM_REGISTRATION_ID = "X-Journal-Gcm-Registration-Id";
 
+    protected static final int PERSISTENT_CONTEXT_VERSION = 11;
+
     @PersistenceContext(unitName = "JournalServerPU")
     protected EntityManager em;
 

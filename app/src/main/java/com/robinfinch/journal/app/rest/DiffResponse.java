@@ -1,5 +1,6 @@
 package com.robinfinch.journal.app.rest;
 
+import com.robinfinch.journal.app.sync.Revision;
 import com.robinfinch.journal.domain.SyncableObject;
 
 import java.util.List;
@@ -12,11 +13,11 @@ import java.util.List;
  */
 public class DiffResponse {
 
-    private long latestRevision;
+    private Revision latestRevision;
     private List<SyncableObject> changes;
     private List<SyncableObject> deletes;
 
-    public long getLatestRevision() {
+    public Revision getLatestRevision() {
         return latestRevision;
     }
 

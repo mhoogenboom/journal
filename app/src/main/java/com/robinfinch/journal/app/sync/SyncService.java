@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.IBinder;
 
 import com.robinfinch.journal.app.ContextModule;
-import com.robinfinch.journal.app.notifications.NotificationModule;
-import com.robinfinch.journal.app.persistence.PersistenceModule;
-import com.robinfinch.journal.app.rest.ApiModule;
 
 import javax.inject.Inject;
 

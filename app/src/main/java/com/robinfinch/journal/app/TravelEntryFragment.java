@@ -51,7 +51,7 @@ public class TravelEntryFragment extends DetailsFragment {
     }
 
     @InjectView(R.id.travelentry_dayoftravel)
-    protected EditText dayOfTravelView;
+    protected EditText dayOfEntryView;
 
     @InjectView(R.id.travelentry_away)
     protected Spinner awayView;
@@ -111,7 +111,7 @@ public class TravelEntryFragment extends DetailsFragment {
                     entry = TravelEntry.from(cursor);
 
                     CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                    dayOfTravelView.setText(dayOfEntry);
+                    dayOfEntryView.setText(dayOfEntry);
 
                     awayView.setSelection(entry.isAway() ? 0 : 1);
 
@@ -149,7 +149,7 @@ public class TravelEntryFragment extends DetailsFragment {
         if (entry != null) {
             entry.resetChanged();
 
-            Date dayOfEntry = Parser.parseDay(dayOfTravelView.getText());
+            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
             entry.setDayOfEntry(dayOfEntry);
 
             CharSequence direction = (CharSequence) awayView.getSelectedItem();

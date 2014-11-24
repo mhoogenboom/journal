@@ -37,6 +37,7 @@ public class JournalEntryListAdapter extends BaseExpandableListAdapter {
 
         if ((cursor != null) && cursor.moveToFirst()) {
             int year = -1;
+            int month = -1;
             int offset = 0;
             int length = 0;
 
@@ -47,12 +48,15 @@ public class JournalEntryListAdapter extends BaseExpandableListAdapter {
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(day);
 
-                if (calendar.get(Calendar.YEAR) != year) {
-                    if (year != -1) {
-                        groups.add(new JournalEntryGroup(year, offset, length));
+                if ((calendar.get(Calendar.YEAR) != year)
+                    || (calendar.get(Calendar.MONTH) != month)) {
+
+                    if ((year != -1) && (month != -1)) {
+                        groups.add(new JournalEntryGroup(year, month, offset, length));
                     }
 
                     year = calendar.get(Calendar.YEAR);
+                    month = calendar.get(Calendar.MONTH);
                     offset += length;
                     length = 0;
                 }
@@ -60,8 +64,8 @@ public class JournalEntryListAdapter extends BaseExpandableListAdapter {
                 length++;
             } while (cursor.moveToNext());
 
-            if (year != -1) {
-                groups.add(new JournalEntryGroup(year, offset, length));
+            if ((year != -1) && (month != -1)) {
+                groups.add(new JournalEntryGroup(year, month, offset, length));
             }
         }
 

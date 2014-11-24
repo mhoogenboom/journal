@@ -33,13 +33,16 @@ public class Author extends SyncableObject implements NamedObject {
         String name = cursor.getString(i);
         author.setName(name);
 
-        i = cursor.getColumnIndexOrThrow(prefix + AuthorContract.COL_LOG_ID);
-        long logId = cursor.getLong(i);
-        author.setLogId(logId);
+        i = cursor.getColumnIndex(prefix + AuthorContract.COL_LOG_ID);
+        if (i != -1) {
+            long logId = cursor.getLong(i);
+            author.setLogId(logId);
+        }
 
         return author;
     }
 
+    @Override
     public String getName() {
         return name;
     }

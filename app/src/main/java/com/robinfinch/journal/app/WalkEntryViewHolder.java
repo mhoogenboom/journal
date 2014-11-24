@@ -17,7 +17,7 @@ import butterknife.InjectView;
 class WalkEntryViewHolder {
 
     @InjectView(R.id.walkentry_dayofwalk)
-    protected TextView dayOfWalkView;
+    protected TextView dayOfEntryView;
 
     @InjectView(R.id.walkentry_description)
     protected TextView descriptionView;
@@ -27,9 +27,7 @@ class WalkEntryViewHolder {
     }
 
     public void bind(WalkEntry entry) {
-
-        dayOfWalkView.setText(Formatter.formatDay(entry.getDayOfEntry()));
-
+        dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
         descriptionView.setText(Formatter.formatWalkDescription(entry.getLocation()));
     }
 }

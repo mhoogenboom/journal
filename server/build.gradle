@@ -9,4 +9,5 @@ dependencies {
 
 war {
     baseName = "journal"
+    expand(versionCode : (rootProject.ext.versionMajor * 100 + rootProject.ext.versionMinor) * 100 + rootProject.ext.versionPatch)
 }
