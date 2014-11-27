@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import static com.robinfinch.journal.server.util.Utils.*;
+import static com.robinfinch.journal.server.util.Utils.appendIfNotEmpty;
 
 /**
  * Journal entry describing a study session.

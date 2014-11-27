@@ -12,7 +12,7 @@ import com.robinfinch.journal.app.persistence.TitleContract;
 import java.util.Date;
 
 import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
-import static com.robinfinch.journal.app.util.Utils.*;
+import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
  * Journal entry describing reading a title.
@@ -135,7 +135,7 @@ public class ReadEntry extends JournalEntry {
 
     @Override
     public String toString() {
-        return "com.robinfinch.journal.domain.StudyEntry[id=" + getId()
+        return "com.robinfinch.journal.domain.ReadEntry[id=" + getId()
                 + ";remoteId=" + getRemoteId()
                 + ";dayOfEntry=" + getDayOfEntry()
                 + ";titleId=" + getTitleId()

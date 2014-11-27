@@ -155,7 +155,7 @@ public class Title extends SyncableObject implements NamedObject {
 
     @Override
     public String toString() {
-        return "com.robinfinch.journal.domain.StudyEntry[id=" + getId()
+        return "com.robinfinch.journal.domain.Title[id=" + getId()
                 + ";remoteId=" + getRemoteId()
                 + ";title=" + getTitle()
                 + ";authorId=" + getAuthorId()

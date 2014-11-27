@@ -21,7 +21,7 @@ public class Config {
     public Uri getServerUri() {
         String server = context.getString(R.string.server);
         String port = context.getString(R.string.port);
-        return Uri.parse("http://" + server + ":" + port + "/journal");
+        return Uri.parse("https://" + server + ":" + port + "/journal");
     }
 
     public String getGcmSenderId() {

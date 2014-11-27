@@ -7,7 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import static com.robinfinch.journal.server.util.Utils.*;
+import static com.robinfinch.journal.server.util.Utils.appendIfNotEmpty;
+import static com.robinfinch.journal.server.util.Utils.isEmpty;
 
 /**
  * Journal entry describing reading a {@link com.robinfinch.journal.domain.Title title}.
@@ -91,7 +92,7 @@ public class ReadEntry extends JournalEntry {
 
     @Override
     public String toString() {
-        return "com.robinfinch.journal.domain.StudyEntry[id=" + getId()
+        return "com.robinfinch.journal.domain.ReadEntry[id=" + getId()
                 + ";owner=" + getOwner()
                 + ";dayOfEntry=" + getDayOfEntry()
                 + ";titleId=" + getTitleId()

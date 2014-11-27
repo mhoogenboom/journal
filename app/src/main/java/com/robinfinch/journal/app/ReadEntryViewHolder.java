@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.domain.ReadEntry;
-import com.robinfinch.journal.domain.StudyEntry;
 import com.robinfinch.journal.domain.Title;
 
 import butterknife.ButterKnife;
