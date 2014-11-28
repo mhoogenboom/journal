@@ -50,7 +50,13 @@ public class SyncFacade extends AbstractFacade {
 
         DiffResponse response = new DiffResponse(revision);
 
-        List<SyncLog> logs = findLogs(app.getOwner().getId(), app.getId(), latestRevision);
+        List<SyncLog> logs;
+        if (latestRevision == 0) {
+            Logger.getLogger(LOG_TAG).info("Sync everything, including changes by the app itself");
+            logs = findAllLogs(app);
+        } else {
+            logs = findLogs(app, latestRevision);
+        }
         for (SyncLog log : logs) {
             response.include(log);
         }
@@ -58,13 +64,21 @@ public class SyncFacade extends AbstractFacade {
         return Response.ok(response).build();
     }
 
-    private List<SyncLog> findLogs(Long ownerId, Long appId, Long latestRevision) {
+    private List<SyncLog> findAllLogs(App modifier) {
+        return em.createQuery("SELECT l FROM SyncLog l" +
+                " WHERE l.modifier.owner.id = ?1" +
+                " ORDER BY l.id ASC", SyncLog.class)
+                .setParameter(1, modifier.getOwner().getId())
+                .getResultList();
+    }
+
+    private List<SyncLog> findLogs(App modifier, Long latestRevision) {
         return em.createQuery("SELECT l FROM SyncLog l" +
                 " WHERE l.id > ?1 AND l.modifier.owner.id = ?2 AND NOT l.modifier.id = ?3" +
                 " ORDER BY l.id ASC", SyncLog.class)
                 .setParameter(1, latestRevision)
-                .setParameter(2, ownerId)
-                .setParameter(3, appId)
+                .setParameter(2, modifier.getOwner().getId())
+                .setParameter(3, modifier.getId())
                 .getResultList();
     }
 }

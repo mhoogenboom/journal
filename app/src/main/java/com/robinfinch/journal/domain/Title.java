@@ -4,12 +4,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.TitleContract;
 
-import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -137,7 +135,7 @@ public class Title extends SyncableObject implements NamedObject {
     }
 
     @Override
-    public void prepareAfterReceive(SQLiteDatabase db) {
+    public boolean prepareAfterReceive(SQLiteDatabase db) {
         if (authorId == 0) {
             author = null;
         } else {
@@ -147,10 +145,10 @@ public class Title extends SyncableObject implements NamedObject {
             if (cursor.moveToFirst()) {
                 author = Author.from(cursor, "");
             } else {
-                Log.d(LOG_TAG, "Received " + this + ", author unknown.");
-                author = null;
+                return false;
             }
         }
+        return super.prepareAfterReceive(db);
     }
 
     @Override

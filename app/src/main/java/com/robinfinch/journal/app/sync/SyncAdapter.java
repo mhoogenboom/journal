@@ -50,6 +50,7 @@ import com.robinfinch.journal.domain.WalkEntry;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -478,23 +479,35 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         try {
             db.beginTransaction();
 
-            for (SyncableObject obj : response.getChanges()) {
-                obj.prepareAfterReceive(db);
+            List<SyncableObject> changes = response.getChanges();
+            int doubleSize = 2 * changes.size();
 
-                DirUriType uriType = URI_TYPES_BY_CLASS.get(obj.getClass());
-                long remoteId = obj.getId();
+            for (int i = 0; i < changes.size(); i++) {
+                SyncableObject obj = changes.get(i);
 
-                values = obj.toValues();
+                if (obj.prepareAfterReceive(db)) {
+                    DirUriType uriType = URI_TYPES_BY_CLASS.get(obj.getClass());
+                    long remoteId = obj.getId();
 
-                int updatedRows = db.update(uriType.getEntityName(), values, SyncableObjectContract.COL_REMOTE_ID + "= ?",
-                        new String[]{Long.toString(remoteId)});
+                    values = obj.toValues();
 
-                if (updatedRows == 0) {
-                    values.put(SyncableObjectContract.COL_REMOTE_ID, remoteId);
-                    db.insert(uriType.getEntityName(), null, values);
+                    int updatedRows = db.update(uriType.getEntityName(), values, SyncableObjectContract.COL_REMOTE_ID + "= ?",
+                            new String[]{Long.toString(remoteId)});
+
+                    if (updatedRows == 0) {
+                        values.put(SyncableObjectContract.COL_REMOTE_ID, remoteId);
+                        db.insert(uriType.getEntityName(), null, values);
+                    }
+
+                    getContext().getContentResolver().notifyChange(uriType.uri(), null);
+                } else {
+                    if (changes.size() == doubleSize) {
+                        Log.d(LOG_TAG, "Every object has been postponed at least once, putting a stop to it.");
+                        break;
+                    }
+                    Log.d(LOG_TAG, "Postpone receiving " + obj);
+                    changes.add(obj);
                 }
-
-                getContext().getContentResolver().notifyChange(uriType.uri(), null);
             }
 
             for (SyncableObject obj : response.getDeletes()) {

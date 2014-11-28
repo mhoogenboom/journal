@@ -41,5 +41,5 @@ public abstract class SyncableObject extends PersistableObject {
         return true;
     }
 
-    public void prepareAfterReceive(SQLiteDatabase db) {}
+    public boolean prepareAfterReceive(SQLiteDatabase db) { return true; }
 }

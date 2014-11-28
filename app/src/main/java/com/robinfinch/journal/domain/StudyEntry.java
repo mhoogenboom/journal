@@ -4,14 +4,12 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
 
 import java.util.Date;
 
-import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -117,7 +115,7 @@ public class StudyEntry extends JournalEntry {
     }
 
     @Override
-    public void prepareAfterReceive(SQLiteDatabase db) {
+    public boolean prepareAfterReceive(SQLiteDatabase db) {
         if (courseId == 0) {
             course = null;
         } else {
@@ -127,10 +125,10 @@ public class StudyEntry extends JournalEntry {
             if (cursor.moveToFirst()) {
                 course = Course.from(cursor, "");
             } else {
-                Log.d(LOG_TAG, "Received " + this + ", course unknown.");
-                course = null;
+                return false;
             }
         }
+        return super.prepareAfterReceive(db);
     }
 
     @Override

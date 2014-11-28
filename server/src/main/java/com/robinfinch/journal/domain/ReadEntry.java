@@ -52,23 +52,6 @@ public class ReadEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Read");
-        if (title != null) {
-            appendIfNotEmpty(sb, " ", title.getAuthorName());
-            if (!isEmpty(title.getAuthorName()) && !isEmpty(title.getTitle())) {
-                sb.append(":");
-            }
-            appendIfNotEmpty(sb, " ", title.getTitle());
-            appendIfNotEmpty(sb, " (", title.getYear(), ")");
-        }
-        appendIfNotEmpty(sb, ", ", part);
-        sb.append(".");
-        return sb.toString();
-    }
-
-    @Override
     public void prepareBeforeSend() {
         super.prepareBeforeSend();
 
@@ -88,6 +71,23 @@ public class ReadEntry extends JournalEntry {
         } else {
             title = em.find(Title.class, titleId);
         }
+    }
+
+    @Override
+    public String toPrettyString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Read");
+        if (title != null) {
+            appendIfNotEmpty(sb, " ", title.getAuthorName());
+            if (!isEmpty(title.getAuthorName()) && !isEmpty(title.getTitle())) {
+                sb.append(":");
+            }
+            appendIfNotEmpty(sb, " ", title.getTitle());
+            appendIfNotEmpty(sb, " (", title.getYear(), ")");
+        }
+        appendIfNotEmpty(sb, ", ", part);
+        sb.append(".");
+        return sb.toString();
     }
 
     @Override

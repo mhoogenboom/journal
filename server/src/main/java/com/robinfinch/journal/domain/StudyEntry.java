@@ -51,17 +51,6 @@ public class StudyEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
-        StringBuilder sb = new StringBuilder();
-        if (course != null) {
-            sb.append(course.getName());
-        }
-        appendIfNotEmpty(sb, ", ", description);
-        sb.append(".");
-        return sb.toString();
-    }
-
-    @Override
     public void prepareBeforeSend() {
         super.prepareBeforeSend();
 
@@ -81,6 +70,17 @@ public class StudyEntry extends JournalEntry {
         } else {
             course = em.find(Course.class, courseId);
         }
+    }
+
+    @Override
+    public String toPrettyString() {
+        StringBuilder sb = new StringBuilder();
+        if (course != null) {
+            sb.append(course.getName());
+        }
+        appendIfNotEmpty(sb, ", ", description);
+        sb.append(".");
+        return sb.toString();
     }
 
     @Override
