@@ -25,7 +25,7 @@ public class WalkEntry extends JournalEntry {
     @Override
     public String toPrettyString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Walk");
+        sb.append("Walked");
         if (!isEmpty(location)) {
             sb.append(" near ");
             sb.append(location);

@@ -1,5 +1,7 @@
-build
-app/build
-server/build
 local.properties
 .gradle
+app/build
+dabbler/build
+dabbler-app/build
+server/build
+build

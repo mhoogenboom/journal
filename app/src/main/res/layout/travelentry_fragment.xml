@@ -45,7 +45,8 @@
         android:id="@+id/travelentry_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:inputType="textCapWords" />
 
     <View
         android:layout_width="match_parent"

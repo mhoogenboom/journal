@@ -56,4 +56,9 @@ public class Parser {
         String s = text.toString().trim();
         return (s.isEmpty() ? null : s);
     }
+
+    public static int parseNumber(Editable text) {
+        String s = text.toString().trim();
+        return (s.isEmpty() ? 0 : Integer.parseInt(s));
+    }
 }

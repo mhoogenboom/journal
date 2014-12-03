@@ -19,7 +19,7 @@ import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMat
 public class WalkEntryTests extends JournalEntryTests {
 
     public void testCrud() {
-        navigateToList("Walks");
+        navigateToList("Walked");
 
         createItem();
         updateItem();
@@ -32,7 +32,7 @@ public class WalkEntryTests extends JournalEntryTests {
     protected void createItem() {
         onView(withId(R.id.entity_add)).perform(click());
 
-        onView(withText("Walk Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.walkentry_dayofwalk)).check(matches(withText(today())));
         onView(withId(R.id.walkentry_location)).check(matches(withText("")));
         onView(withId(R.id.walkentry_dayofwalk)).perform(clearText(), typeText("1/2/2010"));
@@ -44,7 +44,7 @@ public class WalkEntryTests extends JournalEntryTests {
     protected void updateItem() {
         // onData().perform(click());
 
-        onView(withText("Walk Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.walkentry_dayofwalk)).check(matches(withText("1/2/2010")));
         onView(withId(R.id.walkentry_location)).check(matches(withText("")));
         onView(withId(R.id.walkentry_dayofwalk)).perform(clearText(), typeText("2/2/2010"));
@@ -57,7 +57,7 @@ public class WalkEntryTests extends JournalEntryTests {
     protected void deleteItem() {
         // onData().perform(click());
 
-        onView(withText("Walk Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.walkentry_dayofwalk)).check(matches(withText("2/2/2010")));
         onView(withId(R.id.walkentry_location)).check(matches(withText("Woodwalton Fen")));
 

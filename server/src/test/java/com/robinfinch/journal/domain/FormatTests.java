@@ -18,16 +18,16 @@ public class FormatTests {
         philOfMind.setName("Philosophy of Mind");
 
         StudyEntry entry = new StudyEntry();
-        assertEquals(".", entry.toPrettyString());
+        assertEquals("Studied.", entry.toPrettyString());
 
         entry.setCourse(philOfMind);
-        assertEquals("Philosophy of Mind.", entry.toPrettyString());
+        assertEquals("Studied Philosophy of Mind.", entry.toPrettyString());
 
-        entry.setDescription("Unit 4.3");
-        assertEquals("Philosophy of Mind, Unit 4.3.", entry.toPrettyString());
+        entry.setDescription("unit 4.3");
+        assertEquals("Studied Philosophy of Mind, unit 4.3.", entry.toPrettyString());
 
         entry.setCourse(null);
-        assertEquals("Unit 4.3.", entry.toPrettyString());
+        assertEquals("Studied unit 4.3.", entry.toPrettyString());
     }
 
     @Test
@@ -59,10 +59,10 @@ public class FormatTests {
     public void formatWalkEntry() {
 
         WalkEntry entry = new WalkEntry();
-        assertEquals("Walk.", entry.toPrettyString());
+        assertEquals("Walked.", entry.toPrettyString());
 
         entry.setLocation("Woodwalton Fen");
-        assertEquals("Walk near Woodwalton Fen.", entry.toPrettyString());
+        assertEquals("Walked near Woodwalton Fen.", entry.toPrettyString());
     }
 
     @Test
@@ -85,9 +85,9 @@ public class FormatTests {
     public void formatTravelEntry() {
 
         TravelEntry entry = new TravelEntry();
-        assertEquals("Journey.", entry.toPrettyString());
+        assertEquals("Travelled.", entry.toPrettyString());
 
         entry.setPlace("Penruddock");
-        assertEquals("Journey from Penruddock.", entry.toPrettyString());
+        assertEquals("Travelled from Penruddock.", entry.toPrettyString());
     }
 }

@@ -39,7 +39,7 @@ public class Formatter {
         if (day == null) {
             return "";
         }
-        return String.format("%1$tA %1$td", day);
+        return String.format("%1$tA %1$te", day);
     }
 
     public static final CharSequence formatNamedObject(NamedObject obj) {
@@ -50,7 +50,7 @@ public class Formatter {
     }
 
     public static final CharSequence formatWalkDescription(String place) {
-        return "Near " + place;
+        return "near " + place;
     }
 
     public static final CharSequence formatDistanceForInput(int distance) {
@@ -84,9 +84,9 @@ public class Formatter {
             return "";
         } else {
             if (away) {
-                return "To " + place;
+                return "to " + place;
             } else {
-                return "From " + place;
+                return "from " + place;
             }
         }
     }

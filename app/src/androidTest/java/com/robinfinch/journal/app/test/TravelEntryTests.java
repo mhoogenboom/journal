@@ -10,10 +10,10 @@ import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewA
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.isDisplayed;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
+import static com.robinfinch.journal.app.test.Matchers.withSelectedItem;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
-import static com.robinfinch.journal.app.test.Matchers.*;
 
 /**
  * Travel entry related tests.
@@ -23,7 +23,7 @@ import static com.robinfinch.journal.app.test.Matchers.*;
 public class TravelEntryTests extends JournalEntryTests {
 
     public void testCrud() {
-        navigateToList("Travel");
+        navigateToList("Travelled");
 
         createItem();
         updateItem();
@@ -36,7 +36,7 @@ public class TravelEntryTests extends JournalEntryTests {
     protected void createItem() {
         onView(withId(R.id.entity_add)).perform(click());
 
-        onView(withText("Travel Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.travelentry_dayoftravel)).check(matches(withText(today())));
         onView(withId(R.id.travelentry_away)).check(matches(withSelectedItem(allOf(instanceOf(String.class), is("From")))));
         onView(withId(R.id.travelentry_place)).check(matches(withText("")));
@@ -49,7 +49,7 @@ public class TravelEntryTests extends JournalEntryTests {
     protected void updateItem() {
         // onData().perform(click());
 
-        onView(withText("Travel Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.travelentry_dayoftravel)).check(matches(withText("1/2/2010")));
         onView(withId(R.id.travelentry_away)).check(matches(withSelectedItem(allOf(instanceOf(String.class), is("From")))));
         onView(withId(R.id.travelentry_place)).check(matches(withText("")));
@@ -65,7 +65,7 @@ public class TravelEntryTests extends JournalEntryTests {
     protected void deleteItem() {
         // onData().perform(click());
 
-        onView(withText("Travel Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.travelentry_dayoftravel)).check(matches(withText("2/2/2010")));
         onView(withId(R.id.travelentry_away)).check(matches(withSelectedItem(allOf(instanceOf(String.class), is("To")))));
         onView(withId(R.id.travelentry_place)).check(matches(withText("London")));

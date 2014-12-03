@@ -75,10 +75,15 @@ public class StudyEntry extends JournalEntry {
     @Override
     public String toPrettyString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("Studied");
         if (course != null) {
+            sb.append(" ");
             sb.append(course.getName());
+
+            appendIfNotEmpty(sb, ", ", description);
+        } else {
+            appendIfNotEmpty(sb, " ", description);
         }
-        appendIfNotEmpty(sb, ", ", description);
         sb.append(".");
         return sb.toString();
     }

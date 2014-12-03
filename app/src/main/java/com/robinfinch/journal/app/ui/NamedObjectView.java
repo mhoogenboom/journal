@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
+import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.domain.NamedObject;
 
@@ -17,13 +18,15 @@ public class NamedObjectView<T extends NamedObject> extends EditText {
     private T obj;
 
     public NamedObjectView(Context context) {
-        super(context);
-        setFocusable(false);
+        this(context, null);
     }
 
     public NamedObjectView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        setFocusable(false);
+        this(context, attrs, R.attr.namedObjectViewStyle);
+    }
+
+    public NamedObjectView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
     }
 
     public void setObject(T obj) {

@@ -43,7 +43,7 @@ class ReadEntryViewHolder {
             authorView.setVisibility(View.GONE);
         } else {
             titleView.setVisibility(View.VISIBLE);
-            titleView.setText(title.getTitle());
+            titleView.setText(Formatter.formatNamedObject(title));
 
             authorView.setVisibility(View.VISIBLE);
             authorView.setText(Formatter.formatNamedObject(title.getAuthor()));

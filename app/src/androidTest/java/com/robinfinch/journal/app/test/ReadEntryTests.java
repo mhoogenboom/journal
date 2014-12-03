@@ -11,8 +11,9 @@ import static com.google.android.apps.common.testing.ui.espresso.assertion.ViewA
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.isDisplayed;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMatchers.withText;
-import static org.hamcrest.Matchers.*;
-import static com.robinfinch.journal.app.test.Matchers.*;
+import static com.robinfinch.journal.app.test.Matchers.withName;
+import static com.robinfinch.journal.app.test.Matchers.withNamedObject;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Read entry related tests.
@@ -22,7 +23,7 @@ import static com.robinfinch.journal.app.test.Matchers.*;
 public class ReadEntryTests extends JournalEntryTests {
 
     public void testCrud() {
-        navigateToList("Reading");
+        navigateToList("Read");
 
         createItem();
         updateItem();
@@ -35,7 +36,7 @@ public class ReadEntryTests extends JournalEntryTests {
     protected void createItem() {
         onView(withId(R.id.entity_add)).perform(click());
 
-        onView(withText("Read Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.readentry_dayread)).check(matches(withText(today())));
         onView(withId(R.id.readentry_title)).check(matches(withNamedObject(org.hamcrest.Matchers.<NamedObject>nullValue())));
         onView(withId(R.id.readentry_part)).check(matches(withText("")));
@@ -48,7 +49,7 @@ public class ReadEntryTests extends JournalEntryTests {
     protected void updateItem() {
         // onData().perform(click());
 
-        onView(withText("Read Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.readentry_dayread)).check(matches(withText("1/2/2010")));
         onView(withId(R.id.readentry_title)).check(matches(withNamedObject(org.hamcrest.Matchers.<NamedObject>nullValue())));
         onView(withId(R.id.readentry_part)).check(matches(withText("")));
@@ -70,7 +71,7 @@ public class ReadEntryTests extends JournalEntryTests {
     protected void deleteItem() {
         // onData().perform(click());
 
-        onView(withText("Read Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.readentry_dayread)).check(matches(withText("02/02/2010")));
         onView(withId(R.id.readentry_title)).check(matches(withNamedObject(withName(is("Testing with Espresso")))));
         onView(withId(R.id.readentry_part)).check(matches(withText("ch 1")));

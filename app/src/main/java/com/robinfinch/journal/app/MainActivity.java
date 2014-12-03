@@ -47,6 +47,7 @@ public class MainActivity extends Activity implements
         RunEntryFragment.Parent,
         TravelEntryListFragment.Parent,
         TravelEntryFragment.Parent,
+        DabbleFragment.Parent,
         EmptyFragment.Parent {
 
     public static PendingIntent intentFor(Context context) {
@@ -86,6 +87,7 @@ public class MainActivity extends Activity implements
         optionsAdapter.add(getText(R.string.walkentries));
         optionsAdapter.add(getText(R.string.runentries));
         optionsAdapter.add(getText(R.string.travelentries));
+        optionsAdapter.add(getText(R.string.dabble));
 
         optionsList = (ListView) findViewById(R.id.navigation);
         optionsList.setAdapter(optionsAdapter);
@@ -133,6 +135,8 @@ public class MainActivity extends Activity implements
             showList(RunEntryListFragment.newInstance());
         } else if (getText(R.string.travelentries).equals(option)) {
             showList(TravelEntryListFragment.newInstance());
+        } else if (getText(R.string.dabble).equals(option)) {
+            showList(DabbleFragment.newInstance());
         }
     }
 

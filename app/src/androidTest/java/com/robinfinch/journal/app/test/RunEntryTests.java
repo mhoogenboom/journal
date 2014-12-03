@@ -19,7 +19,7 @@ import static com.google.android.apps.common.testing.ui.espresso.matcher.ViewMat
 public class RunEntryTests extends JournalEntryTests {
 
     public void testCrud() {
-        navigateToList("Runs");
+        navigateToList("Run");
 
         createItem();
         updateItem();
@@ -32,7 +32,7 @@ public class RunEntryTests extends JournalEntryTests {
     protected void createItem() {
         onView(withId(R.id.entity_add)).perform(click());
 
-        onView(withText("Run Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.runentry_dayofrun)).check(matches(withText(today())));
         onView(withId(R.id.runentry_distance)).check(matches(withText("0")));
         onView(withId(R.id.runentry_timetaken)).check(matches(withText("0:00")));
@@ -45,7 +45,7 @@ public class RunEntryTests extends JournalEntryTests {
     protected void updateItem() {
         // onData().perform(click());
 
-        onView(withText("Run Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.runentry_dayofrun)).check(matches(withText("1/2/2010")));
         onView(withId(R.id.runentry_distance)).check(matches(withText("0")));
         onView(withId(R.id.runentry_timetaken)).check(matches(withText("0:00")));
@@ -60,7 +60,7 @@ public class RunEntryTests extends JournalEntryTests {
     protected void deleteItem() {
         // onData().perform(click());
 
-        onView(withText("Run Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.runentry_dayofrun)).check(matches(withText("2/2/2010")));
         onView(withId(R.id.runentry_distance)).check(matches(withText("5000")));
         onView(withId(R.id.runentry_timetaken)).check(matches(withText("25:00")));

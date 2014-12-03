@@ -28,6 +28,7 @@ public interface ReadEntryContract extends JournalEntryContract {
             aliased(TitleContract.NAME, TitleContract.COL_ID),
             aliased(TitleContract.NAME, TitleContract.COL_REMOTE_ID),
             aliased(TitleContract.NAME, TitleContract.COL_TITLE),
+            aliased(TitleContract.NAME, TitleContract.COL_YEAR),
             aliased(TitleContract.NAME, TitleContract.COL_AUTHOR_ID),
             aliased(AuthorContract.NAME, AuthorContract.COL_ID),
             aliased(AuthorContract.NAME, AuthorContract.COL_REMOTE_ID),

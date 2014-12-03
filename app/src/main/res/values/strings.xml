@@ -6,20 +6,20 @@
     <string name="options_open">Open navigation drawer</string>
     <string name="options_close">Close navigation drawer</string>
 
-    <string name="studyentries">Study</string>	
-    <string name="studyentry">Study Details</string>
+    <string name="studyentries">Studied</string>
+    <string name="studyentry">Details</string>
     <string name="studyentry_dayofstudy">Day finished</string>
     <string name="studyentry_course">Course</string>
     <string name="studyentry_description">Description</string>
 
     <string name="courses">Select course</string>
-    <string name="course">Course details</string>
+    <string name="course">Course</string>
     <string name="course_name">Name</string>
     <string name="course_add">New course</string>
     <string name="course_select">Select</string>
 
-    <string name="readentries">Reading</string>
-    <string name="readentry">Read Details</string>
+    <string name="readentries">Read</string>
+    <string name="readentry">Details</string>
     <string name="readentry_dayread">Day finished</string>
     <string name="readentry_title">Title</string>
     <string name="readentry_part">Part</string>
@@ -38,19 +38,19 @@
     <string name="author_add">New author</string>
     <string name="author_select">Select</string>
 
-    <string name="walkentries">Walks</string>
-    <string name="walkentry">Walk Details</string>
+    <string name="walkentries">Walked</string>
+    <string name="walkentry">Details</string>
     <string name="walkentry_dayofwalk">Day of walk</string>
     <string name="walkentry_location">Near</string>
 
-    <string name="runentries">Runs</string>
-    <string name="runentry">Run Details</string>
+    <string name="runentries">Run</string>
+    <string name="runentry">Details</string>
     <string name="runentry_dayofrun">Day of run</string>
     <string name="runentry_distance">Distance</string>
     <string name="runentry_timetaken">Time</string>
 
-    <string name="travelentries">Travel</string>
-    <string name="travelentry">Travel Details</string>
+    <string name="travelentries">Travelled</string>
+    <string name="travelentry">Details</string>
     <string name="travelentry_dayoftravel">Day of travel</string>
     <string name="travelentry_direction">Direction</string>
     <string name="travelentry_away">To</string>
@@ -60,6 +60,9 @@
     <string name="entity_add">Add</string>
     <string name="entity_delete">Delete</string>
 
+    <string name="dabble">Dabble</string>
+    <string name="dabble_instructions">Pick strokes</string>
+    <string name="dabble_go">Dabble</string>
     <string name="notification_sync_title">Journal Update</string>
     <string name="notification_sync_text">Your journal has been updated.</string>
     <string name="notification_out_of_date_title">Journal app out of date</string>

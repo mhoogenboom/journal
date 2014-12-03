@@ -50,11 +50,9 @@ public class Title extends SyncableObject implements NamedObject {
             entry.setAuthor(author);
         }
 
-        i = cursor.getColumnIndex(prefix + TitleContract.COL_YEAR);
-        if (i != -1) {
-            String year = cursor.getString(i);
-            entry.setYear(year);
-        }
+        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_YEAR);
+        String year = cursor.getString(i);
+        entry.setYear(year);
 
         i = cursor.getColumnIndex(prefix + TitleContract.COL_LOG_ID);
         if (i != -1) {
@@ -108,7 +106,17 @@ public class Title extends SyncableObject implements NamedObject {
 
     @Override
     public String getName() {
-        return getTitle();
+        StringBuilder sb = new StringBuilder();
+        if (title != null) {
+            sb.append(title);
+
+            if (year != null) {
+                sb.append(" (");
+                sb.append(year);
+                sb.append(")");
+            }
+        }
+        return sb.toString();
     }
 
     @Override

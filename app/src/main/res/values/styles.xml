@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <item name="namedObjectViewStyle">@style/Widget.NamedObjectView</item>
     </style>
 
     <style name="Header" parent="android:TextAppearance.DeviceDefault.Large">
@@ -17,4 +18,11 @@
 
     <style name="ListItem.Field" parent="android:TextAppearance.DeviceDefault.Medium">
 	</style>
+
+    <style name="Widget.NamedObjectView" parent="android:Widget.EditText">
+        <item name="android:editable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>

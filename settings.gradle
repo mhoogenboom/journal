@@ -1,1 +1,1 @@
-include ':app', ':server'
+include ':app', ':dabbler', 'dabbler-app', ':server'

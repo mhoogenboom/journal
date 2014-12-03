@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.is;
 public class StudyEntryTests extends JournalEntryTests {
 
     public void testCrud() {
-        navigateToList("Study");
+        navigateToList("Studied");
 
         createItem();
         updateItem();
@@ -36,7 +36,7 @@ public class StudyEntryTests extends JournalEntryTests {
     protected void createItem() {
         onView(withId(R.id.entity_add)).perform(click());
 
-        onView(withText("Study Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.studyentry_dayofstudy)).check(matches(withText(today())));
         onView(withId(R.id.studyentry_course)).check(matches(withNamedObject(org.hamcrest.Matchers.<NamedObject>nullValue())));
         onView(withId(R.id.studyentry_description)).check(matches(withText("")));
@@ -49,7 +49,7 @@ public class StudyEntryTests extends JournalEntryTests {
     protected void updateItem() {
         // onData().perform(click());
 
-        onView(withText("Study Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.studyentry_dayofstudy)).check(matches(withText("1/2/2010")));
         onView(withId(R.id.studyentry_course)).check(matches(withNamedObject(org.hamcrest.Matchers.<NamedObject>nullValue())));
         onView(withId(R.id.studyentry_description)).check(matches(withText("")));
@@ -71,7 +71,7 @@ public class StudyEntryTests extends JournalEntryTests {
     protected void deleteItem() {
         // onData().perform(click());
 
-        onView(withText("Study Details")).check(matches(isDisplayed()));
+        onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.studyentry_dayofstudy)).check(matches(withText("02/02/2010")));
         onView(withId(R.id.studyentry_course)).check(matches(withNamedObject(withName(is("Introduction to unit testing")))));
         onView(withId(R.id.studyentry_description)).check(matches(withText("lesson 1")));

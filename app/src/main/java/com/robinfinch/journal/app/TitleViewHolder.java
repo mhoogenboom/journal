@@ -28,7 +28,7 @@ class TitleViewHolder {
 
     public void bind(Title title) {
 
-        titleView.setText(title.getTitle());
+        titleView.setText(title.getName());
         authorView.setText(Formatter.formatNamedObject(title.getAuthor()));
     }
 }
