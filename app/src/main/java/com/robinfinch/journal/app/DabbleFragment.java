@@ -90,6 +90,8 @@ public class DabbleFragment extends Fragment {
         List<StrokeSample> samples = new ArrayList<>();
         samples.add(new StrokeSample(factory.createBasicStroke(), R.drawable.dabble_sample_basic_stroke));
         samples.add(new StrokeSample(factory.createBlackStroke(), R.drawable.dabble_sample_black_stroke));
+        samples.add(new StrokeSample(factory.createLongThinDarkStroke(), R.drawable.dabble_sample_longthindark_stroke));
+        samples.add(new StrokeSample(factory.createLongThinDarkRedStroke(), R.drawable.dabble_sample_longthindarkred_stroke));
 
         adapter = new StrokeSamplesAdapter(samples);
 

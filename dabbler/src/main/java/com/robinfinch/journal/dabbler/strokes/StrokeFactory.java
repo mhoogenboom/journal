@@ -33,8 +33,8 @@ public class StrokeFactory
                 .withLength(NORMAL_LENGTH)
                 .withWidth(NORMAL_WIDTH)
                 .withRed(FULL)
-                .withBlue(FULL)
                 .withGreen(FULL)
+                .withBlue(FULL)
                 .build();
     }
 
@@ -46,8 +46,8 @@ public class StrokeFactory
                 .withLength(NORMAL_LENGTH)
                 .withWidth(NORMAL_WIDTH)
                 .withRed(C0)
-                .withBlue(C0)
                 .withGreen(C0)
+                .withBlue(C0)
                 .build();
     }
 
@@ -59,8 +59,8 @@ public class StrokeFactory
                 .withLength(NORMAL_LENGTH)
                 .withWidth(THIN)
                 .withRed(DARK)
-                .withBlue(DARK)
                 .withGreen(DARK)
+                .withBlue(DARK)
                 .build();
     }
 
@@ -72,8 +72,34 @@ public class StrokeFactory
                 .withLength(NORMAL_LENGTH)
                 .withWidth(THIN)
                 .withRed(DARK)
-                .withBlue(C0)
                 .withGreen(C0)
+                .withBlue(C0)
+                .build();
+    }
+
+    public Stroke createLongThinDarkGreenStroke() {
+        return new SequencesStroke.Builder()
+                .withSeed(seed())
+                .withNumberOfSegments(LONG)
+                .withAngle(STANDARD)
+                .withLength(NORMAL_LENGTH)
+                .withWidth(THIN)
+                .withRed(C0)
+                .withGreen(DARK)
+                .withBlue(C0)
+                .build();
+    }
+
+    public Stroke createLongThinDarkBlueStroke() {
+        return new SequencesStroke.Builder()
+                .withSeed(seed())
+                .withNumberOfSegments(LONG)
+                .withAngle(STANDARD)
+                .withLength(NORMAL_LENGTH)
+                .withWidth(THIN)
+                .withRed(C0)
+                .withGreen(C0)
+                .withBlue(DARK)
                 .build();
     }
 
@@ -85,8 +111,8 @@ public class StrokeFactory
                 .withLength(NORMAL_LENGTH)
                 .withWidth(THICK)
                 .withRed(LIGHT)
-                .withBlue(LIGHT)
                 .withGreen(LIGHT)
+                .withBlue(LIGHT)
                 .build();
     }
 
@@ -98,8 +124,8 @@ public class StrokeFactory
                 .withLength(NORMAL_LENGTH)
                 .withWidth(THICK)
                 .withRed(LIGHT)
-                .withBlue(C0)
                 .withGreen(C0)
+                .withBlue(C0)
                 .build();
     }
 
@@ -111,8 +137,8 @@ public class StrokeFactory
                 .withLength(LIMP)
                 .withWidth(NORMAL_WIDTH)
                 .withRed(FULL)
-                .withBlue(FULL)
                 .withGreen(FULL)
+                .withBlue(FULL)
                 .build();
     }
 
@@ -124,8 +150,8 @@ public class StrokeFactory
                 .withLength(STIFF)
                 .withWidth(NORMAL_WIDTH)
                 .withRed(FULL)
-                .withBlue(FULL)
                 .withGreen(FULL)
+                .withBlue(FULL)
                 .build();
     }
 
@@ -137,8 +163,8 @@ public class StrokeFactory
                 .withLength(STIFF)
                 .withWidth(NORMAL_WIDTH)
                 .withRed(FULL)
-                .withBlue(FULL)
                 .withGreen(FULL)
+                .withBlue(FULL)
                 .build();
     }
 }

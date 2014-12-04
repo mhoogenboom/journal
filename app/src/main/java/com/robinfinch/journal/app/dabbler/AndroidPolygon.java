@@ -17,7 +17,11 @@ public class AndroidPolygon implements Polygon {
 
     @Override
     public void addPoint(int x, int y) {
-        polygon.lineTo(x, y);
+        if (polygon.isEmpty()) {
+            polygon.moveTo(x, y);
+        } else {
+            polygon.lineTo(x, y);
+        }
     }
 
     android.graphics.Path getNativePolygon() {
