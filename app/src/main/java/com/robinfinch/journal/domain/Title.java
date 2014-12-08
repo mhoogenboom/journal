@@ -105,7 +105,7 @@ public class Title extends SyncableObject implements NamedObject {
     }
 
     @Override
-    public String getName() {
+    public CharSequence getName() {
         StringBuilder sb = new StringBuilder();
         if (title != null) {
             sb.append(title);
@@ -116,7 +116,7 @@ public class Title extends SyncableObject implements NamedObject {
                 sb.append(")");
             }
         }
-        return sb.toString();
+        return sb;
     }
 
     @Override

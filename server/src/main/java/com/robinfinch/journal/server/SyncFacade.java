@@ -29,7 +29,6 @@ public class SyncFacade extends AbstractFacade {
     @Resource(name="version_code")
     private Integer versionCode;
 
-
     @GET
     @Path("/{latestRevision}")
     public Response diff(

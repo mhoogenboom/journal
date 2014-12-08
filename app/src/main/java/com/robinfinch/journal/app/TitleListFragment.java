@@ -46,8 +46,13 @@ public class TitleListFragment extends ListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.title_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.titles;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.title_add;
     }
 
     @Override

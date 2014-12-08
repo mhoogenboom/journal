@@ -7,7 +7,9 @@ import android.provider.BaseColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
@@ -23,16 +25,24 @@ import butterknife.OnClick;
  */
 public abstract class ExpandableListFragment extends Fragment {
 
+    @InjectView(R.id.list_header)
+    protected TextView listHeader;
+
     @InjectView(R.id.list)
     protected ExpandableListView list;
+
+    @InjectView(R.id.list_add)
+    protected Button listAddButton;
 
     protected JournalEntryListAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutResId(), container, false);
+        View view = inflater.inflate(R.layout.expandable_list_fragment, container, false);
         ButterKnife.inject(this, view);
+
+        listHeader.setText(getHeaderResId());
 
         list.setAdapter(adapter);
 
@@ -43,21 +53,28 @@ public abstract class ExpandableListFragment extends Fragment {
                 if (cursor == null) {
                     return false;
                 } else {
-                    int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
-                    select(cursor.getLong(i));
+                    select(cursor);
                     return true;
                 }
             }
         });
 
+        listAddButton.setText(getAddButtonResId());
 
         return view;
     }
 
-    protected abstract int getLayoutResId();
+    protected abstract int getHeaderResId();
 
-    @OnClick(R.id.entity_add)
+    protected abstract int getAddButtonResId();
+
+    @OnClick(R.id.list_add)
     protected abstract void add();
+
+    protected void select(Cursor cursor) {
+        int i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        select(cursor.getLong(i));
+    }
 
     protected abstract void select(long id);
 

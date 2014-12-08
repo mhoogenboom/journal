@@ -47,8 +47,13 @@ public class RunEntryListFragment extends ExpandableListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.runentry_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.runentries;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.entity_add;
     }
 
     @Override

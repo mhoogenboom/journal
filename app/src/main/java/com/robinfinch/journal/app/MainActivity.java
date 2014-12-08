@@ -41,12 +41,14 @@ public class MainActivity extends Activity implements
         StudyEntryFragment.Parent,
         ReadEntryListFragment.Parent,
         ReadEntryFragment.Parent,
+        ApplicationEntryListFragment.Parent,
+        ApplicationFragment.Parent,
+        TravelEntryListFragment.Parent,
+        TravelEntryFragment.Parent,
         WalkEntryListFragment.Parent,
         WalkEntryFragment.Parent,
         RunEntryListFragment.Parent,
         RunEntryFragment.Parent,
-        TravelEntryListFragment.Parent,
-        TravelEntryFragment.Parent,
         DabbleFragment.Parent,
         EmptyFragment.Parent {
 
@@ -84,9 +86,10 @@ public class MainActivity extends Activity implements
         final ArrayAdapter<CharSequence> optionsAdapter = new ArrayAdapter<>(this, R.layout.option_list_item);
         optionsAdapter.add(getText(R.string.studyentries));
         optionsAdapter.add(getText(R.string.readentries));
+        optionsAdapter.add(getText(R.string.applicationentries));
+        optionsAdapter.add(getText(R.string.travelentries));
         optionsAdapter.add(getText(R.string.walkentries));
         optionsAdapter.add(getText(R.string.runentries));
-        optionsAdapter.add(getText(R.string.travelentries));
         optionsAdapter.add(getText(R.string.dabble));
 
         optionsList = (ListView) findViewById(R.id.navigation);
@@ -129,12 +132,14 @@ public class MainActivity extends Activity implements
             showList(StudyEntryListFragment.newInstance());
         } else if (getText(R.string.readentries).equals(option)) {
             showList(ReadEntryListFragment.newInstance());
+        } else if (getText(R.string.applicationentries).equals(option)) {
+            showList(ApplicationEntryListFragment.newInstance());
+        } else if (getText(R.string.travelentries).equals(option)) {
+            showList(TravelEntryListFragment.newInstance());
         } else if (getText(R.string.walkentries).equals(option)) {
             showList(WalkEntryListFragment.newInstance());
         } else if (getText(R.string.runentries).equals(option)) {
             showList(RunEntryListFragment.newInstance());
-        } else if (getText(R.string.travelentries).equals(option)) {
-            showList(TravelEntryListFragment.newInstance());
         } else if (getText(R.string.dabble).equals(option)) {
             showList(DabbleFragment.newInstance());
         }
@@ -229,6 +234,34 @@ public class MainActivity extends Activity implements
     }
 
     @Override
+    public void onApplicationItemSelected(Uri uri) {
+        if (singlePaneLayout) {
+            startDetailsActivity(ApplicationActivity.class, uri);
+        } else {
+            showDetails(ApplicationFragment.newInstance(uri));
+        }
+    }
+
+    @Override
+    public void onApplicationStateUpdated() {
+        showDetails(EmptyFragment.newInstance());
+    }
+
+    @Override
+    public void onTravelEntryItemSelected(Uri uri) {
+        if (singlePaneLayout) {
+            startDetailsActivity(TravelEntryActivity.class, uri);
+        } else {
+            showDetails(TravelEntryFragment.newInstance(uri));
+        }
+    }
+
+    @Override
+    public void onTravelEntryDeleted() {
+        showDetails(EmptyFragment.newInstance());
+    }
+
+    @Override
     public void onWalkEntryItemSelected(Uri uri) {
         if (singlePaneLayout) {
             startDetailsActivity(WalkEntryActivity.class, uri);
@@ -253,20 +286,6 @@ public class MainActivity extends Activity implements
 
     @Override
     public void onRunEntryDeleted() {
-        showDetails(EmptyFragment.newInstance());
-    }
-
-    @Override
-    public void onTravelEntryItemSelected(Uri uri) {
-        if (singlePaneLayout) {
-            startDetailsActivity(TravelEntryActivity.class, uri);
-        } else {
-            showDetails(TravelEntryFragment.newInstance(uri));
-        }
-    }
-
-    @Override
-    public void onTravelEntryDeleted() {
         showDetails(EmptyFragment.newInstance());
     }
 

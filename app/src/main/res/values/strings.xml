@@ -16,7 +16,6 @@
     <string name="course">Course</string>
     <string name="course_name">Name</string>
     <string name="course_add">New course</string>
-    <string name="course_select">Select</string>
 
     <string name="readentries">Read</string>
     <string name="readentry">Details</string>
@@ -30,13 +29,33 @@
     <string name="title_author">Author</string>
     <string name="title_year">Year</string>
     <string name="title_add">New title</string>
-    <string name="title_select">Select</string>
 
     <string name="authors">Select author</string>
     <string name="author">Author</string>
     <string name="author_name">Name</string>
     <string name="author_add">New author</string>
-    <string name="author_select">Select</string>
+
+    <string name="applicationentries">Applied</string>
+
+    <string name="application">Application Details</string>
+    <string name="application_recruiter">Recruiter</string>
+    <string name="application_client">Client</string>
+    <string name="application_start">Start</string>
+    <string name="application_rate">Rate</string>
+    <string name="application_add">New application</string>
+
+    <string name="organisations">Select organisation</string>
+    <string name="organisation">Organisation</string>
+    <string name="organisation_name">Name</string>
+    <string name="organisation_add">New organisation</string>
+
+    <string name="travelentries">Travelled</string>
+    <string name="travelentry">Details</string>
+    <string name="travelentry_dayoftravel">Day of travel</string>
+    <string name="travelentry_direction">Direction</string>
+    <string name="travelentry_away">To</string>
+    <string name="travelentry_back">From</string>
+    <string name="travelentry_place">Place</string>
 
     <string name="walkentries">Walked</string>
     <string name="walkentry">Details</string>
@@ -49,14 +68,7 @@
     <string name="runentry_distance">Distance</string>
     <string name="runentry_timetaken">Time</string>
 
-    <string name="travelentries">Travelled</string>
-    <string name="travelentry">Details</string>
-    <string name="travelentry_dayoftravel">Day of travel</string>
-    <string name="travelentry_direction">Direction</string>
-    <string name="travelentry_away">To</string>
-    <string name="travelentry_back">From</string>
-    <string name="travelentry_place">Place</string>
-
+    <string name="entity_select">Select</string>
     <string name="entity_add">Add</string>
     <string name="entity_delete">Delete</string>
 

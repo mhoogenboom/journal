@@ -66,15 +66,26 @@
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity
+            android:name=".ApplicationActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".OrganisationListActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".OrganisationActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>        
+        <activity
+            android:name=".TravelEntryActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".WalkEntryActivity"
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".RunEntryActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity
-            android:name=".TravelEntryActivity"
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity

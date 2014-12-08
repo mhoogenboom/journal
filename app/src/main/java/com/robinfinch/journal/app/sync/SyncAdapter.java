@@ -18,11 +18,15 @@ import android.util.Log;
 
 import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.notifications.MyNotificationManager;
+import com.robinfinch.journal.app.persistence.ApplicationContract;
+import com.robinfinch.journal.app.persistence.ApplicationEntryContract;
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.DbHelper;
+import com.robinfinch.journal.app.persistence.OrganisationContract;
 import com.robinfinch.journal.app.persistence.PersistenceModule;
 import com.robinfinch.journal.app.persistence.ReadEntryContract;
+import com.robinfinch.journal.app.persistence.RecruiterContract;
 import com.robinfinch.journal.app.persistence.RevisionContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
@@ -37,9 +41,13 @@ import com.robinfinch.journal.app.rest.JournalApi;
 import com.robinfinch.journal.app.rest.SyncableObjectWrapper;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.Function;
+import com.robinfinch.journal.domain.Application;
+import com.robinfinch.journal.domain.ApplicationEntry;
 import com.robinfinch.journal.domain.Author;
 import com.robinfinch.journal.domain.Course;
+import com.robinfinch.journal.domain.Organisation;
 import com.robinfinch.journal.domain.ReadEntry;
+import com.robinfinch.journal.domain.Recruiter;
 import com.robinfinch.journal.domain.RunEntry;
 import com.robinfinch.journal.domain.StudyEntry;
 import com.robinfinch.journal.domain.SyncLog;
@@ -79,9 +87,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         URI_TYPES_BY_CLASS.put(ReadEntry.class, ReadEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(Title.class, TitleContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(Author.class, AuthorContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(ApplicationEntry.class, ApplicationEntryContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(Application.class, ApplicationContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(Recruiter.class, RecruiterContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(Organisation.class, OrganisationContract.DIR_URI_TYPE);
+        URI_TYPES_BY_CLASS.put(TravelEntry.class, TravelEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(WalkEntry.class, WalkEntryContract.DIR_URI_TYPE);
         URI_TYPES_BY_CLASS.put(RunEntry.class, RunEntryContract.DIR_URI_TYPE);
-        URI_TYPES_BY_CLASS.put(TravelEntry.class, TravelEntryContract.DIR_URI_TYPE);
     }
 
     public static final Set<Class> SYNCABLE_OBJECT_CLASSES = URI_TYPES_BY_CLASS.keySet();
@@ -234,6 +246,62 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     };
                     break;
 
+                case ApplicationEntryContract.NAME:
+                    cursor = query(db, ApplicationEntryContract.DIR_URI_TYPE, ApplicationEntryContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return ApplicationEntry.from(cursor, ApplicationEntryContract.NAME + "_");
+                        }
+                    };
+                    break;
+
+                case ApplicationContract.NAME:
+                    cursor = query(db, ApplicationContract.DIR_URI_TYPE, ApplicationContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return Application.from(cursor, ApplicationContract.NAME + "_");
+                        }
+                    };
+                    break;
+
+                case RecruiterContract.NAME:
+                    cursor = query(db, RecruiterContract.DIR_URI_TYPE, RecruiterContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return Recruiter.from(cursor, RecruiterContract.NAME + "_");
+                        }
+                    };
+                    break;
+
+
+                case OrganisationContract.NAME:
+                    cursor = query(db, OrganisationContract.DIR_URI_TYPE, OrganisationContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return Organisation.from(cursor, OrganisationContract.NAME + "_");
+                        }
+                    };
+                    break;
+                
+                case TravelEntryContract.NAME:
+                    cursor = query(db, TravelEntryContract.DIR_URI_TYPE, TravelEntryContract.COLS, log.getEntityId());
+
+                    from = new Function<Cursor, SyncableObject>() {
+                        @Override
+                        public SyncableObject apply(Cursor cursor) {
+                            return TravelEntry.from(cursor);
+                        }
+                    };
+                    break;
+
                 case WalkEntryContract.NAME:
                     cursor = query(db, WalkEntryContract.DIR_URI_TYPE, WalkEntryContract.COLS, log.getEntityId());
 
@@ -252,17 +320,6 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
                             return RunEntry.from(cursor);
-                        }
-                    };
-                    break;
-
-                case TravelEntryContract.NAME:
-                    cursor = query(db, TravelEntryContract.DIR_URI_TYPE, TravelEntryContract.COLS, log.getEntityId());
-
-                    from = new Function<Cursor, SyncableObject>() {
-                        @Override
-                        public SyncableObject apply(Cursor cursor) {
-                            return TravelEntry.from(cursor);
                         }
                     };
                     break;

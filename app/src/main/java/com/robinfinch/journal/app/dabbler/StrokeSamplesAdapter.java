@@ -2,15 +2,11 @@ package com.robinfinch.journal.app.dabbler;
 
 import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.util.Parser;
@@ -20,8 +16,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
-import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**
  * Adapter for a list of {@link com.robinfinch.journal.app.dabbler.StrokeSample samples}.

@@ -8,8 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.R;
 
@@ -24,16 +26,24 @@ import butterknife.OnClick;
  */
 public abstract class ListFragment extends Fragment {
 
+    @InjectView(R.id.list_header)
+    protected TextView listHeader;
+
     @InjectView(R.id.list)
     protected ListView list;
+
+    @InjectView(R.id.list_add)
+    protected Button listAddButton;
 
     protected CursorAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(getLayoutResId(), container, false);
+        View view = inflater.inflate(R.layout.list_fragment, container, false);
         ButterKnife.inject(this, view);
+
+        listHeader.setText(getHeaderResId());
 
         list.setAdapter(adapter);
 
@@ -48,12 +58,16 @@ public abstract class ListFragment extends Fragment {
             }
         });
 
+        listAddButton.setText(getAddButtonResId());
+
         return view;
     }
 
-    protected abstract int getLayoutResId();
+    protected abstract int getHeaderResId();
 
-    @OnClick(R.id.entity_add)
+    protected abstract int getAddButtonResId();
+
+    @OnClick(R.id.list_add)
     protected abstract void add();
 
     protected abstract void select(long id);

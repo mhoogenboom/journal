@@ -108,11 +108,6 @@ public class CourseFragment extends DetailsFragment {
         queryHandler = new AsyncQueryHandler(getActivity().getContentResolver()) {
 
             @Override
-            public void onUpdateComplete(int token, Object cookie, int result) {
-
-            }
-
-            @Override
             public void onDeleteComplete(int token, Object cookie, int result) {
                 parent.onCourseDeleted();
             }

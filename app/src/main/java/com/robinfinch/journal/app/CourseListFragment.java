@@ -46,8 +46,13 @@ public class CourseListFragment extends ListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.course_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.courses;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.course_add;
     }
 
     @Override

@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="@dimen/large_padding"
-            android:text="@string/author_select" />
+            android:text="@string/entity_select" />
 
         <Button
             android:id="@+id/entity_delete"

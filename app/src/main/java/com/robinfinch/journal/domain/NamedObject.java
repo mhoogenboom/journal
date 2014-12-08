@@ -9,5 +9,5 @@ public interface NamedObject {
 
     Long getId();
 
-    String getName();
+    CharSequence getName();
 }

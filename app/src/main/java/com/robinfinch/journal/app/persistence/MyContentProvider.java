@@ -40,12 +40,20 @@ public class MyContentProvider extends ContentProvider {
             TitleContract.ITEM_URI_TYPE,
             AuthorContract.DIR_URI_TYPE,
             AuthorContract.ITEM_URI_TYPE,
+            ApplicationEntryContract.DIR_URI_TYPE,
+            ApplicationEntryContract.ITEM_URI_TYPE,
+            ApplicationContract.DIR_URI_TYPE,
+            ApplicationContract.ITEM_URI_TYPE,
+            RecruiterContract.DIR_URI_TYPE,
+            RecruiterContract.ITEM_URI_TYPE,
+            OrganisationContract.DIR_URI_TYPE,
+            OrganisationContract.ITEM_URI_TYPE,
+            TravelEntryContract.DIR_URI_TYPE,
+            TravelEntryContract.ITEM_URI_TYPE,
             WalkEntryContract.DIR_URI_TYPE,
             WalkEntryContract.ITEM_URI_TYPE,
             RunEntryContract.DIR_URI_TYPE,
-            RunEntryContract.ITEM_URI_TYPE,
-            TravelEntryContract.DIR_URI_TYPE,
-            TravelEntryContract.ITEM_URI_TYPE
+            RunEntryContract.ITEM_URI_TYPE
     };
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);

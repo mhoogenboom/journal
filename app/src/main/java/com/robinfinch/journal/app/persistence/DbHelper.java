@@ -15,7 +15,7 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "journal.db";
-    public static final int DATABASE_VERSION = 11;
+    public static final int DATABASE_VERSION = 12;
 
     /*
      * Revision
@@ -87,6 +87,71 @@ public class DbHelper extends SQLiteOpenHelper {
                     ")";
 
     /*
+     * Application entry
+     */
+    private static final String SQL_CREATE_APPLICATION_ENTRY =
+            "CREATE TABLE " + ApplicationEntryContract.NAME + " (" +
+                    ApplicationEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    ApplicationEntryContract.COL_REMOTE_ID + " INTEGER," +
+                    ApplicationEntryContract.COL_DAY_OF_ENTRY + " INTEGER," +
+                    ApplicationEntryContract.COL_APPLICATION_ID + " INTEGER," +
+                    ApplicationEntryContract.COL_ACTION_ID + " INTEGER," +
+                    ApplicationEntryContract.COL_LOG_ID + " INTEGER" +
+                    ")";
+
+    /*
+     * Application
+     */
+    private static final String SQL_CREATE_APPLICATION =
+            "CREATE TABLE " + ApplicationContract.NAME + " (" +
+                    ApplicationContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    ApplicationContract.COL_REMOTE_ID + " INTEGER," +
+                    ApplicationContract.COL_RECRUITER_ID + " INTEGER," +
+                    ApplicationContract.COL_CLIENT_ID + " INTEGER," +
+                    ApplicationContract.COL_START + " TEXT," +
+                    ApplicationContract.COL_RATE + " TEXT," +
+                    ApplicationContract.COL_STATE_ID + " INTEGER," +
+                    ApplicationContract.COL_LOG_ID + " INTEGER" +
+                    ")";
+
+    /*
+     * Recruiter
+     */
+    private static final String SQL_CREATE_RECRUITER =
+            "CREATE TABLE " + RecruiterContract.NAME + " (" +
+                    RecruiterContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    RecruiterContract.COL_REMOTE_ID + " INTEGER," +
+                    RecruiterContract.COL_NAME + " TEXT," +
+                    RecruiterContract.COL_ORGANISATION_ID + " INTEGER," +
+                    RecruiterContract.COL_PHONE_NUMBER + " TEXT," +
+                    RecruiterContract.COL_LOG_ID + " INTEGER" +
+                    ")";
+
+    /*
+     * Organisation
+     */
+    private static final String SQL_CREATE_ORGANISATION =
+            "CREATE TABLE " + OrganisationContract.NAME + " (" +
+                    OrganisationContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    OrganisationContract.COL_REMOTE_ID + " INTEGER," +
+                    OrganisationContract.COL_NAME + " TEXT," +
+                    OrganisationContract.COL_LOG_ID + " INTEGER" +
+                    ")";
+    
+    /*
+     * Travel entry
+     */
+    private static final String SQL_CREATE_TRAVEL_ENTRY =
+            "CREATE TABLE " + TravelEntryContract.NAME + " (" +
+                    TravelEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
+                    TravelEntryContract.COL_REMOTE_ID + " INTEGER," +
+                    TravelEntryContract.COL_DAY_OF_ENTRY + " INTEGER," +
+                    TravelEntryContract.COL_AWAY + " BOOLEAN," +
+                    TravelEntryContract.COL_PLACE + " TEXT," +
+                    TravelEntryContract.COL_LOG_ID + " INTEGER" +
+                    ")";    
+    
+    /*
      * Walk entry
      */
     private static final String SQL_CREATE_WALK_ENTRY =
@@ -109,19 +174,6 @@ public class DbHelper extends SQLiteOpenHelper {
                     RunEntryContract.COL_DISTANCE + " INTEGER," +
                     RunEntryContract.COL_TIME_TAKEN + " INTEGER," +
                     RunEntryContract.COL_LOG_ID + " INTEGER" +
-                    ")";
-
-    /*
-     * Travel entry
-     */
-    private static final String SQL_CREATE_TRAVEL_ENTRY =
-            "CREATE TABLE " + TravelEntryContract.NAME + " (" +
-                    TravelEntryContract.COL_ID + " INTEGER PRIMARY KEY," +
-                    TravelEntryContract.COL_REMOTE_ID + " INTEGER," +
-                    TravelEntryContract.COL_DAY_OF_ENTRY + " INTEGER," +
-                    TravelEntryContract.COL_AWAY + " BOOLEAN," +
-                    TravelEntryContract.COL_PLACE + " TEXT," +
-                    TravelEntryContract.COL_LOG_ID + " INTEGER" +
                     ")";
 
     /*
@@ -148,9 +200,13 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_READ_ENTRY);
         db.execSQL(SQL_CREATE_TITLE);
         db.execSQL(SQL_CREATE_AUTHOR);
+        db.execSQL(SQL_CREATE_APPLICATION_ENTRY);
+        db.execSQL(SQL_CREATE_APPLICATION);
+        db.execSQL(SQL_CREATE_RECRUITER);
+        db.execSQL(SQL_CREATE_ORGANISATION);
+        db.execSQL(SQL_CREATE_TRAVEL_ENTRY);
         db.execSQL(SQL_CREATE_WALK_ENTRY);
         db.execSQL(SQL_CREATE_RUN_ENTRY);
-        db.execSQL(SQL_CREATE_TRAVEL_ENTRY);
         db.execSQL(SQL_CREATE_SYNC_LOG);
     }
 
@@ -174,5 +230,15 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL(SQL_CREATE_READ_ENTRY);
             oldVersion++;
         }
+
+        if ((oldVersion == 11) && (11 < newVersion)) {
+            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version " + oldVersion);
+            db.execSQL(SQL_CREATE_APPLICATION_ENTRY);
+            db.execSQL(SQL_CREATE_APPLICATION);
+            db.execSQL(SQL_CREATE_RECRUITER);
+            db.execSQL(SQL_CREATE_ORGANISATION);
+            oldVersion++;
+        }
+
     }
 }

@@ -6,17 +6,24 @@
     android:orientation="horizontal"
     android:padding="@dimen/medium_padding">
 
-    <EditText
-        android:id="@+id/dabble_count"
-        android:layout_width="0dp"
+    <FrameLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:inputType="number"/>
+        android:padding="@dimen/large_padding"
+        android:background="@drawable/dabble_count_background">
+
+        <EditText
+            android:id="@+id/dabble_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="4" />
+
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/dabble_sample"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="5" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

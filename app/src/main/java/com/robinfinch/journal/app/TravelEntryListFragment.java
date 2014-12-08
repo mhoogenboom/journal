@@ -48,8 +48,13 @@ public class TravelEntryListFragment extends ExpandableListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.travelentry_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.travelentries;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.entity_add;
     }
 
     @Override

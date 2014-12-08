@@ -46,8 +46,13 @@ public class AuthorListFragment extends ListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.author_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.authors;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.author_add;
     }
 
     @Override

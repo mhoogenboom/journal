@@ -48,8 +48,13 @@ public class WalkEntryListFragment extends ExpandableListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.walkentry_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.walkentries;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.entity_add;
     }
 
     @Override

@@ -6,10 +6,10 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/list_header"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/medium_padding"
-        android:text="@string/titles"
         style="@style/Header" />
 
     <ListView
@@ -19,9 +19,8 @@
         android:layout_weight="1" />
 
     <Button
-        android:id="@+id/entity_add"
+        android:id="@+id/list_add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/large_padding"
-        android:text="@string/title_add" />
+        android:layout_margin="@dimen/large_padding" />
 </LinearLayout>

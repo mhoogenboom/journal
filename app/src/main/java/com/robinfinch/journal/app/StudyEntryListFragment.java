@@ -48,8 +48,13 @@ public class StudyEntryListFragment extends ExpandableListFragment {
     private Parent parent;
 
     @Override
-    protected int getLayoutResId() {
-        return R.layout.studyentry_list_fragment;
+    protected int getHeaderResId() {
+        return R.string.studyentries;
+    }
+
+    @Override
+    protected int getAddButtonResId() {
+        return R.string.entity_add;
     }
 
     @Override
