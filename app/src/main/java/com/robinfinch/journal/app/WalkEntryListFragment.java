@@ -14,12 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
 import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.WalkEntry;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 /**
@@ -73,7 +78,7 @@ public class WalkEntryListFragment extends ExpandableListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.walkentry_list_item, parent, false);
 
-                WalkEntryViewHolder viewHolder = new WalkEntryViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -83,7 +88,7 @@ public class WalkEntryListFragment extends ExpandableListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 WalkEntry walkEntry = WalkEntry.from(cursor);
 
-                WalkEntryViewHolder viewHolder = (WalkEntryViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(walkEntry);
             }
         });
@@ -151,5 +156,23 @@ public class WalkEntryListFragment extends ExpandableListFragment {
 
     public interface Parent {
         void onWalkEntryItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.walkentry_dayofwalk)
+        protected TextView dayOfEntryView;
+
+        @InjectView(R.id.walkentry_description)
+        protected TextView descriptionView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(WalkEntry entry) {
+            dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
+            descriptionView.setText(Formatter.formatWalkDescription(entry.getLocation()));
+        }
     }
 }

@@ -14,12 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.RunEntry;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * List of run entries fragment.
@@ -72,7 +77,7 @@ public class RunEntryListFragment extends ExpandableListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.runentry_list_item, parent, false);
 
-                RunEntryViewHolder viewHolder = new RunEntryViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -82,7 +87,7 @@ public class RunEntryListFragment extends ExpandableListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 RunEntry runEntry = RunEntry.from(cursor);
 
-                RunEntryViewHolder viewHolder = (RunEntryViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(runEntry);
             }
         });
@@ -149,5 +154,31 @@ public class RunEntryListFragment extends ExpandableListFragment {
 
     public interface Parent {
         void onRunEntryItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.runentry_dayofrun)
+        protected TextView dayOfEntryView;
+
+        @InjectView(R.id.runentry_distance)
+        protected TextView distanceView;
+
+        @InjectView(R.id.runentry_timetaken)
+        protected TextView timeTakenView;
+
+        @InjectView(R.id.runentry_avgpace)
+        protected TextView avgPaceView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(RunEntry entry) {
+            dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
+            distanceView.setText(Formatter.formatDistance(entry.getDistance()));
+            timeTakenView.setText(Formatter.formatTime(entry.getTimeTaken()));
+            avgPaceView.setText(Formatter.formatPace(entry.getAvgPace()));
+        }
     }
 }

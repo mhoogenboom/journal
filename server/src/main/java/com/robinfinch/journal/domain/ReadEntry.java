@@ -78,14 +78,13 @@ public class ReadEntry extends JournalEntry {
         StringBuilder sb = new StringBuilder();
         sb.append("Read");
         if (title != null) {
-            appendIfNotEmpty(sb, " ", title.getAuthorName());
-            if (!isEmpty(title.getAuthorName()) && !isEmpty(title.getTitle())) {
-                sb.append(":");
-            }
-            appendIfNotEmpty(sb, " ", title.getTitle());
-            appendIfNotEmpty(sb, " (", title.getYear(), ")");
+            sb.append(" ");
+            sb.append(title.toPrettyString());
         }
-        appendIfNotEmpty(sb, ", ", part);
+        if (part != null) {
+            sb.append(", ");
+            sb.append(part);
+        }
         sb.append(".");
         return sb.toString();
     }

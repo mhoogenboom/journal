@@ -215,11 +215,11 @@ public class Application extends SyncableObject implements NamedObject {
         if (recruiterId == 0) {
             recruiter = null;
         } else {
-            Cursor cursor = db.query(RecruiterContract.NAME, RecruiterContract.COLS,
-                    RecruiterContract.COL_REMOTE_ID + "=" + recruiterId, null, null, null, null, null);
+            Cursor cursor = db.query(RecruiterContract.NAME + RecruiterContract.JOINS, RecruiterContract.COLS,
+                    RecruiterContract.NAME + "_" + RecruiterContract.COL_REMOTE_ID + "=" + recruiterId, null, null, null, null, null);
 
             if (cursor.moveToFirst()) {
-                recruiter = Recruiter.from(cursor, "");
+                recruiter = Recruiter.from(cursor, RecruiterContract.NAME + "_");
             } else {
                 return false;
             }

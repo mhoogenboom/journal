@@ -7,13 +7,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
+import static com.robinfinch.journal.server.util.Utils.appendIfNotEmpty;
+import static com.robinfinch.journal.server.util.Utils.compare;
+import static com.robinfinch.journal.server.util.Utils.isEmpty;
+
 /**
  * A written work.
  *
  * @author Mark Hoogenboom
  */
 @Entity
-public class Title extends SyncableObject {
+public class Title extends SyncableObject implements Comparable<Title> {
 
     private String title;
 
@@ -82,6 +86,29 @@ public class Title extends SyncableObject {
         } else {
             author = em.find(Author.class, authorId);
         }
+    }
+
+    @Override
+    public int compareTo(Title that) {
+        int c = compare(this.author, that.author);
+        if (c == 0) {
+            c = compare(this.year, that.year);
+        }
+        if (c == 0) {
+            c = (int) (this.getId() - that.getId());
+        }
+        return c;
+    }
+
+    public String toPrettyString() {
+        StringBuilder sb = new StringBuilder();
+        appendIfNotEmpty(sb, " ", getAuthorName());
+        if (!isEmpty(getAuthorName()) && !isEmpty(title)) {
+            sb.append(":");
+        }
+        appendIfNotEmpty(sb, " ", title);
+        appendIfNotEmpty(sb, " (", year, ")");
+        return sb.toString();
     }
 
     @Override

@@ -16,26 +16,27 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.robinfinch.journal.app.persistence.CourseContract;
+import com.robinfinch.journal.app.persistence.AuthorContract;
+import com.robinfinch.journal.app.persistence.RecruiterContract;
 import com.robinfinch.journal.app.ui.ListFragment;
-import com.robinfinch.journal.domain.Course;
+import com.robinfinch.journal.app.util.Formatter;
+import com.robinfinch.journal.domain.Recruiter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-
 /**
- * List of courses fragment.
+ * List of recruiters fragment.
  *
- * @author Mark Hogenboom
+ * @recruiter Mark Hogenboom
  */
-public class CourseListFragment extends ListFragment {
+public class RecruiterListFragment extends ListFragment {
 
-    private static final int LOAD_COURSES = 1;
-    private static final int INSERT_COURSE = 2;
+    private static final int LOAD_RECRUITERS = 1;
+    private static final int INSERT_RECRUITER = 2;
 
-    public static CourseListFragment newInstance() {
-        CourseListFragment fragment = new CourseListFragment();
+    public static RecruiterListFragment newInstance() {
+        RecruiterListFragment fragment = new RecruiterListFragment();
 
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -51,12 +52,12 @@ public class CourseListFragment extends ListFragment {
 
     @Override
     protected int getHeaderResId() {
-        return R.string.courses;
+        return R.string.recruiters;
     }
 
     @Override
     protected int getAddButtonResId() {
-        return R.string.course_add;
+        return R.string.recruiter_add;
     }
 
     @Override
@@ -73,7 +74,7 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
-                View view = LayoutInflater.from(context).inflate(R.layout.course_list_item, parent, false);
+                View view = LayoutInflater.from(context).inflate(R.layout.recruiter_list_item, parent, false);
 
                 ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
@@ -83,10 +84,10 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Course course = Course.from(cursor, "");
+                Recruiter recruiter = Recruiter.from(cursor, RecruiterContract.NAME + "_");
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
-                viewHolder.bind(course);
+                viewHolder.bind(recruiter);
             }
         };
     }
@@ -101,8 +102,8 @@ public class CourseListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        CourseContract.DIR_URI_TYPE.uri(),
-                        CourseContract.COLS, null, null, CourseContract.COL_NAME + " ASC");
+                        RecruiterContract.DIR_URI_TYPE.uri(),
+                        RecruiterContract.COLS, null, null, RecruiterContract.NAME + "_" + RecruiterContract.COL_NAME +  " ASC");
             }
 
             @Override
@@ -120,23 +121,23 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public void onInsertComplete(int token, Object cookie, Uri uri) {
-                parent.onCourseItemSelected(uri);
+                parent.onRecruiterItemSelected(uri);
             }
         };
 
-        getLoaderManager().initLoader(LOAD_COURSES, null, loaderCallbacks);
+        getLoaderManager().initLoader(LOAD_RECRUITERS, null, loaderCallbacks);
     }
 
     @Override
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_COURSE, null, CourseContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_RECRUITER, null, RecruiterContract.DIR_URI_TYPE.uri(), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onCourseItemSelected(CourseContract.ITEM_URI_TYPE.uri(id));
+        parent.onRecruiterItemSelected(RecruiterContract.ITEM_URI_TYPE.uri(id));
     }
 
     @Override
@@ -146,21 +147,28 @@ public class CourseListFragment extends ListFragment {
     }
 
     public interface Parent {
-        void onCourseItemSelected(Uri uri);
+        void onRecruiterItemSelected(Uri uri);
     }
 
     static class ViewHolder {
 
-        @InjectView(R.id.course_name)
+        @InjectView(R.id.recruiter_name)
         protected TextView nameView;
+
+        @InjectView(R.id.recruiter_organisation)
+        protected TextView recruiterView;
+
+        @InjectView(R.id.recruiter_phone_number)
+        protected TextView phoneNumberView;
 
         public ViewHolder(View view) {
             ButterKnife.inject(this, view);
         }
 
-        public void bind(Course course) {
-
-            nameView.setText(course.getName());
+        public void bind(Recruiter recruiter) {
+            nameView.setText(recruiter.getName());
+            recruiterView.setText(Formatter.formatNamedObject(recruiter.getOrganisation()));
+            phoneNumberView.setText(recruiter.getPhoneNumber());
         }
     }
 }

@@ -14,11 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.TitleContract;
 import com.robinfinch.journal.app.ui.ListFragment;
+import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.domain.Title;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * List of titles fragment.
@@ -71,7 +76,7 @@ public class TitleListFragment extends ListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.title_list_item, parent, false);
 
-                TitleViewHolder viewHolder = new TitleViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -81,7 +86,7 @@ public class TitleListFragment extends ListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 Title title = Title.from(cursor, TitleContract.NAME + "_");
 
-                TitleViewHolder viewHolder = (TitleViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(title);
             }
         };
@@ -143,5 +148,24 @@ public class TitleListFragment extends ListFragment {
 
     public interface Parent {
         void onTitleItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.title_title)
+        protected TextView titleView;
+
+        @InjectView(R.id.title_author)
+        protected TextView authorView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(Title title) {
+
+            titleView.setText(title.getName());
+            authorView.setText(Formatter.formatNamedObject(title.getAuthor()));
+        }
     }
 }

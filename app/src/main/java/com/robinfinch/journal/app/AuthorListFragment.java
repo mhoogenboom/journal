@@ -14,10 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.ui.ListFragment;
 import com.robinfinch.journal.domain.Author;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 /**
@@ -71,7 +75,7 @@ public class AuthorListFragment extends ListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.author_list_item, parent, false);
 
-                AuthorViewHolder viewHolder = new AuthorViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -81,7 +85,7 @@ public class AuthorListFragment extends ListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 Author author = Author.from(cursor, "");
 
-                AuthorViewHolder viewHolder = (AuthorViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(author);
             }
         };
@@ -143,5 +147,20 @@ public class AuthorListFragment extends ListFragment {
 
     public interface Parent {
         void onAuthorItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.author_name)
+        protected TextView nameView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(Author author) {
+
+            nameView.setText(author.getName());
+        }
     }
 }

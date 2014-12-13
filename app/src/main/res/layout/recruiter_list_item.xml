@@ -7,15 +7,21 @@
     android:padding="@dimen/medium_padding">
 
     <TextView
-        android:id="@+id/title_title"
+        android:id="@+id/recruiter_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/ListItem.Field" />
 
     <TextView
-        android:id="@+id/title_author"
+        android:id="@+id/recruiter_organisation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/ListItem.SecondaryField" />
+
+    <TextView
+        android:id="@+id/recruiter_phone_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/ListItem.Field" />
 
 </LinearLayout>

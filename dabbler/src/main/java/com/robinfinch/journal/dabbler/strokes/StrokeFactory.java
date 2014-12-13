@@ -129,6 +129,32 @@ public class StrokeFactory
                 .build();
     }
 
+    public Stroke createShortThickLightGreenStroke() {
+        return new SequencesStroke.Builder()
+                .withSeed(seed())
+                .withNumberOfSegments(SHORT)
+                .withAngle(STANDARD)
+                .withLength(NORMAL_LENGTH)
+                .withWidth(THICK)
+                .withRed(C0)
+                .withGreen(LIGHT)
+                .withBlue(C0)
+                .build();
+    }
+
+    public Stroke createShortThickLightBlueStroke() {
+        return new SequencesStroke.Builder()
+                .withSeed(seed())
+                .withNumberOfSegments(SHORT)
+                .withAngle(STANDARD)
+                .withLength(NORMAL_LENGTH)
+                .withWidth(THICK)
+                .withRed(C0)
+                .withGreen(C0)
+                .withBlue(LIGHT)
+                .build();
+    }
+
     public Stroke createLimpStroke() {
         return new SequencesStroke.Builder()
                 .withSeed(seed())

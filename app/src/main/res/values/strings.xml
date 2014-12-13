@@ -44,6 +44,14 @@
     <string name="application_rate">Rate</string>
     <string name="application_add">New application</string>
 
+    <string name="recruiters">Select recruiter</string>
+    <string name="recruiter">Recruiter</string>
+    <string name="recruiter_name">Name</string>
+    <string name="recruiter_organisation">Organisation</string>
+    <string name="recruiter_phone_number">Phone number</string>
+    <string name="recruiter_pick">Choose contact</string>
+    <string name="recruiter_add">New recruiter</string>
+
     <string name="organisations">Select organisation</string>
     <string name="organisation">Organisation</string>
     <string name="organisation_name">Name</string>

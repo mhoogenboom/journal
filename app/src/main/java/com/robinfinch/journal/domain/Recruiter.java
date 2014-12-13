@@ -50,9 +50,11 @@ public class Recruiter extends SyncableObject implements NamedObject {
             recruiter.setOrganisation(organisation);
         }
 
-        i = cursor.getColumnIndexOrThrow(prefix + RecruiterContract.COL_PHONE_NUMBER);
-        String phoneNumber = cursor.getString(i);
-        recruiter.setPhoneNumber(phoneNumber);
+        i = cursor.getColumnIndex(prefix + RecruiterContract.COL_PHONE_NUMBER);
+        if (i != -1) {
+            String phoneNumber = cursor.getString(i);
+            recruiter.setPhoneNumber(phoneNumber);
+        }
 
         i = cursor.getColumnIndex(prefix + RecruiterContract.COL_LOG_ID);
         if (i != -1) {

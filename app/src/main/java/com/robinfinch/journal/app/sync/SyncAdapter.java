@@ -279,14 +279,13 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     };
                     break;
 
-
                 case OrganisationContract.NAME:
                     cursor = query(db, OrganisationContract.DIR_URI_TYPE, OrganisationContract.COLS, log.getEntityId());
 
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Organisation.from(cursor, OrganisationContract.NAME + "_");
+                            return Organisation.from(cursor, "");
                         }
                     };
                     break;

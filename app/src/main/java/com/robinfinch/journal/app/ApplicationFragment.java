@@ -239,14 +239,16 @@ public class ApplicationFragment extends Fragment {
                             break;
 
                         case LOAD_RECRUITER:
-                            Recruiter recruiter = Recruiter.from(cursor, "");
+                            Recruiter recruiter = Recruiter.from(cursor, RecruiterContract.NAME + "_");
 
                             recruiterView.setObject(recruiter);
+                            break;
 
                         case LOAD_CLIENT:
                             Organisation client = Organisation.from(cursor, "");
 
                             clientView.setObject(client);
+                            break;
                     }
                 } else {
                     onLoaderReset(loader);
@@ -328,7 +330,7 @@ public class ApplicationFragment extends Fragment {
     }
 
     private void selectRecruiter() {
-        Intent intent = new Intent(getActivity(), AuthorListActivity.class); // TODO
+        Intent intent = new Intent(getActivity(), RecruiterListActivity.class);
         startActivityForResult(intent, REQUEST_SELECT_RECRUITER);
     }
 

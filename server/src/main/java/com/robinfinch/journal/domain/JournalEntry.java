@@ -31,22 +31,9 @@ public abstract class JournalEntry extends SyncableObject implements Comparable<
     public int compareTo(JournalEntry that) {
         int c = compare(this.dayOfEntry, that.dayOfEntry);
         if (c == 0) {
-            if (beforeAllEntries(this) || afterAllEntries(that)) {
-                return -1;
-            }
-            if (beforeAllEntries(that) || afterAllEntries(this)) {
-                return 1;
-            }
+            c = (int) (this.getId() - that.getId());
         }
         return c;
-    }
-
-    private boolean beforeAllEntries(JournalEntry entry) {
-        return (entry instanceof TravelEntry) && ((TravelEntry) entry).isAway();
-    }
-
-    private boolean afterAllEntries(JournalEntry entry) {
-        return (entry instanceof TravelEntry) && !((TravelEntry) entry).isAway();
     }
 
     public abstract String toPrettyString();

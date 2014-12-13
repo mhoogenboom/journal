@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/applicationentry_application"
         android:layout_alignParentLeft="true"
-        style="@style/ListItem.Field" />
+        style="@style/ListItem.SecondaryField" />
 
 </RelativeLayout>

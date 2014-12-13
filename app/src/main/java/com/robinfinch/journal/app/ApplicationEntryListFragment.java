@@ -14,18 +14,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
-import com.robinfinch.journal.app.applications.ApplicationWorkflow;
 import com.robinfinch.journal.app.applications.ApplicationsModule;
 import com.robinfinch.journal.app.persistence.ApplicationContract;
 import com.robinfinch.journal.app.persistence.ApplicationEntryContract;
 import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.domain.ApplicationEntry;
+import com.robinfinch.journal.domain.workflow.Action;
 import com.robinfinch.journal.domain.workflow.Workflow;
 
 import javax.inject.Inject;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import dagger.ObjectGraph;
 
 
@@ -87,7 +91,7 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.applicationentry_list_item, parent, false);
 
-                ApplicationEntryViewHolder viewHolder = new ApplicationEntryViewHolder(workflow, view);
+                ViewHolder viewHolder = new ViewHolder(workflow, view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -97,7 +101,7 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 ApplicationEntry entry = ApplicationEntry.from(cursor, ApplicationEntryContract.NAME + "_");
 
-                ApplicationEntryViewHolder viewHolder = (ApplicationEntryViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(entry);
             }
         });
@@ -170,5 +174,37 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
 
     public interface Parent {
         void onApplicationItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.applicationentry_dayofentry)
+        protected TextView dayOfEntryView;
+
+        @InjectView(R.id.applicationentry_application)
+        protected TextView applicationView;
+
+        @InjectView(R.id.applicationentry_action)
+        protected TextView actionView;
+
+        private final Workflow workflow;
+
+        public ViewHolder(Workflow workflow, View view) {
+            ButterKnife.inject(this, view);
+            this.workflow = workflow;
+        }
+
+        public void bind(ApplicationEntry entry) {
+            dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
+
+            applicationView.setText(Formatter.formatNamedObject(entry.getApplication()));
+
+            Action action = workflow.getAction(entry.getActionId());
+            if (action == null) {
+                actionView.setText("");
+            } else {
+                actionView.setText(action.getDescription());
+            }
+        }
     }
 }

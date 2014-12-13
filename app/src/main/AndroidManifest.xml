@@ -70,6 +70,13 @@
             android:windowSoftInputMode="stateHidden"
             android:parentActivityName=".MainActivity"></activity>
         <activity
+            android:name=".RecruiterListActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".RecruiterActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity
             android:name=".OrganisationListActivity"
             android:parentActivityName=".MainActivity"></activity>
         <activity

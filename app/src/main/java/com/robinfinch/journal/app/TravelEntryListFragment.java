@@ -14,12 +14,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
 import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.TravelEntry;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 /**
@@ -73,7 +78,7 @@ public class TravelEntryListFragment extends ExpandableListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.travelentry_list_item, parent, false);
 
-                TravelEntryViewHolder viewHolder = new TravelEntryViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -83,7 +88,7 @@ public class TravelEntryListFragment extends ExpandableListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 TravelEntry travelEntry = TravelEntry.from(cursor);
 
-                TravelEntryViewHolder viewHolder = (TravelEntryViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(travelEntry);
             }
         });
@@ -151,5 +156,23 @@ public class TravelEntryListFragment extends ExpandableListFragment {
 
     public interface Parent {
         void onTravelEntryItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.travelentry_dayoftravel)
+        protected TextView dayOfEntryView;
+
+        @InjectView(R.id.travelentry_description)
+        protected TextView descriptionView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(TravelEntry entry) {
+            dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
+            descriptionView.setText(Formatter.formatTravelDescription(entry.isAway(), entry.getPlace()));
+        }
     }
 }

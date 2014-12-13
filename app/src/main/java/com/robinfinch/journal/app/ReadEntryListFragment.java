@@ -14,12 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.ReadEntryContract;
 import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
+import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.ReadEntry;
+import com.robinfinch.journal.domain.Title;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 /**
@@ -72,7 +78,7 @@ public class ReadEntryListFragment extends ExpandableListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.readentry_list_item, parent, false);
 
-                ReadEntryViewHolder viewHolder = new ReadEntryViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -82,7 +88,7 @@ public class ReadEntryListFragment extends ExpandableListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 ReadEntry entry = ReadEntry.from(cursor, ReadEntryContract.NAME + "_");
 
-                ReadEntryViewHolder viewHolder = (ReadEntryViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(entry);
             }
         });
@@ -149,5 +155,48 @@ public class ReadEntryListFragment extends ExpandableListFragment {
 
     public interface Parent {
         void onReadEntryItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.readentry_dayread)
+        protected TextView dayOfEntryView;
+
+        @InjectView(R.id.readentry_title)
+        protected TextView titleView;
+
+        @InjectView(R.id.readentry_part)
+        protected TextView partView;
+
+        @InjectView(R.id.readentry_author)
+        protected TextView authorView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(ReadEntry entry) {
+            dayOfEntryView.setText(Formatter.formatDay(entry.getDayOfEntry()));
+
+            Title title = entry.getTitle();
+            if (title == null) {
+                titleView.setVisibility(View.GONE);
+
+                authorView.setVisibility(View.GONE);
+            } else {
+                titleView.setVisibility(View.VISIBLE);
+                titleView.setText(Formatter.formatNamedObject(title));
+
+                authorView.setVisibility(View.VISIBLE);
+                authorView.setText(Formatter.formatNamedObject(title.getAuthor()));
+            }
+
+            if (entry.getPart() == null) {
+                partView.setVisibility(View.GONE);
+            } else {
+                partView.setVisibility(View.VISIBLE);
+                partView.setText(entry.getPart());
+            }
+        }
     }
 }

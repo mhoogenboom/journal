@@ -56,6 +56,35 @@ public class FormatTests {
     }
 
     @Test
+    public void formatTitle() {
+
+        Author ianMcEwan = new Author();
+        ianMcEwan.setName("Ian McEwan");
+
+        Title theChildrenAct = new Title();
+        assertEquals("", theChildrenAct.toPrettyString());
+
+        theChildrenAct.setTitle("The Children Act");
+        assertEquals("The Children Act", theChildrenAct.toPrettyString());
+
+        theChildrenAct.setYear("2014");
+        assertEquals("The Children Act (2014)", theChildrenAct.toPrettyString());
+
+        theChildrenAct.setAuthor(ianMcEwan);
+        assertEquals("Ian McEwan: The Children Act (2014)", theChildrenAct.toPrettyString());
+    }
+
+    @Test
+    public void formatTravelEntry() {
+
+        TravelEntry entry = new TravelEntry();
+        assertEquals("Travelled.", entry.toPrettyString());
+
+        entry.setPlace("Penruddock");
+        assertEquals("Travelled from Penruddock.", entry.toPrettyString());
+    }
+
+    @Test
     public void formatWalkEntry() {
 
         WalkEntry entry = new WalkEntry();
@@ -79,15 +108,5 @@ public class FormatTests {
 
         entry.setDistance(0);
         assertEquals("Run 25:03.", entry.toPrettyString());
-    }
-
-    @Test
-    public void formatTravelEntry() {
-
-        TravelEntry entry = new TravelEntry();
-        assertEquals("Travelled.", entry.toPrettyString());
-
-        entry.setPlace("Penruddock");
-        assertEquals("Travelled from Penruddock.", entry.toPrettyString());
     }
 }

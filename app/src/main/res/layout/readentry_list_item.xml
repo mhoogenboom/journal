@@ -34,6 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/readentry_part"
         android:layout_alignParentLeft="true"
-        style="@style/ListItem.Field" />
+        style="@style/ListItem.SecondaryField" />
 
 </RelativeLayout>

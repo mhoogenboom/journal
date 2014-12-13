@@ -14,10 +14,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.TextView;
 
 import com.robinfinch.journal.app.persistence.OrganisationContract;
 import com.robinfinch.journal.app.ui.ListFragment;
 import com.robinfinch.journal.domain.Organisation;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 /**
@@ -71,7 +75,7 @@ public class OrganisationListFragment extends ListFragment {
             public View newView(Context context, Cursor cursor, ViewGroup parent) {
                 View view = LayoutInflater.from(context).inflate(R.layout.organisation_list_item, parent, false);
 
-                OrganisationViewHolder viewHolder = new OrganisationViewHolder(view);
+                ViewHolder viewHolder = new ViewHolder(view);
                 view.setTag(viewHolder);
 
                 return view;
@@ -81,7 +85,7 @@ public class OrganisationListFragment extends ListFragment {
             public void bindView(View view, Context context, Cursor cursor) {
                 Organisation organisation = Organisation.from(cursor, "");
 
-                OrganisationViewHolder viewHolder = (OrganisationViewHolder) view.getTag();
+                ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(organisation);
             }
         };
@@ -143,5 +147,20 @@ public class OrganisationListFragment extends ListFragment {
 
     public interface Parent {
         void onOrganisationItemSelected(Uri uri);
+    }
+
+    static class ViewHolder {
+
+        @InjectView(R.id.organisation_name)
+        protected TextView nameView;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
+
+        public void bind(Organisation organisation) {
+
+            nameView.setText(organisation.getName());
+        }
     }
 }

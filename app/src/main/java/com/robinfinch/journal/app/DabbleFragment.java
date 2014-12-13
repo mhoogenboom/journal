@@ -92,6 +92,15 @@ public class DabbleFragment extends Fragment {
         samples.add(new StrokeSample(factory.createBlackStroke(), R.drawable.dabble_sample_black_stroke));
         samples.add(new StrokeSample(factory.createLongThinDarkStroke(), R.drawable.dabble_sample_longthindark_stroke));
         samples.add(new StrokeSample(factory.createLongThinDarkRedStroke(), R.drawable.dabble_sample_longthindarkred_stroke));
+        samples.add(new StrokeSample(factory.createLongThinDarkGreenStroke(), R.drawable.dabble_sample_longthindarkgreen_stroke));
+        samples.add(new StrokeSample(factory.createLongThinDarkBlueStroke(), R.drawable.dabble_sample_longthindarkblue_stroke));
+        samples.add(new StrokeSample(factory.createShortThickLightStroke(), R.drawable.dabble_sample_shortthicklight_stroke));
+        samples.add(new StrokeSample(factory.createShortThickLightRedStroke(), R.drawable.dabble_sample_shortthicklightred_stroke));
+        samples.add(new StrokeSample(factory.createShortThickLightGreenStroke(), R.drawable.dabble_sample_shortthicklightgreen_stroke));
+        samples.add(new StrokeSample(factory.createShortThickLightBlueStroke(), R.drawable.dabble_sample_shortthicklightblue_stroke));
+        samples.add(new StrokeSample(factory.createLimpStroke(), R.drawable.dabble_sample_limp_stroke));
+        samples.add(new StrokeSample(factory.createStiffStroke(), R.drawable.dabble_sample_stiff_stroke));
+        samples.add(new StrokeSample(factory.createStiffStroke(), R.drawable.dabble_sample_blocky_stroke));
 
         adapter = new StrokeSamplesAdapter(samples);
 

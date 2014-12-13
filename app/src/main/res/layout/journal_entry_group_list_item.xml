@@ -7,4 +7,4 @@
     android:paddingTop="@dimen/medium_padding"
     android:paddingBottom="@dimen/medium_padding"
     android:paddingLeft="32dp"
-    style="@style/Header" />
+    style="@style/ListItem.Header" />

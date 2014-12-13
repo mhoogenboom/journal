@@ -33,6 +33,7 @@ public interface ApplicationContract extends SyncableObjectContract {
             aliased(RecruiterContract.NAME, RecruiterContract.COL_ID),
             aliased(RecruiterContract.NAME, RecruiterContract.COL_REMOTE_ID),
             aliased(RecruiterContract.NAME, RecruiterContract.COL_NAME),
+            aliased(RecruiterContract.NAME, RecruiterContract.COL_ORGANISATION_ID),
             aliased(OrganisationContract.NAME, OrganisationContract.COL_ID),
             aliased(OrganisationContract.NAME, OrganisationContract.COL_REMOTE_ID),
             aliased(OrganisationContract.NAME, OrganisationContract.COL_NAME)
