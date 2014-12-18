@@ -27,9 +27,12 @@ public class JournalEntryListAdapter extends BaseExpandableListAdapter {
 
     private final CursorAdapter adapter;
 
-    public JournalEntryListAdapter(CursorAdapter adapter) {
+    private final String dayOfEntryColumn;
+
+    public JournalEntryListAdapter(CursorAdapter adapter, String dayOfEntryColumn) {
         this.groups = new ArrayList<>();
         this.adapter = adapter;
+        this.dayOfEntryColumn = dayOfEntryColumn;
     }
 
     public void swapCursor(Cursor cursor) {
@@ -42,7 +45,7 @@ public class JournalEntryListAdapter extends BaseExpandableListAdapter {
             int length = 0;
 
             do {
-                int index = cursor.getColumnIndexOrThrow(JournalEntryContract.COL_DAY_OF_ENTRY);
+                int index = cursor.getColumnIndexOrThrow(dayOfEntryColumn);
                 long day = cursor.getLong(index);
 
                 Calendar calendar = Calendar.getInstance();

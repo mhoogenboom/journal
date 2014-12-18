@@ -25,10 +25,12 @@ import com.robinfinch.journal.domain.Title;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
+
 /**
  * List of titles fragment.
  *
- * @title Mark Hogenboom
+ * @title Mark Hoogenboom
  */
 public class TitleListFragment extends ListFragment {
 
@@ -84,7 +86,7 @@ public class TitleListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Title title = Title.from(cursor, TitleContract.NAME + "_");
+                Title title = Title.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(title);
@@ -103,7 +105,9 @@ public class TitleListFragment extends ListFragment {
                 return new CursorLoader(
                         getActivity(),
                         TitleContract.DIR_URI_TYPE.uri(),
-                        TitleContract.COLS, null, null, AuthorContract.COL_NAME + ", " + TitleContract.COL_YEAR +  " ASC");
+                        TitleContract.COLS, null, null,
+                        alias(AuthorContract.NAME, AuthorContract.COL_NAME) + ", " +
+                        alias(TitleContract.NAME, TitleContract.COL_YEAR) + " ASC");
             }
 
             @Override

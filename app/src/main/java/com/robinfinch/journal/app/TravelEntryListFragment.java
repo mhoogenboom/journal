@@ -26,11 +26,12 @@ import com.robinfinch.journal.domain.TravelEntry;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of travel entries fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class TravelEntryListFragment extends ExpandableListFragment {
 
@@ -91,7 +92,7 @@ public class TravelEntryListFragment extends ExpandableListFragment {
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(travelEntry);
             }
-        });
+        }, alias(TravelEntryContract.NAME, TravelEntryContract.COL_DAY_OF_ENTRY));
     }
 
     @Override

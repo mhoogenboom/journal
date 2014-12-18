@@ -128,7 +128,7 @@ public class StudyEntryFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_STUDY_ENTRY:
-                            entry = StudyEntry.from(cursor, StudyEntryContract.NAME + "_");
+                            entry = StudyEntry.from(cursor);
 
                             CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
                             dayOfEntryView.setText(dayOfEntry);
@@ -140,7 +140,7 @@ public class StudyEntryFragment extends DetailsFragment {
                             break;
 
                         case LOAD_COURSE:
-                            Course course = Course.from(cursor, "");
+                            Course course = Course.from(cursor);
 
                             courseView.setObject(course);
                     }

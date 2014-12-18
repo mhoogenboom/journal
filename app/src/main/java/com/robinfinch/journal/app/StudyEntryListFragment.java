@@ -21,11 +21,12 @@ import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
 import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.StudyEntry;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of study entries fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class StudyEntryListFragment extends ExpandableListFragment {
 
@@ -80,12 +81,12 @@ public class StudyEntryListFragment extends ExpandableListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                StudyEntry entry = StudyEntry.from(cursor, StudyEntryContract.NAME + "_");
+                StudyEntry entry = StudyEntry.from(cursor);
 
                 StudyEntryViewHolder viewHolder = (StudyEntryViewHolder) view.getTag();
                 viewHolder.bind(entry);
             }
-        });
+        }, alias(StudyEntryContract.NAME, StudyEntryContract.COL_DAY_OF_ENTRY));
     }
 
     @Override

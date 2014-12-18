@@ -34,7 +34,7 @@ public class StudyEntryTests extends JournalEntryTests {
 
     @Override
     protected void createItem() {
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
 
         onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.studyentry_dayofstudy)).check(matches(withText(today())));
@@ -62,7 +62,7 @@ public class StudyEntryTests extends JournalEntryTests {
 
     private void setCourse() {
         onView(withId(R.id.studyentry_course)).perform(click());
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
         onView(withId(R.id.course_name)).perform(typeText("Introduction to unit testing"));
         onView(withId(R.id.course_select)).perform(click());
     }

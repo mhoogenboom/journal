@@ -90,7 +90,7 @@ public class AuthorFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    author = Author.from(cursor, "");
+                    author = Author.from(cursor);
 
                     CharSequence name = author.getName();
                     nameView.setText(name);

@@ -3,11 +3,11 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.OrganisationContract;
 import com.robinfinch.journal.app.persistence.RecruiterContract;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,38 +25,38 @@ public class Recruiter extends SyncableObject implements NamedObject {
 
     private String phoneNumber;
 
-    public static Recruiter from(Cursor cursor, String prefix) {
+    public static Recruiter from(Cursor cursor) {
         Recruiter recruiter = new Recruiter();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(RecruiterContract.NAME, RecruiterContract.COL_ID));
         long id = cursor.getLong(i);
         recruiter.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(prefix + RecruiterContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(RecruiterContract.NAME, RecruiterContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         recruiter.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(prefix + RecruiterContract.COL_NAME);
+        i = cursor.getColumnIndexOrThrow(alias(RecruiterContract.NAME, RecruiterContract.COL_NAME));
         String name = cursor.getString(i);
         recruiter.setName(name);
 
-        i = cursor.getColumnIndexOrThrow(prefix + RecruiterContract.COL_ORGANISATION_ID);
+        i = cursor.getColumnIndexOrThrow(alias(RecruiterContract.NAME, RecruiterContract.COL_ORGANISATION_ID));
         long organisationId = cursor.getLong(i);
         if (organisationId == 0) {
             recruiter.setOrganisation(null);
         } else {
-            Organisation organisation = Organisation.from(cursor, OrganisationContract.NAME + "_");
+            Organisation organisation = Organisation.from(cursor);
             recruiter.setOrganisation(organisation);
         }
 
-        i = cursor.getColumnIndex(prefix + RecruiterContract.COL_PHONE_NUMBER);
+        i = cursor.getColumnIndex(alias(RecruiterContract.NAME, RecruiterContract.COL_PHONE_NUMBER));
         if (i != -1) {
             String phoneNumber = cursor.getString(i);
             recruiter.setPhoneNumber(phoneNumber);
         }
 
-        i = cursor.getColumnIndex(prefix + RecruiterContract.COL_LOG_ID);
+        i = cursor.getColumnIndex(alias(RecruiterContract.NAME, RecruiterContract.COL_LOG_ID));
         if (i != -1) {
             long logId = cursor.getLong(i);
             recruiter.setLogId(logId);
@@ -136,10 +136,10 @@ public class Recruiter extends SyncableObject implements NamedObject {
             organisation = null;
         } else {
             Cursor cursor = db.query(OrganisationContract.NAME, OrganisationContract.COLS,
-                    OrganisationContract.COL_REMOTE_ID + "=" + organisationId, null, null, null, null, null);
+                   alias(OrganisationContract.NAME, OrganisationContract.COL_REMOTE_ID) + "=" + organisationId, null, null, null, null, null);
 
             if (cursor.moveToFirst()) {
-                organisation = Organisation.from(cursor, "");
+                organisation = Organisation.from(cursor);
             } else {
                 return false;
             }

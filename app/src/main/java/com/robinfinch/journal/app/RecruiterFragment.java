@@ -32,7 +32,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-import static com.robinfinch.journal.app.util.Constants.*;
+import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
+import static com.robinfinch.journal.app.util.Constants.ARG_URI;
+import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 
 /**
  * Recruiter details fragment.
@@ -144,7 +146,7 @@ public class RecruiterFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_RECRUITER:
-                            recruiter = Recruiter.from(cursor, RecruiterContract.NAME + "_");
+                            recruiter = Recruiter.from(cursor);
 
                             CharSequence name = recruiter.getName();
                             nameView.setText(name);
@@ -156,7 +158,7 @@ public class RecruiterFragment extends DetailsFragment {
                             break;
 
                         case LOAD_ORGANISATION:
-                            Organisation organisation = Organisation.from(cursor, "");
+                            Organisation organisation = Organisation.from(cursor);
 
                             organisationView.setObject(organisation);
                             break;

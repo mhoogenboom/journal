@@ -2,12 +2,12 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
 
 import java.util.Date;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,27 +25,27 @@ public class TravelEntry extends JournalEntry {
         TravelEntry entry = new TravelEntry();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(TravelEntryContract.NAME, TravelEntryContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(TravelEntryContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(TravelEntryContract.NAME, TravelEntryContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(TravelEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(alias(TravelEntryContract.NAME, TravelEntryContract.COL_DAY_OF_ENTRY));
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 
-        i = cursor.getColumnIndexOrThrow(TravelEntryContract.COL_AWAY);
+        i = cursor.getColumnIndexOrThrow(alias(TravelEntryContract.NAME, TravelEntryContract.COL_AWAY));
         boolean away = (cursor.getInt(i) == 1);
         entry.setAway(away);
 
-        i = cursor.getColumnIndexOrThrow(TravelEntryContract.COL_PLACE);
+        i = cursor.getColumnIndexOrThrow(alias(TravelEntryContract.NAME, TravelEntryContract.COL_PLACE));
         String place = cursor.getString(i);
         entry.setPlace(place);
 
-        i = cursor.getColumnIndexOrThrow(TravelEntryContract.COL_LOG_ID);
+        i = cursor.getColumnIndexOrThrow(alias(TravelEntryContract.NAME, TravelEntryContract.COL_LOG_ID));
         long logId = cursor.getLong(i);
         entry.setLogId(logId);
 

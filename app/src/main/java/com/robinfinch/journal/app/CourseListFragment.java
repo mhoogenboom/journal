@@ -23,11 +23,12 @@ import com.robinfinch.journal.domain.Course;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of courses fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class CourseListFragment extends ListFragment {
 
@@ -83,7 +84,7 @@ public class CourseListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Course course = Course.from(cursor, "");
+                Course course = Course.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(course);
@@ -102,7 +103,8 @@ public class CourseListFragment extends ListFragment {
                 return new CursorLoader(
                         getActivity(),
                         CourseContract.DIR_URI_TYPE.uri(),
-                        CourseContract.COLS, null, null, CourseContract.COL_NAME + " ASC");
+                        CourseContract.COLS, null, null,
+                        alias(CourseContract.NAME, CourseContract.COL_NAME) + " ASC");
             }
 
             @Override

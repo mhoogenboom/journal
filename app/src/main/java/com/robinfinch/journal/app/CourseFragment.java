@@ -90,7 +90,7 @@ public class CourseFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    course = Course.from(cursor, "");
+                    course = Course.from(cursor);
 
                     CharSequence name = course.getName();
                     nameView.setText(name);

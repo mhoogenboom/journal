@@ -23,11 +23,12 @@ import com.robinfinch.journal.domain.Author;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of authors fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class AuthorListFragment extends ListFragment {
 
@@ -83,7 +84,7 @@ public class AuthorListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Author author = Author.from(cursor, "");
+                Author author = Author.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(author);
@@ -102,7 +103,8 @@ public class AuthorListFragment extends ListFragment {
                 return new CursorLoader(
                         getActivity(),
                         AuthorContract.DIR_URI_TYPE.uri(),
-                        AuthorContract.COLS, null, null, AuthorContract.COL_NAME + " ASC");
+                        AuthorContract.COLS, null, null,
+                        alias(AuthorContract.NAME, AuthorContract.COL_NAME) + " ASC");
             }
 
             @Override

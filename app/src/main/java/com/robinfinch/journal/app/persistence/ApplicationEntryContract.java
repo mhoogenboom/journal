@@ -4,7 +4,7 @@ import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
 
 import static com.robinfinch.journal.app.util.Utils.aliased;
-import static com.robinfinch.journal.app.util.Utils.aliasedId;
+import static com.robinfinch.journal.app.util.Utils.*;
 
 /**
  * Data definition for {@link com.robinfinch.journal.domain.ApplicationEntry}.
@@ -20,8 +20,9 @@ public interface ApplicationEntryContract extends JournalEntryContract {
 
     String[] COLS = {
             aliasedId(NAME, COL_ID),
+            aliased(NAME, COL_ID),
             aliased(NAME, COL_REMOTE_ID),
-            COL_DAY_OF_ENTRY,
+            aliased(NAME, COL_DAY_OF_ENTRY),
             aliased(NAME, COL_APPLICATION_ID),
             aliased(NAME, COL_ACTION_ID),
             aliased(NAME, COL_LOG_ID),
@@ -36,8 +37,8 @@ public interface ApplicationEntryContract extends JournalEntryContract {
     };
 
     String JOINS =
-            " LEFT JOIN " + ApplicationContract.NAME + " ON (" + NAME + "." + COL_APPLICATION_ID + " = " + ApplicationContract.NAME + "." + ApplicationContract.COL_ID + ")" +
-            " LEFT JOIN " + OrganisationContract.NAME + " ON (" + ApplicationContract.NAME + "." + ApplicationContract.COL_CLIENT_ID + " = " + OrganisationContract.NAME + "." + OrganisationContract.COL_ID + ")";
+            " LEFT JOIN " + ApplicationContract.NAME + " ON (" + prefixed(NAME, COL_APPLICATION_ID) + " = " + prefixed(ApplicationContract.NAME, ApplicationContract.COL_ID) + ")" +
+            " LEFT JOIN " + OrganisationContract.NAME + " ON (" + prefixed(ApplicationContract.NAME, ApplicationContract.COL_CLIENT_ID) + " = " + prefixed(OrganisationContract.NAME, OrganisationContract.COL_ID) + ")";
 
     DirUriType DIR_URI_TYPE = new DirUriType(NAME, JOINS);
 

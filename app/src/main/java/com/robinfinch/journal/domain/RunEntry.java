@@ -2,12 +2,12 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 
 import java.util.Date;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,27 +25,27 @@ public class RunEntry extends JournalEntry {
         RunEntry entry = new RunEntry();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(RunEntryContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(RunEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_DAY_OF_ENTRY));
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 
-        i = cursor.getColumnIndexOrThrow(RunEntryContract.COL_DISTANCE);
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_DISTANCE));
         int distance = cursor.getInt(i);
         entry.setDistance(distance);
 
-        i = cursor.getColumnIndexOrThrow(RunEntryContract.COL_TIME_TAKEN);
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_TIME_TAKEN));
         int timeTaken = cursor.getInt(i);
         entry.setTimeTaken(timeTaken);
 
-        i = cursor.getColumnIndexOrThrow(RunEntryContract.COL_LOG_ID);
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_LOG_ID));
         long logId = cursor.getLong(i);
         entry.setLogId(logId);
 

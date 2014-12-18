@@ -26,10 +26,12 @@ import com.robinfinch.journal.domain.RunEntry;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
+
 /**
  * List of run entries fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class RunEntryListFragment extends ExpandableListFragment {
 
@@ -90,7 +92,7 @@ public class RunEntryListFragment extends ExpandableListFragment {
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(runEntry);
             }
-        });
+        }, alias(RunEntryContract.NAME, RunEntryContract.COL_DAY_OF_ENTRY));
     }
 
     @Override

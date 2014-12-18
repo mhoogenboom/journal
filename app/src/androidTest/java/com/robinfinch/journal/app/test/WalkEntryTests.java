@@ -30,7 +30,7 @@ public class WalkEntryTests extends JournalEntryTests {
 
     @Override
     protected void createItem() {
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
 
         onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.walkentry_dayofwalk)).check(matches(withText(today())));

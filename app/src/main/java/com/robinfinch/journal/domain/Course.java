@@ -2,10 +2,10 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -17,23 +17,23 @@ public class Course extends SyncableObject implements NamedObject {
 
     private String name;
 
-    public static Course from(Cursor cursor, String prefix) {
+    public static Course from(Cursor cursor) {
         Course course = new Course();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(prefix.equals("") ? BaseColumns._ID : prefix + CourseContract.COL_ID);
+        i = cursor.getColumnIndexOrThrow(alias(CourseContract.NAME, CourseContract.COL_ID));
         long id = cursor.getLong(i);
         course.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(prefix + CourseContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(CourseContract.NAME, CourseContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         course.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(prefix + CourseContract.COL_NAME);
+        i = cursor.getColumnIndexOrThrow(alias(CourseContract.NAME, CourseContract.COL_NAME));
         String name = cursor.getString(i);
         course.setName(name);
 
-        i = cursor.getColumnIndex(prefix + CourseContract.COL_LOG_ID);
+        i = cursor.getColumnIndex(alias(CourseContract.NAME, CourseContract.COL_LOG_ID));
         if (i != -1) {
             long logId = cursor.getLong(i);
             course.setLogId(logId);

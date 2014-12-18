@@ -4,7 +4,7 @@ import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
 
 import static com.robinfinch.journal.app.util.Utils.aliased;
-import static com.robinfinch.journal.app.util.Utils.aliasedId;
+import static com.robinfinch.journal.app.util.Utils.*;
 
 /**
  * Data definition for {@link com.robinfinch.journal.domain.Title}.
@@ -21,6 +21,7 @@ public interface TitleContract extends SyncableObjectContract {
 
     String[] COLS = {
             aliasedId(NAME, COL_ID),
+            aliased(NAME, COL_ID),
             aliased(NAME, COL_REMOTE_ID),
             aliased(NAME, COL_TITLE),
             aliased(NAME, COL_AUTHOR_ID),
@@ -31,7 +32,7 @@ public interface TitleContract extends SyncableObjectContract {
             aliased(AuthorContract.NAME, AuthorContract.COL_NAME)
     };
 
-    String JOINS = " LEFT JOIN " + AuthorContract.NAME + " ON (" + NAME + "." + COL_AUTHOR_ID + " = " + AuthorContract.NAME + "." + AuthorContract.COL_ID + ")";
+    String JOINS = " LEFT JOIN " + AuthorContract.NAME + " ON (" + prefixed(NAME, COL_AUTHOR_ID) + " = " + prefixed(AuthorContract.NAME, AuthorContract.COL_ID) + ")";
 
     DirUriType DIR_URI_TYPE = new DirUriType(NAME, JOINS);
 

@@ -3,13 +3,13 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.ApplicationContract;
 import com.robinfinch.journal.app.persistence.ApplicationEntryContract;
 
 import java.util.Date;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,36 +25,36 @@ public class ApplicationEntry extends JournalEntry {
 
     private long actionId;
 
-    public static ApplicationEntry from(Cursor cursor, String prefix) {
+    public static ApplicationEntry from(Cursor cursor) {
         ApplicationEntry entry = new ApplicationEntry();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(prefix + ApplicationEntryContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(ApplicationEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_DAY_OF_ENTRY));
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 
-        i = cursor.getColumnIndexOrThrow(prefix + ApplicationEntryContract.COL_APPLICATION_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_APPLICATION_ID));
         long applicationId = cursor.getLong(i);
         if (applicationId == 0) {
             entry.setApplication(null);
         } else {
-            Application application = Application.from(cursor, ApplicationContract.NAME + "_");
+            Application application = Application.from(cursor);
             entry.setApplication(application);
         }
 
-        i = cursor.getColumnIndexOrThrow(prefix + ApplicationEntryContract.COL_ACTION_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_ACTION_ID));
         long actionId = cursor.getLong(i);
         entry.setActionId(actionId);
 
-        i = cursor.getColumnIndexOrThrow(prefix + ApplicationEntryContract.COL_LOG_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_LOG_ID));
         long logId = cursor.getLong(i);
         entry.setLogId(logId);
 
@@ -120,10 +120,10 @@ public class ApplicationEntry extends JournalEntry {
             application = null;
         } else {
             Cursor cursor = db.query(ApplicationContract.NAME + ApplicationContract.JOINS, ApplicationContract.COLS,
-                   ApplicationContract.NAME + "_" + ApplicationContract.COL_REMOTE_ID + "=" + applicationId, null, null, null, null, null);
+                   alias(ApplicationContract.NAME, ApplicationContract.COL_REMOTE_ID) + "=" + applicationId, null, null, null, null, null);
 
             if (cursor.moveToFirst()) {
-                application = Application.from(cursor, ApplicationContract.NAME + "_");
+                application = Application.from(cursor);
             } else {
                 return false;
             }

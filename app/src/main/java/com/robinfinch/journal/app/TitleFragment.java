@@ -126,7 +126,7 @@ public class TitleFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_TITLE:
-                            title = Title.from(cursor, TitleContract.NAME + "_");
+                            title = Title.from(cursor);
 
                             CharSequence t = title.getTitle();
                             titleView.setText(t);
@@ -138,7 +138,7 @@ public class TitleFragment extends DetailsFragment {
                             break;
 
                         case LOAD_AUTHOR:
-                            Author author = Author.from(cursor, "");
+                            Author author = Author.from(cursor);
 
                             authorView.setObject(author);
                     }

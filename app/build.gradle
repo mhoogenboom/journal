@@ -46,6 +46,13 @@ android {
         versionName "$rootProject.ext.versionMajor.$rootProject.ext.versionMinor.$rootProject.ext.versionPatch"
         project.ext.archivesBaseName = "journal-" + versionName
         testInstrumentationRunner "com.google.android.apps.common.testing.testrunner.GoogleInstrumentationTestRunner"
+
+        ndk {
+            moduleName "aeolus"
+            cFlags "-std=c++11"
+            stl "gnustl_shared"
+            ldLibs "log"
+        }
     }
 
     compileOptions {

@@ -26,11 +26,12 @@ import com.robinfinch.journal.domain.WalkEntry;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of walk entries fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class WalkEntryListFragment extends ExpandableListFragment {
 
@@ -91,7 +92,7 @@ public class WalkEntryListFragment extends ExpandableListFragment {
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(walkEntry);
             }
-        });
+        }, alias(WalkEntryContract.NAME, WalkEntryContract.COL_DAY_OF_ENTRY));
     }
 
     @Override

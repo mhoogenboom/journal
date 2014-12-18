@@ -3,13 +3,13 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
 import com.robinfinch.journal.app.persistence.StudyEntryContract;
 
 import java.util.Date;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,36 +25,36 @@ public class StudyEntry extends JournalEntry {
 
     private String description;
 
-    public static StudyEntry from(Cursor cursor, String prefix) {
+    public static StudyEntry from(Cursor cursor) {
         StudyEntry entry = new StudyEntry();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(StudyEntryContract.NAME, StudyEntryContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(prefix + StudyEntryContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(StudyEntryContract.NAME, StudyEntryContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(StudyEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(alias(StudyEntryContract.NAME, StudyEntryContract.COL_DAY_OF_ENTRY));
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 
-        i = cursor.getColumnIndexOrThrow(prefix + StudyEntryContract.COL_COURSE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(StudyEntryContract.NAME, StudyEntryContract.COL_COURSE_ID));
         long courseId = cursor.getLong(i);
         if (courseId == 0) {
             entry.setCourse(null);
         } else {
-            Course course = Course.from(cursor, CourseContract.NAME + "_");
+            Course course = Course.from(cursor);
             entry.setCourse(course);
         }
 
-        i = cursor.getColumnIndexOrThrow(prefix + StudyEntryContract.COL_DESCRIPTION);
+        i = cursor.getColumnIndexOrThrow(alias(StudyEntryContract.NAME, StudyEntryContract.COL_DESCRIPTION));
         String description = cursor.getString(i);
         entry.setDescription(description);
 
-        i = cursor.getColumnIndexOrThrow(prefix + StudyEntryContract.COL_LOG_ID);
+        i = cursor.getColumnIndexOrThrow(alias(StudyEntryContract.NAME, StudyEntryContract.COL_LOG_ID));
         long logId = cursor.getLong(i);
         entry.setLogId(logId);
 
@@ -123,7 +123,7 @@ public class StudyEntry extends JournalEntry {
                     CourseContract.COL_REMOTE_ID + "=" + courseId, null, null, null, null, null);
 
             if (cursor.moveToFirst()) {
-                course = Course.from(cursor, "");
+                course = Course.from(cursor);
             } else {
                 return false;
             }

@@ -27,11 +27,12 @@ import com.robinfinch.journal.domain.Title;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of read entries fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class ReadEntryListFragment extends ExpandableListFragment {
 
@@ -86,12 +87,12 @@ public class ReadEntryListFragment extends ExpandableListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                ReadEntry entry = ReadEntry.from(cursor, ReadEntryContract.NAME + "_");
+                ReadEntry entry = ReadEntry.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(entry);
             }
-        });
+        }, alias(ReadEntryContract.NAME, ReadEntryContract.COL_DAY_OF_ENTRY));
     }
 
     @Override
@@ -105,7 +106,8 @@ public class ReadEntryListFragment extends ExpandableListFragment {
                 return new CursorLoader(
                         getActivity(),
                         ReadEntryContract.DIR_URI_TYPE.uri(),
-                        ReadEntryContract.COLS, null, null, ReadEntryContract.COL_DAY_OF_ENTRY + " ASC");
+                        ReadEntryContract.COLS, null, null,
+                        alias(ReadEntryContract.NAME, ReadEntryContract.COL_DAY_OF_ENTRY) + " ASC");
             }
 
             @Override

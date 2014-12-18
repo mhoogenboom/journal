@@ -2,7 +2,8 @@ package com.robinfinch.journal.app.test;
 
 import com.robinfinch.journal.app.R;
 
-import static com.google.android.apps.common.testing.ui.espresso.Espresso.*;
+import static com.google.android.apps.common.testing.ui.espresso.Espresso.onData;
+import static com.google.android.apps.common.testing.ui.espresso.Espresso.onView;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.clearText;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.click;
 import static com.google.android.apps.common.testing.ui.espresso.action.ViewActions.typeText;
@@ -34,7 +35,7 @@ public class TravelEntryTests extends JournalEntryTests {
 
     @Override
     protected void createItem() {
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
 
         onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.travelentry_dayoftravel)).check(matches(withText(today())));

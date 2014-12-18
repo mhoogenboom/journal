@@ -197,7 +197,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return StudyEntry.from(cursor, StudyEntryContract.NAME + "_");
+                            return StudyEntry.from(cursor);
                         }
                     };
                     break;
@@ -208,7 +208,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Course.from(cursor, "");
+                            return Course.from(cursor);
                         }
                     };
                     break;
@@ -219,7 +219,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return ReadEntry.from(cursor, ReadEntryContract.NAME + "_");
+                            return ReadEntry.from(cursor);
                         }
                     };
                     break;
@@ -230,7 +230,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Title.from(cursor, TitleContract.NAME + "_");
+                            return Title.from(cursor);
                         }
                     };
                     break;
@@ -241,7 +241,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Author.from(cursor, "");
+                            return Author.from(cursor);
                         }
                     };
                     break;
@@ -252,7 +252,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return ApplicationEntry.from(cursor, ApplicationEntryContract.NAME + "_");
+                            return ApplicationEntry.from(cursor);
                         }
                     };
                     break;
@@ -263,7 +263,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Application.from(cursor, ApplicationContract.NAME + "_");
+                            return Application.from(cursor);
                         }
                     };
                     break;
@@ -274,7 +274,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Recruiter.from(cursor, RecruiterContract.NAME + "_");
+                            return Recruiter.from(cursor);
                         }
                     };
                     break;
@@ -285,7 +285,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                     from = new Function<Cursor, SyncableObject>() {
                         @Override
                         public SyncableObject apply(Cursor cursor) {
-                            return Organisation.from(cursor, "");
+                            return Organisation.from(cursor);
                         }
                     };
                     break;

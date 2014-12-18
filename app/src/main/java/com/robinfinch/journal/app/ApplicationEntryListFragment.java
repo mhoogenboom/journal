@@ -32,11 +32,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import dagger.ObjectGraph;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of application entries fragment.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public class ApplicationEntryListFragment extends ExpandableListFragment {
 
@@ -99,12 +100,12 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                ApplicationEntry entry = ApplicationEntry.from(cursor, ApplicationEntryContract.NAME + "_");
+                ApplicationEntry entry = ApplicationEntry.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(entry);
             }
-        });
+        }, alias(ApplicationEntryContract.NAME, ApplicationEntryContract.COL_DAY_OF_ENTRY));
     }
 
     @Override

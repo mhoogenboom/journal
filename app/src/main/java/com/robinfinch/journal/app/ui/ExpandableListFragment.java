@@ -21,7 +21,7 @@ import butterknife.OnClick;
 /**
  * Base class of expandable list fragments.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public abstract class ExpandableListFragment extends Fragment {
 

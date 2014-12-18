@@ -30,7 +30,7 @@ public class RunEntryTests extends JournalEntryTests {
 
     @Override
     protected void createItem() {
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
 
         onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.runentry_dayofrun)).check(matches(withText(today())));

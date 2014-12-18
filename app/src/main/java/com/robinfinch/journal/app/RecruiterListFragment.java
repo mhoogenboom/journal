@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.RecruiterContract;
 import com.robinfinch.journal.app.ui.ListFragment;
 import com.robinfinch.journal.app.util.Formatter;
@@ -25,10 +24,12 @@ import com.robinfinch.journal.domain.Recruiter;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
+
 /**
  * List of recruiters fragment.
  *
- * @recruiter Mark Hogenboom
+ * @recruiter Mark Hoogenboom
  */
 public class RecruiterListFragment extends ListFragment {
 
@@ -84,7 +85,7 @@ public class RecruiterListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Recruiter recruiter = Recruiter.from(cursor, RecruiterContract.NAME + "_");
+                Recruiter recruiter = Recruiter.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(recruiter);
@@ -103,7 +104,8 @@ public class RecruiterListFragment extends ListFragment {
                 return new CursorLoader(
                         getActivity(),
                         RecruiterContract.DIR_URI_TYPE.uri(),
-                        RecruiterContract.COLS, null, null, RecruiterContract.NAME + "_" + RecruiterContract.COL_NAME +  " ASC");
+                        RecruiterContract.COLS, null, null,
+                        alias(RecruiterContract.NAME, RecruiterContract.COL_NAME) + " ASC");
             }
 
             @Override

@@ -128,7 +128,7 @@ public class ReadEntryFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_READ_ENTRY:
-                            entry = ReadEntry.from(cursor, ReadEntryContract.NAME + "_");
+                            entry = ReadEntry.from(cursor);
 
                             CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
                             dayOfEntryView.setText(dayOfEntry);
@@ -140,7 +140,7 @@ public class ReadEntryFragment extends DetailsFragment {
                             break;
 
                         case LOAD_TITLE:
-                            Title title = Title.from(cursor, TitleContract.NAME + "_");
+                            Title title = Title.from(cursor);
 
                             titleView.setObject(title);
                     }

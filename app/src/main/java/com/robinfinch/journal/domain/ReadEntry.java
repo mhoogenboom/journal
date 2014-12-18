@@ -3,13 +3,13 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.ReadEntryContract;
 import com.robinfinch.journal.app.persistence.TitleContract;
 
 import java.util.Date;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,36 +25,36 @@ public class ReadEntry extends JournalEntry {
 
     private String part;
 
-    public static ReadEntry from(Cursor cursor, String prefix) {
+    public static ReadEntry from(Cursor cursor) {
         ReadEntry entry = new ReadEntry();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(ReadEntryContract.NAME, ReadEntryContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(prefix + ReadEntryContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ReadEntryContract.NAME, ReadEntryContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(ReadEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(alias(ReadEntryContract.NAME, ReadEntryContract.COL_DAY_OF_ENTRY));
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 
-        i = cursor.getColumnIndexOrThrow(prefix + ReadEntryContract.COL_TITLE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ReadEntryContract.NAME, ReadEntryContract.COL_TITLE_ID));
         long titleId = cursor.getLong(i);
         if (titleId == 0) {
             entry.setTitle(null);
         } else {
-            Title title = Title.from(cursor, TitleContract.NAME + "_");
+            Title title = Title.from(cursor);
             entry.setTitle(title);
         }
 
-        i = cursor.getColumnIndexOrThrow(prefix + ReadEntryContract.COL_PART);
+        i = cursor.getColumnIndexOrThrow(alias(ReadEntryContract.NAME, ReadEntryContract.COL_PART));
         String part = cursor.getString(i);
         entry.setPart(part);
 
-        i = cursor.getColumnIndexOrThrow(prefix + ReadEntryContract.COL_LOG_ID);
+        i = cursor.getColumnIndexOrThrow(alias(ReadEntryContract.NAME, ReadEntryContract.COL_LOG_ID));
         long logId = cursor.getLong(i);
         entry.setLogId(logId);
 
@@ -120,10 +120,10 @@ public class ReadEntry extends JournalEntry {
             title = null;
         } else {
             Cursor cursor = db.query(TitleContract.NAME + TitleContract.JOINS, TitleContract.COLS,
-                   TitleContract.NAME + "_" + TitleContract.COL_REMOTE_ID + "=" + titleId, null, null, null, null, null);
+                   alias(TitleContract.NAME, TitleContract.COL_REMOTE_ID) + "=" + titleId, null, null, null, null, null);
 
             if (cursor.moveToFirst()) {
-                title = Title.from(cursor, TitleContract.NAME + "_");
+                title = Title.from(cursor);
             } else {
                 return false;
             }

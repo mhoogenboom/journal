@@ -219,7 +219,7 @@ public class ApplicationFragment extends Fragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_APPLICATION:
-                            application = Application.from(cursor, ApplicationContract.NAME + "_");
+                            application = Application.from(cursor);
 
                             recruiterView.setObject(application.getRecruiter());
 
@@ -239,13 +239,13 @@ public class ApplicationFragment extends Fragment {
                             break;
 
                         case LOAD_RECRUITER:
-                            Recruiter recruiter = Recruiter.from(cursor, RecruiterContract.NAME + "_");
+                            Recruiter recruiter = Recruiter.from(cursor);
 
                             recruiterView.setObject(recruiter);
                             break;
 
                         case LOAD_CLIENT:
-                            Organisation client = Organisation.from(cursor, "");
+                            Organisation client = Organisation.from(cursor);
 
                             clientView.setObject(client);
                             break;

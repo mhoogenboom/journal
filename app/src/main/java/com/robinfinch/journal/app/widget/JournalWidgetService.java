@@ -58,7 +58,7 @@ public class JournalWidgetService extends IntentService {
                 StudyEntryContract.COLS, null, null,
                 StudyEntryContract.COL_DAY_OF_ENTRY + " DESC LIMIT 1");
         if (cursor.moveToNext()) {
-            StudyEntry entry = StudyEntry.from(cursor, StudyEntryContract.NAME + "_");
+            StudyEntry entry = StudyEntry.from(cursor);
 
             Log.d(LOG_TAG, "Updating widgets " + Arrays.toString(widgetIds) + " with " + entry);
 

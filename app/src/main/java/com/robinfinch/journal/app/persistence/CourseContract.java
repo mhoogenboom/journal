@@ -3,6 +3,7 @@ package com.robinfinch.journal.app.persistence;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
 
+import static com.robinfinch.journal.app.util.Utils.aliased;
 import static com.robinfinch.journal.app.util.Utils.aliasedId;
 
 /**
@@ -17,7 +18,11 @@ public interface CourseContract extends SyncableObjectContract {
     String COL_NAME = "name";
 
     String[] COLS = {
-            aliasedId(NAME, COL_ID), COL_REMOTE_ID, COL_NAME, COL_LOG_ID
+            aliasedId(NAME, COL_ID),
+            aliased(NAME, COL_ID),
+            aliased(NAME, COL_REMOTE_ID),
+            aliased(NAME, COL_NAME),
+            aliased(NAME, COL_LOG_ID)
     };
 
     DirUriType DIR_URI_TYPE = new DirUriType(NAME, "");

@@ -90,7 +90,7 @@ public class OrganisationFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    organisation = Organisation.from(cursor, "");
+                    organisation = Organisation.from(cursor);
 
                     CharSequence name = organisation.getName();
                     nameView.setText(name);

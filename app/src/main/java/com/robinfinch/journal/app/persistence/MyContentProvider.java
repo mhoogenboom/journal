@@ -14,6 +14,7 @@ import android.util.Log;
 import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
+import com.robinfinch.journal.app.util.LoggingCursorFactory;
 import com.robinfinch.journal.app.util.UriType;
 
 import javax.inject.Inject;
@@ -99,6 +100,8 @@ public class MyContentProvider extends ContentProvider {
         }
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        // db = SQLiteDatabase.openOrCreateDatabase(db.getPath(), new LoggingCursorFactory());
 
         Cursor cursor = queryBuilder.query(db, projection, selection, selectionArgs, null, null, sortOrder);
         cursor.setNotificationUri(getContext().getContentResolver(), uri);

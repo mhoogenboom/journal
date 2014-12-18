@@ -22,7 +22,7 @@ import butterknife.OnClick;
 /**
  * Base class of list fragments.
  *
- * @author Mark Hogenboom
+ * @author Mark Hoogenboom
  */
 public abstract class ListFragment extends Fragment {
 

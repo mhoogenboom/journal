@@ -2,12 +2,12 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
 
 import java.util.Date;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -23,23 +23,23 @@ public class WalkEntry extends JournalEntry {
         WalkEntry entry = new WalkEntry();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(WalkEntryContract.NAME, WalkEntryContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(WalkEntryContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(WalkEntryContract.NAME, WalkEntryContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(WalkEntryContract.COL_DAY_OF_ENTRY);
+        i = cursor.getColumnIndexOrThrow(alias(WalkEntryContract.NAME, WalkEntryContract.COL_DAY_OF_ENTRY));
         long dayOfEntry = cursor.getLong(i);
         entry.setDayOfEntry((dayOfEntry == 0) ? null : new Date(dayOfEntry));
 
-        i = cursor.getColumnIndexOrThrow(WalkEntryContract.COL_LOCATION);
+        i = cursor.getColumnIndexOrThrow(alias(WalkEntryContract.NAME, WalkEntryContract.COL_LOCATION));
         String location = cursor.getString(i);
         entry.setLocation(location);
 
-        i = cursor.getColumnIndexOrThrow(WalkEntryContract.COL_LOG_ID);
+        i = cursor.getColumnIndexOrThrow(alias(WalkEntryContract.NAME, WalkEntryContract.COL_LOG_ID));
         long logId = cursor.getLong(i);
         entry.setLogId(logId);
 

@@ -3,11 +3,11 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
 
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.TitleContract;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -25,36 +25,36 @@ public class Title extends SyncableObject implements NamedObject {
 
     private String year;
 
-    public static Title from(Cursor cursor, String prefix) {
+    public static Title from(Cursor cursor) {
         Title entry = new Title();
         int i;
 
-        i = cursor.getColumnIndexOrThrow(BaseColumns._ID);
+        i = cursor.getColumnIndexOrThrow(alias(TitleContract.NAME, TitleContract.COL_ID));
         long id = cursor.getLong(i);
         entry.setId(id);
 
-        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_REMOTE_ID);
+        i = cursor.getColumnIndexOrThrow(alias(TitleContract.NAME, TitleContract.COL_REMOTE_ID));
         long remoteId = cursor.getLong(i);
         entry.setRemoteId(remoteId);
 
-        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_TITLE);
+        i = cursor.getColumnIndexOrThrow(alias(TitleContract.NAME, TitleContract.COL_TITLE));
         String title = cursor.getString(i);
         entry.setTitle(title);
 
-        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_AUTHOR_ID);
+        i = cursor.getColumnIndexOrThrow(alias(TitleContract.NAME, TitleContract.COL_AUTHOR_ID));
         long authorId = cursor.getLong(i);
         if (authorId == 0) {
             entry.setAuthor(null);
         } else {
-            Author author = Author.from(cursor, AuthorContract.NAME + "_");
+            Author author = Author.from(cursor);
             entry.setAuthor(author);
         }
 
-        i = cursor.getColumnIndexOrThrow(prefix + TitleContract.COL_YEAR);
+        i = cursor.getColumnIndexOrThrow(alias(TitleContract.NAME, TitleContract.COL_YEAR));
         String year = cursor.getString(i);
         entry.setYear(year);
 
-        i = cursor.getColumnIndex(prefix + TitleContract.COL_LOG_ID);
+        i = cursor.getColumnIndex(alias(TitleContract.NAME, TitleContract.COL_LOG_ID));
         if (i != -1) {
             long logId = cursor.getLong(i);
             entry.setLogId(logId);
@@ -148,10 +148,10 @@ public class Title extends SyncableObject implements NamedObject {
             author = null;
         } else {
             Cursor cursor = db.query(AuthorContract.NAME, AuthorContract.COLS,
-                    AuthorContract.COL_REMOTE_ID + "=" + authorId, null, null, null, null, null);
+                    alias(AuthorContract.NAME, AuthorContract.COL_REMOTE_ID) + "=" + authorId, null, null, null, null, null);
 
             if (cursor.moveToFirst()) {
-                author = Author.from(cursor, "");
+                author = Author.from(cursor);
             } else {
                 return false;
             }

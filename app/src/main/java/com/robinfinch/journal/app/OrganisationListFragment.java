@@ -23,11 +23,12 @@ import com.robinfinch.journal.domain.Organisation;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * List of organisations fragment.
  *
- * @organisation Mark Hogenboom
+ * @organisation Mark Hoogenboom
  */
 public class OrganisationListFragment extends ListFragment {
 
@@ -83,7 +84,7 @@ public class OrganisationListFragment extends ListFragment {
 
             @Override
             public void bindView(View view, Context context, Cursor cursor) {
-                Organisation organisation = Organisation.from(cursor, "");
+                Organisation organisation = Organisation.from(cursor);
 
                 ViewHolder viewHolder = (ViewHolder) view.getTag();
                 viewHolder.bind(organisation);
@@ -102,7 +103,8 @@ public class OrganisationListFragment extends ListFragment {
                 return new CursorLoader(
                         getActivity(),
                         OrganisationContract.DIR_URI_TYPE.uri(),
-                        OrganisationContract.COLS, null, null, OrganisationContract.COL_NAME + " ASC");
+                        OrganisationContract.COLS, null, null,
+                        alias(OrganisationContract.NAME, OrganisationContract.COL_NAME) + " ASC");
             }
 
             @Override

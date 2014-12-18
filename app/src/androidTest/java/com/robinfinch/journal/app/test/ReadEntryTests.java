@@ -34,7 +34,7 @@ public class ReadEntryTests extends JournalEntryTests {
 
     @Override
     protected void createItem() {
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
 
         onView(withText("Details")).check(matches(isDisplayed()));
         onView(withId(R.id.readentry_dayread)).check(matches(withText(today())));
@@ -62,7 +62,7 @@ public class ReadEntryTests extends JournalEntryTests {
 
     private void setTitle() {
         onView(withId(R.id.readentry_title)).perform(click());
-        onView(withId(R.id.entity_add)).perform(click());
+        onView(withId(R.id.list_add)).perform(click());
         onView(withId(R.id.title_title)).perform(typeText("Testing with Espresso"));
         onView(withId(R.id.title_select)).perform(click());
     }

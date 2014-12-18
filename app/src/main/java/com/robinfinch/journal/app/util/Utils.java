@@ -63,6 +63,9 @@ public class Utils {
         return result;
     }
 
+    /**
+     * Defines an alias for an id column (to use in cursor adapters).
+     */
     public static String aliasedId(String tableName, String columnName) {
         StringBuilder sb = new StringBuilder();
         sb.append(tableName);
@@ -73,6 +76,9 @@ public class Utils {
         return sb.toString();
     }
 
+    /**
+     * Defines an alias for a column.
+     */
     public static String aliased(String tableName, String columnName) {
         StringBuilder sb = new StringBuilder();
         sb.append(tableName);
@@ -81,6 +87,28 @@ public class Utils {
         sb.append(" AS ");
         sb.append(tableName);
         sb.append("_");
+        sb.append(columnName);
+        return sb.toString();
+    }
+
+    /**
+     * Alias to be used in cursor.getIndex().
+     */
+    public static String alias(String tableName, String columnName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(tableName);
+        sb.append("_");
+        sb.append(columnName);
+        return sb.toString();
+    }
+
+    /**
+     * Prefixed column name to be used in joins.
+     */
+    public static String prefixed(String tableName, String columnName) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(tableName);
+        sb.append(".");
         sb.append(columnName);
         return sb.toString();
     }
