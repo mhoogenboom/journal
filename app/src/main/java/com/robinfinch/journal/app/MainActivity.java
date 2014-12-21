@@ -1,6 +1,5 @@
 package com.robinfinch.journal.app;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,8 +8,9 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +36,7 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  *
  * @author Mark Hoogenboom
  */
-public class MainActivity extends Activity implements
+public class MainActivity extends ActionBarActivity implements
         StudyEntryListFragment.Parent,
         StudyEntryFragment.Parent,
         ReadEntryListFragment.Parent,
@@ -105,7 +105,7 @@ public class MainActivity extends Activity implements
         });
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout,
-                R.drawable.ic_drawer, R.string.options_open, R.string.options_close) {
+                 R.string.options_open, R.string.options_close) {
 
             @Override
             public void onDrawerClosed(View view) {
@@ -122,7 +122,7 @@ public class MainActivity extends Activity implements
 
         drawerLayout.setDrawerListener(drawerToggle);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         onDrawerOptionSelected(getText(R.string.studyentries));
     }

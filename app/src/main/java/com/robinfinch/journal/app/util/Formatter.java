@@ -49,10 +49,6 @@ public class Formatter {
         return obj.getName();
     }
 
-    public static final CharSequence formatWalkDescription(String place) {
-        return "near " + place;
-    }
-
     public static final CharSequence formatDistanceForInput(int distance) {
         return Integer.toString(distance);
     }
@@ -88,6 +84,14 @@ public class Formatter {
             } else {
                 return "from " + place;
             }
+        }
+    }
+
+    public static final CharSequence formatWalkDescription(String place) {
+        if (TextUtils.isEmpty(place)) {
+            return "";
+        } else {
+            return "near " + place;
         }
     }
 }

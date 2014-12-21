@@ -10,7 +10,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CursorAdapter;
 
 import com.robinfinch.journal.app.R;
-import com.robinfinch.journal.app.persistence.JournalEntryContract;
 
 import java.util.ArrayList;
 import java.util.Calendar;

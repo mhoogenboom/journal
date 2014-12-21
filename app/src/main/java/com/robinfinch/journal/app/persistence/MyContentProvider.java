@@ -14,7 +14,6 @@ import android.util.Log;
 import com.robinfinch.journal.app.ContextModule;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
-import com.robinfinch.journal.app.util.LoggingCursorFactory;
 import com.robinfinch.journal.app.util.UriType;
 
 import javax.inject.Inject;

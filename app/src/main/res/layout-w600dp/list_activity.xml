@@ -15,7 +15,7 @@
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:background="@color/primary"/>
+            android:background="@color/brown_dark"/>
 
         <FrameLayout
             android:id="@+id/container_details"
