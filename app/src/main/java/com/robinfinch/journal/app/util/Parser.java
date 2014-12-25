@@ -19,12 +19,24 @@ public class Parser {
 
     static final DateFormat DAY_INPUT = new SimpleDateFormat("dd/MM/yyyy");
 
+    static final DateFormat MONTH_YEAR_INPUT = new SimpleDateFormat("MM/yyyy");
+
     public static Date parseDay(Editable text) {
         Date day = null;
         try {
             day = DAY_INPUT.parse(text.toString());
         } catch (ParseException e) {
             Log.e(LOG_TAG, "Failed to parse day " + text, e);
+        }
+        return day;
+    }
+
+    public static Date parseMonthYear(String text) {
+        Date day = null;
+        try {
+            day = MONTH_YEAR_INPUT.parse(text);
+        } catch (ParseException e) {
+            Log.e(LOG_TAG, "Failed to parse month/year " + text, e);
         }
         return day;
     }

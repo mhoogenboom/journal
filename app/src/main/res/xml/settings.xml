@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <Preference
-        android:title="@string/settings_sync_account"
-        android:summary="@string/settings_sync_account_summary">
-        <intent android:action="android.settings.SYNC_SETTINGS" />
-    </Preference>
-    <CheckBoxPreference
-        android:key="prefs_sync_only_over_wifi"
-        android:title="@string/settings_sync_over_wifi"
-        android:summary="@string/settings_sync_over_wifi_summary"
-        android:defaultValue="true" />
+    <EditTextPreference
+        android:key="prefs_entry_month_year"
+        android:title="@string/settings_entry_month_year"
+        android:summary="@string/settings_entry_month_year_summary"/>
+    <PreferenceCategory
+        android:title="@string/settings_sync">
+        <Preference
+            android:title="@string/settings_sync_account"
+            android:summary="@string/settings_sync_account_summary">
+            <intent android:action="android.settings.SYNC_SETTINGS" />
+        </Preference>
+        <CheckBoxPreference
+            android:key="prefs_sync_only_over_wifi"
+            android:title="@string/settings_sync_over_wifi"
+            android:summary="@string/settings_sync_over_wifi_summary"
+            android:defaultValue="true" />
+    </PreferenceCategory>
 </PreferenceScreen>

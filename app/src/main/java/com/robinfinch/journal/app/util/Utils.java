@@ -1,11 +1,16 @@
 package com.robinfinch.journal.app.util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.provider.BaseColumns;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
@@ -24,6 +29,19 @@ public class Utils {
         } else {
             return !o1.equals(o2);
         }
+    }
+
+    public static long getDefaultDayOfEntry(Context context) {
+        Date day = null;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
+        String monthYearOfEntry = prefs.getString("prefs_entry_month_year", "");
+        if (!TextUtils.isEmpty(monthYearOfEntry)) {
+            day = Parser.parseMonthYear(monthYearOfEntry);
+        }
+
+        return (day == null) ? getToday() : day.getTime();
     }
 
     public static long getToday() {

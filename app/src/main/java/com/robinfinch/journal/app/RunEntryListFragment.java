@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
+import com.robinfinch.journal.app.persistence.JournalEntryContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
@@ -138,7 +139,7 @@ public class RunEntryListFragment extends ExpandableListFragment {
     @Override
     protected void add() {
         ContentValues initialValues = new ContentValues();
-        initialValues.put(RunEntryContract.COL_DAY_OF_ENTRY, Utils.getToday());
+        initialValues.put(JournalEntryContract.COL_DAY_OF_ENTRY, Utils.getDefaultDayOfEntry(getActivity()));
 
         queryHandler.startInsert(INSERT_RUN_ENTRY, null, RunEntryContract.DIR_URI_TYPE.uri(), initialValues);
     }

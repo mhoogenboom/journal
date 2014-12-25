@@ -98,7 +98,10 @@
     <string name="login_error_field_required">This field is required</string>
 
     <string name="settings">Settings</string>
-    <string name="settings_sync_account">Sync account</string>
+    <string name="settings_entry_month_year">Month/Year</string>
+    <string name="settings_entry_month_year_summary">Default month and year for journal entries</string>
+    <string name="settings_sync">Syncing</string>
+    <string name="settings_sync_account">Account</string>
     <string name="settings_sync_account_summary">The account that is used to sync</string>
     <string name="settings_sync_over_wifi">Only sync over wifi</string>
     <string name="settings_sync_over_wifi_summary">Only sync when the device is connected to wifi</string>

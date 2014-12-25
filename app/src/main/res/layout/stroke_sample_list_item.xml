@@ -18,12 +18,13 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:ems="4" />
-
     </FrameLayout>
 
     <ImageView
         android:id="@+id/dabble_sample"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@drawable/dabble_sample_background" />
 
 </LinearLayout>
