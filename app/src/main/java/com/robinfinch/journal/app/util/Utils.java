@@ -130,4 +130,17 @@ public class Utils {
         sb.append(columnName);
         return sb.toString();
     }
+
+    public static void appendIfNotEmpty(StringBuilder sb, String prefix, CharSequence s, String ... postfixes) {
+
+        if (!TextUtils.isEmpty(s)) {
+            if (sb.length() > 0) {
+                sb.append(prefix);
+            }
+            sb.append(s);
+            for (String postfix : postfixes) {
+                sb.append(postfix);
+            }
+        }
+    }
 }

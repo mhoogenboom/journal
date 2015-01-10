@@ -6,6 +6,7 @@ import android.database.Cursor;
 import com.robinfinch.journal.app.persistence.CourseContract;
 
 import static com.robinfinch.journal.app.util.Utils.alias;
+import static com.robinfinch.journal.app.util.Utils.appendIfNotEmpty;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -59,6 +60,15 @@ public class Course extends SyncableObject implements NamedObject {
         ContentValues values = new ContentValues();
         values.put(CourseContract.COL_NAME, getName());
         return values;
+    }
+
+    @Override
+    public CharSequence toShareString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Studying");
+        appendIfNotEmpty(sb, " ", name);
+        sb.append(".");
+        return sb;
     }
 
     @Override

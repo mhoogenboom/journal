@@ -10,9 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.ReadEntryContract;
@@ -26,7 +24,6 @@ import com.robinfinch.journal.domain.Title;
 
 import java.util.Date;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
@@ -37,12 +34,11 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class ReadEntryFragment extends DetailsFragment {
+public class ReadEntryFragment extends DetailsFragment<ReadEntry> {
 
     private static final int LOAD_READ_ENTRY = 1;
     private static final int LOAD_TITLE = 2;
     private static final int UPDATE_READ_ENTRY = 3;
-    private static final int DELETE_READ_ENTRY = 4;
 
     private static final int REQUEST_SELECT_TITLE = 1;
 
@@ -65,12 +61,6 @@ public class ReadEntryFragment extends DetailsFragment {
     @InjectView(R.id.readentry_part)
     protected EditText partView;
 
-    private ReadEntry entry;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -80,18 +70,18 @@ public class ReadEntryFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.readentry_fragment, container, false);
-        ButterKnife.inject(this, view);
+    protected int getLayoutResId() {
+        return R.layout.readentry_fragment;
+    }
 
+    @Override
+    protected void initListeners() {
         titleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectTitle();
             }
         });
-        return view;
     }
 
     @Override
@@ -101,7 +91,6 @@ public class ReadEntryFragment extends DetailsFragment {
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
                 Uri uri;
                 switch (id) {
                     case LOAD_READ_ENTRY:
@@ -128,21 +117,12 @@ public class ReadEntryFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_READ_ENTRY:
-                            entry = ReadEntry.from(cursor);
-
-                            CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                            dayOfEntryView.setText(dayOfEntry);
-
-                            titleView.setObject(entry.getTitle());
-
-                            CharSequence part = entry.getPart();
-                            partView.setText(part);
+                            onReadEntryLoaded(cursor);
                             break;
 
                         case LOAD_TITLE:
-                            Title title = Title.from(cursor);
-
-                            titleView.setObject(title);
+                            onTitleLoaded(cursor);
+                            break;
                     }
                 } else {
                     onLoaderReset(loader);
@@ -153,7 +133,7 @@ public class ReadEntryFragment extends DetailsFragment {
             public void onLoaderReset(Loader<Cursor> loader) {
                 switch (loader.getId()) {
                     case LOAD_READ_ENTRY:
-                        entry = null;
+                        entity = null;
                         break;
 
                     case LOAD_TITLE:
@@ -176,34 +156,46 @@ public class ReadEntryFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_READ_ENTRY, null, loaderCallbacks);
     }
 
-    @Override
-    public void update() {
-        if (entry != null) {
-            entry.resetChanged();
+    private void onReadEntryLoaded(Cursor cursor) {
+        entity = ReadEntry.from(cursor);
 
-            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
-            entry.setDayOfEntry(dayOfEntry);
+        CharSequence dayOfEntry = Formatter.formatDayForInput(entity.getDayOfEntry());
+        dayOfEntryView.setText(dayOfEntry);
 
-            Title title = titleView.getObject();
-            entry.setTitle(title);
+        titleView.setObject(entity.getTitle());
 
-            String part = Parser.parseText(partView.getText());
-            entry.setPart(part);
+        CharSequence part = entity.getPart();
+        partView.setText(part);
 
-            if (entry.hasChanged()) {
-                Uri uri = getArguments().getParcelable(ARG_URI);
+        setShareText(entity.toShareString());
+    }
 
-                ContentValues values = entry.toValues();
-                queryHandler.startUpdate(UPDATE_READ_ENTRY, null, uri, values, null, null);
-            }
-        }
+    private void onTitleLoaded(Cursor cursor) {
+        Title title = Title.from(cursor);
+        titleView.setObject(title);
     }
 
     @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
+    public void update() {
+        if (entity != null) {
+            entity.resetChanged();
 
-        queryHandler.startDelete(DELETE_READ_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
+            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
+            entity.setDayOfEntry(dayOfEntry);
+
+            Title title = titleView.getObject();
+            entity.setTitle(title);
+
+            String part = Parser.parseText(partView.getText());
+            entity.setPart(part);
+
+            if (entity.hasChanged()) {
+                Uri uri = getArguments().getParcelable(ARG_URI);
+
+                ContentValues values = entity.toValues();
+                queryHandler.startUpdate(UPDATE_READ_ENTRY, null, uri, values, null, null);
+            }
+        }
     }
 
     private void selectTitle() {
@@ -236,12 +228,6 @@ public class ReadEntryFragment extends DetailsFragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

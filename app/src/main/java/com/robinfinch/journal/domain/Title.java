@@ -3,11 +3,13 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.robinfinch.journal.app.persistence.AuthorContract;
 import com.robinfinch.journal.app.persistence.TitleContract;
 
 import static com.robinfinch.journal.app.util.Utils.alias;
+import static com.robinfinch.journal.app.util.Utils.appendIfNotEmpty;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -93,6 +95,10 @@ public class Title extends SyncableObject implements NamedObject {
         }
     }
 
+    public String getAuthorName() {
+        return (author == null) ? null : author.getName();
+    }
+
     public String getYear() {
         return year;
     }
@@ -109,12 +115,7 @@ public class Title extends SyncableObject implements NamedObject {
         StringBuilder sb = new StringBuilder();
         if (title != null) {
             sb.append(title);
-
-            if (year != null) {
-                sb.append(" (");
-                sb.append(year);
-                sb.append(")");
-            }
+            appendIfNotEmpty(sb, " (", year, ")");
         }
         return sb;
     }
@@ -157,6 +158,19 @@ public class Title extends SyncableObject implements NamedObject {
             }
         }
         return super.prepareAfterReceive(db);
+    }
+
+    @Override
+    public CharSequence toShareString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Reading");
+        appendIfNotEmpty(sb, " ", getAuthorName());
+        if (!TextUtils.isEmpty(getAuthorName()) && !TextUtils.isEmpty(getName())) {
+            sb.append(":");
+        }
+        appendIfNotEmpty(sb, " ", getName());
+        sb.append(".");
+        return sb;
     }
 
     @Override

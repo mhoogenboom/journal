@@ -100,7 +100,7 @@ public class Title extends SyncableObject implements Comparable<Title> {
         return c;
     }
 
-    public String toPrettyString() {
+    public CharSequence toPrettyString() {
         StringBuilder sb = new StringBuilder();
         appendIfNotEmpty(sb, " ", getAuthorName());
         if (!isEmpty(getAuthorName()) && !isEmpty(title)) {
@@ -108,7 +108,7 @@ public class Title extends SyncableObject implements Comparable<Title> {
         }
         appendIfNotEmpty(sb, " ", title);
         appendIfNotEmpty(sb, " (", year, ")");
-        return sb.toString();
+        return sb;
     }
 
     @Override

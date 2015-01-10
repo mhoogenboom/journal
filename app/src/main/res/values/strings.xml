@@ -79,6 +79,7 @@
     <string name="entity_select">Select</string>
     <string name="entity_add">Add</string>
     <string name="entity_delete">Delete</string>
+    <string name="entity_share">Share</string>
 
     <string name="dabble">Dabble</string>
     <string name="dabble_instructions">Pick strokes</string>
@@ -105,4 +106,6 @@
     <string name="settings_sync_account_summary">The account that is used to sync</string>
     <string name="settings_sync_over_wifi">Only sync over wifi</string>
     <string name="settings_sync_over_wifi_summary">Only sync when the device is connected to wifi</string>
+
+    <string name="about">About</string>
 </resources>

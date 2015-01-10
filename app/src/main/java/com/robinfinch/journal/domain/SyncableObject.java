@@ -42,4 +42,6 @@ public abstract class SyncableObject extends PersistableObject {
     }
 
     public boolean prepareAfterReceive(SQLiteDatabase db) { return true; }
+
+    public abstract CharSequence toShareString();
 }

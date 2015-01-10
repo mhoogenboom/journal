@@ -2,6 +2,7 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
 
@@ -63,6 +64,18 @@ public class WalkEntry extends JournalEntry {
         values.put(WalkEntryContract.COL_DAY_OF_ENTRY, (getDayOfEntry() == null) ? 0 : getDayOfEntry().getTime());
         values.put(WalkEntryContract.COL_LOCATION, getLocation());
         return values;
+    }
+
+    @Override
+    public CharSequence toShareString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Walked");
+        if (!TextUtils.isEmpty(location)) {
+            sb.append(" near ");
+            sb.append(location);
+        }
+        sb.append(".");
+        return sb;
     }
 
     @Override

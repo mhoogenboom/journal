@@ -73,7 +73,7 @@ public class StudyEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
+    public CharSequence toPrettyString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Studied");
         if (course != null) {
@@ -85,7 +85,7 @@ public class StudyEntry extends JournalEntry {
             appendIfNotEmpty(sb, " ", description);
         }
         sb.append(".");
-        return sb.toString();
+        return sb;
     }
 
     @Override

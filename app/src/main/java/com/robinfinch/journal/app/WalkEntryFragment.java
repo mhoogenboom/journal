@@ -9,9 +9,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.WalkEntryContract;
@@ -22,7 +19,6 @@ import com.robinfinch.journal.domain.WalkEntry;
 
 import java.util.Date;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
@@ -32,11 +28,10 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class WalkEntryFragment extends DetailsFragment {
+public class WalkEntryFragment extends DetailsFragment<WalkEntry> {
 
     private static final int LOAD_WALK_ENTRY = 1;
     private static final int UPDATE_WALK_ENTRY = 2;
-    private static final int DELETE_WALK_ENTRY = 3;
 
     public static WalkEntryFragment newInstance(Uri uri) {
         WalkEntryFragment fragment = new WalkEntryFragment();
@@ -54,12 +49,6 @@ public class WalkEntryFragment extends DetailsFragment {
     @InjectView(R.id.walkentry_location)
     protected EditText locationView;
 
-    private WalkEntry entry;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -69,11 +58,8 @@ public class WalkEntryFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.walkentry_fragment, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+    protected int getLayoutResId() {
+        return R.layout.walkentry_fragment;
     }
 
     @Override
@@ -83,9 +69,7 @@ public class WalkEntryFragment extends DetailsFragment {
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
                 Uri uri = getArguments().getParcelable(ARG_URI);
-
                 return new CursorLoader(
                         getActivity(),
                         uri,
@@ -95,13 +79,7 @@ public class WalkEntryFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    entry = WalkEntry.from(cursor);
-
-                    CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                    dayOfEntryView.setText(dayOfEntry);
-
-                    CharSequence location = entry.getLocation();
-                    locationView.setText(location);
+                    onWalkEntryLoaded(cursor);
                 } else {
                     onLoaderReset(loader);
                 }
@@ -109,7 +87,7 @@ public class WalkEntryFragment extends DetailsFragment {
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                entry = null;
+                entity = null;
             }
         };
 
@@ -124,37 +102,36 @@ public class WalkEntryFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_WALK_ENTRY, null, loaderCallbacks);
     }
 
+    private void onWalkEntryLoaded(Cursor cursor) {
+        entity = WalkEntry.from(cursor);
+
+        CharSequence dayOfEntry = Formatter.formatDayForInput(entity.getDayOfEntry());
+        dayOfEntryView.setText(dayOfEntry);
+
+        CharSequence location = entity.getLocation();
+        locationView.setText(location);
+
+        setShareText(entity.toShareString());
+    }
+
     @Override
     public void update() {
-        if (entry != null) {
-            entry.resetChanged();
+        if (entity != null) {
+            entity.resetChanged();
 
             Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
-            entry.setDayOfEntry(dayOfEntry);
+            entity.setDayOfEntry(dayOfEntry);
 
             String location = Parser.parseText(locationView.getText());
-            entry.setLocation(location);
+            entity.setLocation(location);
 
-            if (entry.hasChanged()) {
+            if (entity.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = entry.toValues();
+                ContentValues values = entity.toValues();
                 queryHandler.startUpdate(UPDATE_WALK_ENTRY, null, uri, values, null, null);
             }
         }
-    }
-
-    @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
-
-        queryHandler.startDelete(DELETE_WALK_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

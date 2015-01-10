@@ -104,6 +104,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AboutActivity"></activity>
 
         <service android:name=".auth.AuthenticatorService">
             <intent-filter>

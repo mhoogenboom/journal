@@ -10,9 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.AuthorContract;
@@ -23,7 +21,6 @@ import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.Author;
 import com.robinfinch.journal.domain.Title;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
@@ -35,12 +32,11 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class TitleFragment extends DetailsFragment {
+public class TitleFragment extends DetailsFragment<Title> {
 
     private static final int LOAD_TITLE = 1;
     private static final int LOAD_AUTHOR = 2;
     private static final int UPDATE_TITLE = 3;
-    private static final int DELETE_TITLE = 4;
 
     private static final int REQUEST_SELECT_AUTHOR = 1;
 
@@ -63,12 +59,6 @@ public class TitleFragment extends DetailsFragment {
     @InjectView(R.id.title_year)
     protected EditText yearView;
 
-    private Title title;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -78,18 +68,18 @@ public class TitleFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.title_fragment, container, false);
-        ButterKnife.inject(this, view);
+    protected int getLayoutResId() {
+        return R.layout.title_fragment;
+    }
 
+    @Override
+    protected void initListeners() {
         authorView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectAuthor();
             }
         });
-        return view;
     }
 
     @Override
@@ -126,21 +116,12 @@ public class TitleFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_TITLE:
-                            title = Title.from(cursor);
-
-                            CharSequence t = title.getTitle();
-                            titleView.setText(t);
-
-                            authorView.setObject(title.getAuthor());
-
-                            CharSequence year = title.getYear();
-                            yearView.setText(year);
+                            onTitleLoaded(cursor);
                             break;
 
                         case LOAD_AUTHOR:
-                            Author author = Author.from(cursor);
-
-                            authorView.setObject(author);
+                            onAuthorLoaded(cursor);
+                            break;
                     }
                 } else {
                     onLoaderReset(loader);
@@ -151,7 +132,7 @@ public class TitleFragment extends DetailsFragment {
             public void onLoaderReset(Loader<Cursor> loader) {
                 switch (loader.getId()) {
                     case LOAD_TITLE:
-                        title = null;
+                        entity = null;
                         break;
 
                     case LOAD_AUTHOR:
@@ -174,39 +155,52 @@ public class TitleFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_TITLE, null, loaderCallbacks);
     }
 
+    private void onTitleLoaded(Cursor cursor) {
+        entity = Title.from(cursor);
+
+        CharSequence t = entity.getTitle();
+        titleView.setText(t);
+
+        authorView.setObject(entity.getAuthor());
+
+        CharSequence year = entity.getYear();
+        yearView.setText(year);
+
+        setShareText(entity.toShareString());
+    }
+
+    private void onAuthorLoaded(Cursor cursor) {
+        Author author = Author.from(cursor);
+
+        authorView.setObject(author);
+    }
+
     @OnClick(R.id.title_select)
     public void select() {
-        parent.onTitleSelected(title.getId());
+        parent.onTitleSelected(entity.getId());
     }
 
     @Override
     public void update() {
-        if (title != null) {
-            title.resetChanged();
+        if (entity != null) {
+            entity.resetChanged();
 
             String t = Parser.parseText(titleView.getText());
-            title.setTitle(t);
+            entity.setTitle(t);
 
             Author author = authorView.getObject();
-            title.setAuthor(author);
+            entity.setAuthor(author);
 
             String year = Parser.parseText(yearView.getText());
-            title.setYear(year);
+            entity.setYear(year);
 
-            if (title.hasChanged()) {
+            if (entity.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = title.toValues();
+                ContentValues values = entity.toValues();
                 queryHandler.startUpdate(UPDATE_TITLE, null, uri, values, null, null);
             }
         }
-    }
-
-    @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
-
-        queryHandler.startDelete(DELETE_TITLE, null, uri, Long.toString(title.getRemoteId()), null);
     }
 
     private void selectAuthor() {
@@ -239,12 +233,6 @@ public class TitleFragment extends DetailsFragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

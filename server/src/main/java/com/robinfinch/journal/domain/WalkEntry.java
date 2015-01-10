@@ -23,7 +23,7 @@ public class WalkEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
+    public CharSequence toPrettyString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Walked");
         if (!isEmpty(location)) {
@@ -31,7 +31,7 @@ public class WalkEntry extends JournalEntry {
             sb.append(location);
         }
         sb.append(".");
-        return sb.toString();
+        return sb;
     }
 
     @Override

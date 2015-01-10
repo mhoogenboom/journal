@@ -9,9 +9,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
@@ -22,21 +19,19 @@ import com.robinfinch.journal.domain.RunEntry;
 
 import java.util.Date;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
 
 /**
- * Run entry details fragment.
+ * Run entity details fragment.
  *
  * @author Mark Hoogenboom
  */
-public class RunEntryFragment extends DetailsFragment {
+public class RunEntryFragment extends DetailsFragment<RunEntry> {
 
     private static final int LOAD_RUN_ENTRY = 1;
     private static final int UPDATE_RUN_ENTRY = 2;
-    private static final int DELETE_RUN_ENTRY = 3;
 
     public static RunEntryFragment newInstance(Uri uri) {
         RunEntryFragment fragment = new RunEntryFragment();
@@ -57,12 +52,6 @@ public class RunEntryFragment extends DetailsFragment {
     @InjectView(R.id.runentry_timetaken)
     protected EditText timeTakenView;
 
-    private RunEntry entry;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -72,11 +61,8 @@ public class RunEntryFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.runentry_fragment, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+    protected int getLayoutResId() {
+        return R.layout.runentry_fragment;
     }
 
     @Override
@@ -86,9 +72,7 @@ public class RunEntryFragment extends DetailsFragment {
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
                 Uri uri = getArguments().getParcelable(ARG_URI);
-
                 return new CursorLoader(
                         getActivity(),
                         uri,
@@ -98,16 +82,7 @@ public class RunEntryFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    entry = RunEntry.from(cursor);
-
-                    CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                    dayOfEntryView.setText(dayOfEntry);
-
-                    CharSequence distance = Formatter.formatDistanceForInput(entry.getDistance());
-                    distanceView.setText(distance);
-
-                    CharSequence timeTaken = Formatter.formatTime(entry.getTimeTaken());
-                    timeTakenView.setText(timeTaken);
+                    onRunEntryLoaded(cursor);
                 } else {
                     onLoaderReset(loader);
                 }
@@ -115,7 +90,7 @@ public class RunEntryFragment extends DetailsFragment {
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                entry = null;
+                entity = null;
             }
         };
 
@@ -130,40 +105,42 @@ public class RunEntryFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_RUN_ENTRY, null, loaderCallbacks);
     }
 
+    private void onRunEntryLoaded(Cursor cursor) {
+        entity = RunEntry.from(cursor);
+
+        CharSequence dayOfEntry = Formatter.formatDayForInput(entity.getDayOfEntry());
+        dayOfEntryView.setText(dayOfEntry);
+
+        CharSequence distance = Formatter.formatDistanceForInput(entity.getDistance());
+        distanceView.setText(distance);
+
+        CharSequence timeTaken = Formatter.formatTime(entity.getTimeTaken());
+        timeTakenView.setText(timeTaken);
+
+        setShareText(entity.toShareString());
+    }
+
     @Override
     public void update() {
-        if (entry != null) {
-            entry.resetChanged();
+        if (entity != null) {
+            entity.resetChanged();
 
             Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
-            entry.setDayOfEntry(dayOfEntry);
+            entity.setDayOfEntry(dayOfEntry);
 
             int distance = Parser.parseDistance(distanceView.getText());
-            entry.setDistance(distance);
+            entity.setDistance(distance);
 
             int timeTaken = Parser.parseTime(timeTakenView.getText());
-            entry.setTimeTaken(timeTaken);
+            entity.setTimeTaken(timeTaken);
 
-            if (entry.hasChanged()) {
+            if (entity.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = entry.toValues();
+                ContentValues values = entity.toValues();
                 queryHandler.startUpdate(UPDATE_RUN_ENTRY, null, uri, values, null, null);
             }
         }
-    }
-
-    @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
-
-        queryHandler.startDelete(DELETE_RUN_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

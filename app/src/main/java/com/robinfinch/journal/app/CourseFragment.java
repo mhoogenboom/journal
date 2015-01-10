@@ -9,9 +9,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
@@ -19,7 +16,6 @@ import com.robinfinch.journal.app.ui.DetailsFragment;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.Course;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
@@ -30,11 +26,10 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class CourseFragment extends DetailsFragment {
+public class CourseFragment extends DetailsFragment<Course> {
 
     private static final int LOAD_COURSE = 1;
     private static final int UPDATE_COURSE = 2;
-    private static final int DELETE_COURSE = 3;
 
     public static CourseFragment newInstance(Uri uri) {
         CourseFragment fragment = new CourseFragment();
@@ -49,12 +44,6 @@ public class CourseFragment extends DetailsFragment {
     @InjectView(R.id.course_name)
     protected EditText nameView;
 
-    private Course course;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -64,11 +53,8 @@ public class CourseFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.course_fragment, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+    protected int getLayoutResId() {
+        return R.layout.course_fragment;
     }
 
     @Override
@@ -78,9 +64,7 @@ public class CourseFragment extends DetailsFragment {
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
                 Uri uri = getArguments().getParcelable(ARG_URI);
-
                 return new CursorLoader(
                         getActivity(),
                         uri,
@@ -90,10 +74,7 @@ public class CourseFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    course = Course.from(cursor);
-
-                    CharSequence name = course.getName();
-                    nameView.setText(name);
+                    onCourseLoaded(cursor);
                 } else {
                     onLoaderReset(loader);
                 }
@@ -101,7 +82,7 @@ public class CourseFragment extends DetailsFragment {
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                course = null;
+                entity = null;
             }
         };
 
@@ -116,39 +97,35 @@ public class CourseFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_COURSE, null, loaderCallbacks);
     }
 
+    private void onCourseLoaded(Cursor cursor) {
+        entity = Course.from(cursor);
+
+        CharSequence name = entity.getName();
+        nameView.setText(name);
+
+        setShareText(entity.toShareString());
+    }
+
     @OnClick(R.id.course_select)
     public void select() {
-        parent.onCourseSelected(course.getId());
+        parent.onCourseSelected(entity.getId());
     }
 
     @Override
     public void update() {
-        if (course != null) {
-            course.resetChanged();
+        if (entity != null) {
+            entity.resetChanged();
 
             String name = Parser.parseText(nameView.getText());
-            course.setName(name);
+            entity.setName(name);
 
-            if (course.hasChanged()) {
+            if (entity.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = course.toValues();
+                ContentValues values = entity.toValues();
                 queryHandler.startUpdate(UPDATE_COURSE, null, uri, values, null, null);
             }
         }
-    }
-
-    @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
-
-        queryHandler.startDelete(DELETE_COURSE, null, uri, Long.toString(course.getRemoteId()), null);
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

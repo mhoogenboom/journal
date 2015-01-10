@@ -241,6 +241,11 @@ public class Application extends SyncableObject implements NamedObject {
     }
 
     @Override
+    public String toShareString() {
+        return "";
+    }
+
+    @Override
     public String toString() {
         return "com.robinfinch.journal.domain.Application[id=" + getId()
                 + ";remoteId=" + getRemoteId()

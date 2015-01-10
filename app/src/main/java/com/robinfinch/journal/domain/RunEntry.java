@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
+import com.robinfinch.journal.app.util.Formatter;
 
 import java.util.Date;
 
@@ -85,6 +86,25 @@ public class RunEntry extends JournalEntry {
         values.put(RunEntryContract.COL_DISTANCE, getDistance());
         values.put(RunEntryContract.COL_TIME_TAKEN, getTimeTaken());
         return values;
+    }
+
+    @Override
+    public CharSequence toShareString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Run");
+        if (distance > 0) {
+            sb.append(" ");
+            sb.append(Formatter.formatDistance(distance));
+        }
+        if (timeTaken > 0) {
+            if (distance > 0) {
+                sb.append(" in");
+            }
+            sb.append(" ");
+            sb.append(Formatter.formatTime(timeTaken));
+        }
+        sb.append(".");
+        return sb;
     }
 
     @Override

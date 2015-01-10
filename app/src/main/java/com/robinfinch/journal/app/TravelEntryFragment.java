@@ -9,9 +9,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -24,7 +21,6 @@ import com.robinfinch.journal.domain.TravelEntry;
 
 import java.util.Date;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_URI;
@@ -34,11 +30,10 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class TravelEntryFragment extends DetailsFragment {
+public class TravelEntryFragment extends DetailsFragment<TravelEntry> {
 
     private static final int LOAD_TRAVEL_ENTRY = 1;
     private static final int UPDATE_TRAVEL_ENTRY = 2;
-    private static final int DELETE_TRAVEL_ENTRY = 3;
 
     public static TravelEntryFragment newInstance(Uri uri) {
         TravelEntryFragment fragment = new TravelEntryFragment();
@@ -59,12 +54,6 @@ public class TravelEntryFragment extends DetailsFragment {
     @InjectView(R.id.travelentry_place)
     protected EditText placeView;
 
-    private TravelEntry entry;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -74,11 +63,8 @@ public class TravelEntryFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.travelentry_fragment, container, false);
-        ButterKnife.inject(this, view);
-        return view;
+    protected int getLayoutResId() {
+        return R.layout.travelentry_fragment;
     }
 
     @Override
@@ -96,9 +82,7 @@ public class TravelEntryFragment extends DetailsFragment {
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
                 Uri uri = getArguments().getParcelable(ARG_URI);
-
                 return new CursorLoader(
                         getActivity(),
                         uri,
@@ -108,15 +92,7 @@ public class TravelEntryFragment extends DetailsFragment {
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
                 if (cursor.moveToFirst()) {
-                    entry = TravelEntry.from(cursor);
-
-                    CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                    dayOfEntryView.setText(dayOfEntry);
-
-                    awayView.setSelection(entry.isAway() ? 0 : 1);
-
-                    CharSequence place = entry.getPlace();
-                    placeView.setText(place);
+                   onTravelEntryLoaded(cursor);
                 } else {
                     onLoaderReset(loader);
                 }
@@ -124,7 +100,7 @@ public class TravelEntryFragment extends DetailsFragment {
 
             @Override
             public void onLoaderReset(Loader<Cursor> loader) {
-                entry = null;
+                entity = null;
             }
         };
 
@@ -139,40 +115,41 @@ public class TravelEntryFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_TRAVEL_ENTRY, null, loaderCallbacks);
     }
 
+    private void onTravelEntryLoaded(Cursor cursor) {
+        entity = TravelEntry.from(cursor);
+
+        CharSequence dayOfEntry = Formatter.formatDayForInput(entity.getDayOfEntry());
+        dayOfEntryView.setText(dayOfEntry);
+
+        awayView.setSelection(entity.isAway() ? 0 : 1);
+
+        CharSequence place = entity.getPlace();
+        placeView.setText(place);
+
+        setShareText(entity.toShareString());
+    }
+
     @Override
     public void update() {
-        if (entry != null) {
-            entry.resetChanged();
+        if (entity != null) {
+            entity.resetChanged();
 
             Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
-            entry.setDayOfEntry(dayOfEntry);
+            entity.setDayOfEntry(dayOfEntry);
 
             CharSequence direction = (CharSequence) awayView.getSelectedItem();
-            entry.setAway(getText(R.string.travelentry_away).equals(direction));
+            entity.setAway(getText(R.string.travelentry_away).equals(direction));
 
             String place = Parser.parseText(placeView.getText());
-            entry.setPlace(place);
+            entity.setPlace(place);
 
-            if (entry.hasChanged()) {
+            if (entity.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = entry.toValues();
+                ContentValues values = entity.toValues();
                 queryHandler.startUpdate(UPDATE_TRAVEL_ENTRY, null, uri, values, null, null);
             }
         }
-    }
-
-    @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
-
-        queryHandler.startDelete(DELETE_TRAVEL_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

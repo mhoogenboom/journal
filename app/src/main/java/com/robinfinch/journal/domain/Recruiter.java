@@ -148,6 +148,11 @@ public class Recruiter extends SyncableObject implements NamedObject {
     }
 
     @Override
+    public String toShareString() {
+        return "";
+    }
+
+    @Override
     public String toString() {
         return "com.robinfinch.journal.domain.Recruiter[id=" + getId()
                 + ";remoteId=" + getRemoteId()

@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.robinfinch.journal.app.AboutActivity;
 import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.ui.settings.SettingsActivity;
 
@@ -35,6 +36,9 @@ public class BaseActivity extends ActionBarActivity {
             case R.id.action_settings:
                 openSettings();
                 return true;
+            case R.id.action_about:
+                openAbout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -42,6 +46,11 @@ public class BaseActivity extends ActionBarActivity {
 
     private void openSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 }

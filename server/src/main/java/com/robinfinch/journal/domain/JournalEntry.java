@@ -36,5 +36,5 @@ public abstract class JournalEntry extends SyncableObject implements Comparable<
         return c;
     }
 
-    public abstract String toPrettyString();
+    public abstract CharSequence toPrettyString();
 }

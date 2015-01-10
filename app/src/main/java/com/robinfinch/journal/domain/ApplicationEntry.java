@@ -132,6 +132,11 @@ public class ApplicationEntry extends JournalEntry {
     }
 
     @Override
+    public String toShareString() {
+        return "";
+    }
+
+    @Override
     public String toString() {
         return "com.robinfinch.journal.domain.Applicationentry[id=" + getId()
                 + ";remoteId=" + getRemoteId()

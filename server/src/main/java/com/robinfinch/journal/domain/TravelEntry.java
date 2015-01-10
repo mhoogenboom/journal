@@ -35,7 +35,7 @@ public class TravelEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
+    public CharSequence toPrettyString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Travelled");
         if (!isEmpty(place)) {
@@ -43,7 +43,7 @@ public class TravelEntry extends JournalEntry {
             sb.append(Formatter.formatTravelDescription(away, place));
         }
         sb.append(".");
-        return sb.toString();
+        return sb;
     }
 
     @Override

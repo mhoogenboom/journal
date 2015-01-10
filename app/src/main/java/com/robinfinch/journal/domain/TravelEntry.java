@@ -2,8 +2,12 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
+import com.robinfinch.journal.app.util.Formatter;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
 
@@ -81,6 +85,18 @@ public class TravelEntry extends JournalEntry {
         values.put(TravelEntryContract.COL_AWAY, away ? 1 : 0);
         values.put(TravelEntryContract.COL_PLACE, place);
         return values;
+    }
+
+    @Override
+    public CharSequence toShareString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Travelled");
+        if (!TextUtils.isEmpty(place)) {
+            sb.append(" ");
+            sb.append(Formatter.formatTravelDescription(away, place));
+        }
+        sb.append(".");
+        return sb;
     }
 
     @Override

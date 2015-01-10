@@ -12,12 +12,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.OrganisationContract;
@@ -28,7 +26,6 @@ import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.Organisation;
 import com.robinfinch.journal.domain.Recruiter;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
@@ -41,13 +38,12 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
  *
  * @organisation Mark Hoogenboom
  */
-public class RecruiterFragment extends DetailsFragment {
+public class RecruiterFragment extends DetailsFragment<Recruiter> {
 
     private static final int LOAD_RECRUITER = 1;
     private static final int LOAD_ORGANISATION = 2;
     private static final int LOAD_CONTACT = 3;
     private static final int UPDATE_RECRUITER = 4;
-    private static final int DELETE_RECRUITER = 5;
 
     private static final int REQUEST_SELECT_ORGANISATION = 1;
     private static final int REQUEST_PICK_CONTACT = 2;
@@ -71,12 +67,6 @@ public class RecruiterFragment extends DetailsFragment {
     @InjectView(R.id.recruiter_phone_number)
     protected EditText phoneNumberView;
 
-    private Recruiter recruiter;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -86,18 +76,18 @@ public class RecruiterFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.recruiter_fragment, container, false);
-        ButterKnife.inject(this, view);
+    protected int getLayoutResId() {
+        return R.layout.recruiter_fragment;
+    }
 
+    @Override
+    protected void initListeners() {
         organisationView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectOrganisation();
             }
         });
-        return view;
     }
 
     @Override
@@ -146,35 +136,15 @@ public class RecruiterFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_RECRUITER:
-                            recruiter = Recruiter.from(cursor);
-
-                            CharSequence name = recruiter.getName();
-                            nameView.setText(name);
-
-                            organisationView.setObject(recruiter.getOrganisation());
-
-                            CharSequence phoneNumber = recruiter.getPhoneNumber();
-                            phoneNumberView.setText(phoneNumber);
+                            onRecruiterLoaded(cursor);
                             break;
 
                         case LOAD_ORGANISATION:
-                            Organisation organisation = Organisation.from(cursor);
-
-                            organisationView.setObject(organisation);
+                            onOrganisationLoaded(cursor);
                             break;
 
                         case LOAD_CONTACT:
-                            int i = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
-                            if (i != -1) {
-                                name = cursor.getString(i);
-                                nameView.setText(name);
-                            }
-
-                            i = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
-                            if (i != -1) {
-                                phoneNumber = cursor.getString(i);
-                                phoneNumberView.setText(phoneNumber);
-                            }
+                            onContactLoaded(cursor);
                             break;
                     }
                 } else {
@@ -186,7 +156,7 @@ public class RecruiterFragment extends DetailsFragment {
             public void onLoaderReset(Loader<Cursor> loader) {
                 switch (loader.getId()) {
                     case LOAD_RECRUITER:
-                        recruiter = null;
+                        entity = null;
                         break;
 
                     case LOAD_ORGANISATION:
@@ -207,6 +177,40 @@ public class RecruiterFragment extends DetailsFragment {
         };
 
         getLoaderManager().initLoader(LOAD_RECRUITER, null, loaderCallbacks);
+    }
+
+    private void onRecruiterLoaded(Cursor cursor) {
+        entity = Recruiter.from(cursor);
+
+        CharSequence name = entity.getName();
+        nameView.setText(name);
+
+        organisationView.setObject(entity.getOrganisation());
+
+        CharSequence phoneNumber = entity.getPhoneNumber();
+        phoneNumberView.setText(phoneNumber);
+
+        setShareText(entity.toShareString());
+    }
+
+    private void onOrganisationLoaded(Cursor cursor) {
+        Organisation organisation = Organisation.from(cursor);
+
+        organisationView.setObject(organisation);
+    }
+
+    private void onContactLoaded(Cursor cursor) {
+        int i = cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+        if (i != -1) {
+            String name = cursor.getString(i);
+            nameView.setText(name);
+        }
+
+        i = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+        if (i != -1) {
+            String phoneNumber = cursor.getString(i);
+            phoneNumberView.setText(phoneNumber);
+        }
     }
 
     @Override
@@ -235,37 +239,30 @@ public class RecruiterFragment extends DetailsFragment {
 
     @OnClick(R.id.recruiter_select)
     public void select() {
-        parent.onRecruiterSelected(recruiter.getId());
+        parent.onRecruiterSelected(entity.getId());
     }
 
     @Override
     public void update() {
-        if (recruiter != null) {
-            recruiter.resetChanged();
+        if (entity != null) {
+            entity.resetChanged();
 
             String name = Parser.parseText(nameView.getText());
-            recruiter.setName(name);
+            entity.setName(name);
 
             Organisation organisation = organisationView.getObject();
-            recruiter.setOrganisation(organisation);
+            entity.setOrganisation(organisation);
 
             String phoneNumber = Parser.parseText(phoneNumberView.getText());
-            recruiter.setPhoneNumber(phoneNumber);
+            entity.setPhoneNumber(phoneNumber);
 
-            if (recruiter.hasChanged()) {
+            if (entity.hasChanged()) {
                 Uri uri = getArguments().getParcelable(ARG_URI);
 
-                ContentValues values = recruiter.toValues();
+                ContentValues values = entity.toValues();
                 queryHandler.startUpdate(UPDATE_RECRUITER, null, uri, values, null, null);
             }
         }
-    }
-
-    @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
-
-        queryHandler.startDelete(DELETE_RECRUITER, null, uri, Long.toString(recruiter.getRemoteId()), null);
     }
 
     private void selectOrganisation() {
@@ -314,12 +311,6 @@ public class RecruiterFragment extends DetailsFragment {
             args.putParcelable(ARG_URI, contactUri);
             getLoaderManager().initLoader(LOAD_CONTACT, args, loaderCallbacks);
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override

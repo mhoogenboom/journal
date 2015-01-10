@@ -62,6 +62,11 @@ public class Organisation extends SyncableObject implements NamedObject {
     }
 
     @Override
+    public String toShareString() {
+        return "";
+    }
+
+    @Override
     public String toString() {
         return "com.robinfinch.journal.domain.Organisation[id=" + getId()
                 + ";remoteId=" + getRemoteId()

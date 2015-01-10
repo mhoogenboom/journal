@@ -3,6 +3,7 @@ package com.robinfinch.journal.domain;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.robinfinch.journal.app.persistence.ReadEntryContract;
 import com.robinfinch.journal.app.persistence.TitleContract;
@@ -10,6 +11,7 @@ import com.robinfinch.journal.app.persistence.TitleContract;
 import java.util.Date;
 
 import static com.robinfinch.journal.app.util.Utils.alias;
+import static com.robinfinch.journal.app.util.Utils.appendIfNotEmpty;
 import static com.robinfinch.journal.app.util.Utils.differs;
 
 /**
@@ -129,6 +131,25 @@ public class ReadEntry extends JournalEntry {
             }
         }
         return super.prepareAfterReceive(db);
+    }
+
+    @Override
+    public CharSequence toShareString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Read");
+        if (title != null) {
+            appendIfNotEmpty(sb, " ", title.getAuthorName());
+            if (!TextUtils.isEmpty(title.getAuthorName()) && !TextUtils.isEmpty(title.getName())) {
+                sb.append(":");
+            }
+            appendIfNotEmpty(sb, " ", title.getName());
+        }
+        if (part != null) {
+            sb.append(", ");
+            sb.append(part);
+        }
+        sb.append(".");
+        return sb;
     }
 
     @Override

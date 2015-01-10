@@ -2,6 +2,8 @@ package com.robinfinch.journal.domain;
 
 import com.robinfinch.journal.server.util.Formatter;
 
+import java.nio.charset.CharsetEncoder;
+
 import javax.persistence.Entity;
 
 /**
@@ -33,7 +35,7 @@ public class RunEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
+    public CharSequence toPrettyString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Run");
         if (distance > 0) {
@@ -48,7 +50,7 @@ public class RunEntry extends JournalEntry {
             sb.append(Formatter.formatTime(timeTaken));
         }
         sb.append(".");
-        return sb.toString();
+        return sb;
     }
 
     @Override

@@ -163,6 +163,7 @@ public class MainActivity extends ActionBarActivity implements
         boolean drawerClosed = !drawerLayout.isDrawerOpen(optionsList);
 
         setVisible(menu.findItem(R.id.action_settings), drawerClosed);
+        setVisible(menu.findItem(R.id.action_about), drawerClosed);
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -183,6 +184,9 @@ public class MainActivity extends ActionBarActivity implements
             case R.id.action_settings:
                 openSettings();
                 return true;
+            case R.id.action_about:
+                openAbout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -190,6 +194,11 @@ public class MainActivity extends ActionBarActivity implements
 
     private void openSettings() {
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openAbout() {
+        Intent intent = new Intent(this, AboutActivity.class);
         startActivity(intent);
     }
 

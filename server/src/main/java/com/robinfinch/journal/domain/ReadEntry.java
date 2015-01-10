@@ -71,7 +71,7 @@ public class ReadEntry extends JournalEntry {
     }
 
     @Override
-    public String toPrettyString() {
+    public CharSequence toPrettyString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Read");
         if (title != null) {
@@ -83,7 +83,7 @@ public class ReadEntry extends JournalEntry {
             sb.append(part);
         }
         sb.append(".");
-        return sb.toString();
+        return sb;
     }
 
     @Override

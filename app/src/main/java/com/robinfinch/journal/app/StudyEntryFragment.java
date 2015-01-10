@@ -10,9 +10,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.robinfinch.journal.app.persistence.CourseContract;
@@ -26,7 +24,6 @@ import com.robinfinch.journal.domain.StudyEntry;
 
 import java.util.Date;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import static com.robinfinch.journal.app.util.Constants.ARG_SELECTED_ID;
@@ -37,12 +34,11 @@ import static com.robinfinch.journal.app.util.Constants.ARG_URI;
  *
  * @author Mark Hoogenboom
  */
-public class StudyEntryFragment extends DetailsFragment {
+public class StudyEntryFragment extends DetailsFragment<StudyEntry> {
 
     private static final int LOAD_STUDY_ENTRY = 1;
     private static final int LOAD_COURSE = 2;
     private static final int UPDATE_STUDY_ENTRY = 3;
-    private static final int DELETE_STUDY_ENTRY = 4;
 
     private static final int REQUEST_SELECT_COURSE = 1;
 
@@ -65,12 +61,6 @@ public class StudyEntryFragment extends DetailsFragment {
     @InjectView(R.id.studyentry_description)
     protected EditText descriptionView;
 
-    private StudyEntry entry;
-
-    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks;
-
-    private AsyncQueryHandler queryHandler;
-
     private Parent parent;
 
     @Override
@@ -80,18 +70,18 @@ public class StudyEntryFragment extends DetailsFragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.studyentry_fragment, container, false);
-        ButterKnife.inject(this, view);
+    protected int getLayoutResId() {
+        return R.layout.studyentry_fragment;
+    }
 
+    @Override
+    protected void initListeners() {
         courseView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 selectCourse();
             }
         });
-        return view;
     }
 
     @Override
@@ -128,21 +118,12 @@ public class StudyEntryFragment extends DetailsFragment {
                 if (cursor.moveToFirst()) {
                     switch (loader.getId()) {
                         case LOAD_STUDY_ENTRY:
-                            entry = StudyEntry.from(cursor);
-
-                            CharSequence dayOfEntry = Formatter.formatDayForInput(entry.getDayOfEntry());
-                            dayOfEntryView.setText(dayOfEntry);
-
-                            courseView.setObject(entry.getCourse());
-
-                            CharSequence description = entry.getDescription();
-                            descriptionView.setText(description);
+                            onStudyEntryLoaded(cursor);
                             break;
 
                         case LOAD_COURSE:
-                            Course course = Course.from(cursor);
-
-                            courseView.setObject(course);
+                            onCourseLoaded(cursor);
+                            break;
                     }
                 } else {
                     onLoaderReset(loader);
@@ -153,7 +134,7 @@ public class StudyEntryFragment extends DetailsFragment {
             public void onLoaderReset(Loader<Cursor> loader) {
                 switch (loader.getId()) {
                     case LOAD_STUDY_ENTRY:
-                        entry = null;
+                        entity = null;
                         break;
 
                     case LOAD_COURSE:
@@ -176,34 +157,47 @@ public class StudyEntryFragment extends DetailsFragment {
         getLoaderManager().initLoader(LOAD_STUDY_ENTRY, null, loaderCallbacks);
     }
 
-    @Override
-    public void update() {
-        if (entry != null) {
-            entry.resetChanged();
+    private void onStudyEntryLoaded(Cursor cursor) {
+        entity = StudyEntry.from(cursor);
 
-            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
-            entry.setDayOfEntry(dayOfEntry);
+        CharSequence dayOfEntry = Formatter.formatDayForInput(entity.getDayOfEntry());
+        dayOfEntryView.setText(dayOfEntry);
 
-            Course course = courseView.getObject();
-            entry.setCourse(course);
+        courseView.setObject(entity.getCourse());
 
-            String description = Parser.parseText(descriptionView.getText());
-            entry.setDescription(description);
+        CharSequence description = entity.getDescription();
+        descriptionView.setText(description);
 
-            if (entry.hasChanged()) {
-                Uri uri = getArguments().getParcelable(ARG_URI);
+        setShareText(entity.toShareString());
+    }
 
-                ContentValues values = entry.toValues();
-                queryHandler.startUpdate(UPDATE_STUDY_ENTRY, null, uri, values, null, null);
-            }
-        }
+    private void onCourseLoaded(Cursor cursor) {
+        Course course = Course.from(cursor);
+
+        courseView.setObject(course);
     }
 
     @Override
-    public void delete() {
-        Uri uri = getArguments().getParcelable(ARG_URI);
+    public void update() {
+        if (entity != null) {
+            entity.resetChanged();
 
-        queryHandler.startDelete(DELETE_STUDY_ENTRY, null, uri, Long.toString(entry.getRemoteId()), null);
+            Date dayOfEntry = Parser.parseDay(dayOfEntryView.getText());
+            entity.setDayOfEntry(dayOfEntry);
+
+            Course course = courseView.getObject();
+            entity.setCourse(course);
+
+            String description = Parser.parseText(descriptionView.getText());
+            entity.setDescription(description);
+
+            if (entity.hasChanged()) {
+                Uri uri = getArguments().getParcelable(ARG_URI);
+
+                ContentValues values = entity.toValues();
+                queryHandler.startUpdate(UPDATE_STUDY_ENTRY, null, uri, values, null, null);
+            }
+        }
     }
 
     private void selectCourse() {
@@ -236,12 +230,6 @@ public class StudyEntryFragment extends DetailsFragment {
                 }
             }
         }
-    }
-
-    @Override
-    public void onDestroyView() {
-        ButterKnife.reset(this);
-        super.onDestroyView();
     }
 
     @Override
