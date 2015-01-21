@@ -2,6 +2,7 @@ package com.robinfinch.journal.domain;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.text.TextUtils;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.util.Formatter;
@@ -19,6 +20,8 @@ import static com.robinfinch.journal.app.util.Utils.differs;
 public class RunEntry extends JournalEntry {
 
     private int distance; // in m
+
+    private String note;
 
     private int timeTaken; // in s
 
@@ -42,6 +45,10 @@ public class RunEntry extends JournalEntry {
         int distance = cursor.getInt(i);
         entry.setDistance(distance);
 
+        i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_NOTE));
+        String note = cursor.getString(i);
+        entry.setNote(note);
+
         i = cursor.getColumnIndexOrThrow(alias(RunEntryContract.NAME, RunEntryContract.COL_TIME_TAKEN));
         int timeTaken = cursor.getInt(i);
         entry.setTimeTaken(timeTaken);
@@ -60,6 +67,17 @@ public class RunEntry extends JournalEntry {
     public void setDistance(int distance) {
         if (differs(this.distance, distance)) {
             this.distance = distance;
+            this.changed = true;
+        }
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        if (differs(this.note, note)) {
+            this.note = note;
             this.changed = true;
         }
     }
@@ -84,6 +102,7 @@ public class RunEntry extends JournalEntry {
         ContentValues values = new ContentValues();
         values.put(RunEntryContract.COL_DAY_OF_ENTRY, (getDayOfEntry() == null) ? 0 : getDayOfEntry().getTime());
         values.put(RunEntryContract.COL_DISTANCE, getDistance());
+        values.put(RunEntryContract.COL_NOTE, getNote());
         values.put(RunEntryContract.COL_TIME_TAKEN, getTimeTaken());
         return values;
     }
@@ -95,6 +114,11 @@ public class RunEntry extends JournalEntry {
         if (distance > 0) {
             sb.append(" ");
             sb.append(Formatter.formatDistance(distance));
+        }
+        if (!TextUtils.isEmpty(note)) {
+            sb.append(" (");
+            sb.append(note);
+            sb.append(")");
         }
         if (timeTaken > 0) {
             if (distance > 0) {
@@ -113,6 +137,7 @@ public class RunEntry extends JournalEntry {
                 + ";remoteId=" + getRemoteId()
                 + ";dayOfEntry=" + getDayOfEntry()
                 + ";distance=" + getDistance()
+                + ";note=" + getNote()
                 + ";timeTaken=" + getTimeTaken()
                 + ";logId=" + getLogId()
                 + "]";

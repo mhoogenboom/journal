@@ -3,6 +3,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/brown</item>
         <item name="colorPrimaryDark">@color/brown_dark</item>
+        <item name="colorAccent">@color/brown_red</item>
         <item name="namedObjectViewStyle">@style/Widget.NamedObjectView</item>
     </style>
 

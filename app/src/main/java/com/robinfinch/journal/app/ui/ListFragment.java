@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CursorAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,7 +34,7 @@ public abstract class ListFragment extends Fragment {
     protected ListView list;
 
     @InjectView(R.id.list_add)
-    protected Button listAddButton;
+    protected ImageButton listAddButton;
 
     protected CursorAdapter adapter;
 
@@ -58,13 +59,12 @@ public abstract class ListFragment extends Fragment {
             }
         });
 
-        listAddButton.setText(getAddButtonResId());
-
         return view;
     }
 
     protected abstract int getHeaderResId();
 
+    // TODO: remove
     protected abstract int getAddButtonResId();
 
     @OnClick(R.id.list_add)

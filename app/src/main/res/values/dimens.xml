@@ -2,6 +2,7 @@
 <resources>
     <dimen name="medium_padding">8dp</dimen>
     <dimen name="large_padding">16dp</dimen>
+    <dimen name="oval_button_size">56dp</dimen>
     <dimen name="dabble_width">2400px</dimen>
     <dimen name="dabble_height">1600px</dimen>
 </resources>

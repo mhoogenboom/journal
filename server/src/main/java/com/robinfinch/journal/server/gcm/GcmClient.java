@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.annotation.Resource;
+import javax.ejb.Asynchronous;
+import javax.ejb.Stateless;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
@@ -19,6 +21,7 @@ import static com.robinfinch.journal.server.util.Utils.LOG_TAG;
  *
  * @author Mark Hoogenboom
  */
+@Stateless
 public class GcmClient {
 
     private static final String ENDPOINT = "https://android.googleapis.com/gcm/send";
@@ -26,6 +29,7 @@ public class GcmClient {
     @Resource(name="gcm_api_key")
     private String apiKey;
 
+    @Asynchronous
     public void send(GcmMessage message) {
 
         Logger.getLogger(LOG_TAG).info("Send tickle to " + message.getRegistrationIds());

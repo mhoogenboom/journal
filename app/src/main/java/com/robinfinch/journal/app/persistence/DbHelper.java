@@ -15,7 +15,7 @@ import static com.robinfinch.journal.app.util.Constants.LOG_TAG;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "journal.db";
-    public static final int DATABASE_VERSION = 12;
+    public static final int DATABASE_VERSION = 13;
 
     /*
      * Revision
@@ -172,9 +172,14 @@ public class DbHelper extends SQLiteOpenHelper {
                     RunEntryContract.COL_REMOTE_ID + " INTEGER," +
                     RunEntryContract.COL_DAY_OF_ENTRY + " INTEGER," +
                     RunEntryContract.COL_DISTANCE + " INTEGER," +
+                    RunEntryContract.COL_NOTE + " TEXT," +
                     RunEntryContract.COL_TIME_TAKEN + " INTEGER," +
                     RunEntryContract.COL_LOG_ID + " INTEGER" +
                     ")";
+
+    private static final String SQL_ALTER_RUN_ENTRY_1 =
+            "ALTER TABLE " + RunEntryContract.NAME + " " +
+                    "ADD " + RunEntryContract.COL_NOTE + " TEXT";
 
     /*
      * Sync log
@@ -240,5 +245,10 @@ public class DbHelper extends SQLiteOpenHelper {
             oldVersion++;
         }
 
+        if ((oldVersion == 12) && (12 < newVersion)) {
+            Log.d(LOG_TAG, "Upgrade " + DATABASE_NAME + " version " + oldVersion);
+            db.execSQL(SQL_ALTER_RUN_ENTRY_1);
+            oldVersion++;
+        }
     }
 }

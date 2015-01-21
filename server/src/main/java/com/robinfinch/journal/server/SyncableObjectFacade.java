@@ -22,9 +22,6 @@ import static com.robinfinch.journal.server.util.Utils.LOG_TAG;
  */
 public abstract class SyncableObjectFacade<T extends SyncableObject> extends AbstractFacade {
 
-//    @Resource
-//    private ManagedExecutorService executorService;
-
     @Inject
     private GcmClient gcmClient;
 
@@ -104,11 +101,7 @@ public abstract class SyncableObjectFacade<T extends SyncableObject> extends Abs
         log.setDeletedEntityId(entityId);
         em.persist(log);
 
-//        executorService.submit(new Runnable() {
-//            public void run() {
-                tickle(modifier);
-//            }
-//        });
+        tickle(modifier);
     }
 
     private void tickle(App modifier) {

@@ -49,6 +49,9 @@ public class RunEntryFragment extends DetailsFragment<RunEntry> {
     @InjectView(R.id.runentry_distance)
     protected EditText distanceView;
 
+    @InjectView(R.id.runentry_note)
+    protected EditText noteView;
+
     @InjectView(R.id.runentry_timetaken)
     protected EditText timeTakenView;
 
@@ -114,6 +117,9 @@ public class RunEntryFragment extends DetailsFragment<RunEntry> {
         CharSequence distance = Formatter.formatDistanceForInput(entity.getDistance());
         distanceView.setText(distance);
 
+        CharSequence note = entity.getNote();
+        noteView.setText(note);
+
         CharSequence timeTaken = Formatter.formatTime(entity.getTimeTaken());
         timeTakenView.setText(timeTaken);
 
@@ -130,6 +136,9 @@ public class RunEntryFragment extends DetailsFragment<RunEntry> {
 
             int distance = Parser.parseDistance(distanceView.getText());
             entity.setDistance(distance);
+
+            String note = Parser.parseText(noteView.getText());
+            entity.setNote(note);
 
             int timeTaken = Parser.parseTime(timeTakenView.getText());
             entity.setTimeTaken(timeTaken);

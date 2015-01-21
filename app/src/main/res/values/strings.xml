@@ -74,6 +74,7 @@
     <string name="runentry">Details</string>
     <string name="runentry_dayofrun">Day of run</string>
     <string name="runentry_distance">Distance</string>
+    <string name="runentry_note">Note</string>
     <string name="runentry_timetaken">Time</string>
 
     <string name="entity_select">Select</string>

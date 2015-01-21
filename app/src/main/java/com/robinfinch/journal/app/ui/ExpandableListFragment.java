@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.robinfinch.journal.app.R;
@@ -32,7 +33,7 @@ public abstract class ExpandableListFragment extends Fragment {
     protected ExpandableListView list;
 
     @InjectView(R.id.list_add)
-    protected Button listAddButton;
+    protected ImageButton listAddButton;
 
     protected JournalEntryListAdapter adapter;
 
@@ -59,13 +60,12 @@ public abstract class ExpandableListFragment extends Fragment {
             }
         });
 
-        listAddButton.setText(getAddButtonResId());
-
         return view;
     }
 
     protected abstract int getHeaderResId();
 
+    // TODO: remove
     protected abstract int getAddButtonResId();
 
     @OnClick(R.id.list_add)

@@ -2,6 +2,7 @@
 <resources>
     <color name="brown">#906b59</color>
     <color name="brown_dark">#502b19</color>
+    <color name="brown_red">#c02b19</color>
     <color name="list_background">#ffffff</color>
     <color name="gray">#999999</color>
     <color name="gray_dark">#333333</color>

@@ -6,6 +6,8 @@ import java.nio.charset.CharsetEncoder;
 
 import javax.persistence.Entity;
 
+import static com.robinfinch.journal.server.util.Utils.isEmpty;
+
 /**
  * Journal entry describing a run.
  *
@@ -16,6 +18,8 @@ public class RunEntry extends JournalEntry {
 
     private int distance; // in m
 
+    private String note;
+
     private int timeTaken; // in s
 
     public int getDistance() {
@@ -24,6 +28,14 @@ public class RunEntry extends JournalEntry {
 
     public void setDistance(int distance) {
         this.distance = distance;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public int getTimeTaken() {
@@ -41,6 +53,11 @@ public class RunEntry extends JournalEntry {
         if (distance > 0) {
             sb.append(" ");
             sb.append(Formatter.formatDistance(distance));
+        }
+        if (!isEmpty(note)) {
+            sb.append(" (");
+            sb.append(note);
+            sb.append(")");
         }
         if (timeTaken > 0) {
             if (distance > 0) {

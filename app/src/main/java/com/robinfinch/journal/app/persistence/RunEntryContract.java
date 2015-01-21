@@ -16,6 +16,7 @@ public interface RunEntryContract extends JournalEntryContract {
     String NAME = "runentry";
 
     String COL_DISTANCE = "distance";
+    String COL_NOTE = "note";
     String COL_TIME_TAKEN = "time_taken";
 
     String[] COLS = {
@@ -24,6 +25,7 @@ public interface RunEntryContract extends JournalEntryContract {
             aliased(NAME, COL_REMOTE_ID),
             aliased(NAME, COL_DAY_OF_ENTRY),
             aliased(NAME, COL_DISTANCE),
+            aliased(NAME, COL_NOTE),
             aliased(NAME, COL_TIME_TAKEN),
             aliased(NAME, COL_LOG_ID)
     };
