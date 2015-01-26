@@ -5,4 +5,5 @@
     <dimen name="oval_button_size">56dp</dimen>
     <dimen name="dabble_width">2400px</dimen>
     <dimen name="dabble_height">1600px</dimen>
+    <dimen name="graph_label_size">10dp</dimen>
 </resources>

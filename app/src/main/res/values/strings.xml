@@ -76,6 +76,7 @@
     <string name="runentry_distance">Distance</string>
     <string name="runentry_note">Note</string>
     <string name="runentry_timetaken">Time</string>
+    <string name="runentry_graph">Graph</string>
 
     <string name="entity_select">Select</string>
     <string name="entity_add">Add</string>

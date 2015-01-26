@@ -49,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements
         WalkEntryFragment.Parent,
         RunEntryListFragment.Parent,
         RunEntryFragment.Parent,
+        RunGraphFragment.Parent,
         DabbleFragment.Parent,
         EmptyFragment.Parent {
 
@@ -296,6 +297,11 @@ public class MainActivity extends ActionBarActivity implements
     @Override
     public void onRunEntryDeleted() {
         showDetails(EmptyFragment.newInstance());
+    }
+
+    @Override
+    public void onGraphRequested() {
+        showList(RunGraphFragment.newInstance());
     }
 
     private void showList(Fragment fragment) {

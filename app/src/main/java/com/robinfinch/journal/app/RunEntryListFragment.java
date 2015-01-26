@@ -10,7 +10,11 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
@@ -94,6 +98,8 @@ public class RunEntryListFragment extends ExpandableListFragment {
                 viewHolder.bind(runEntry);
             }
         }, alias(RunEntryContract.NAME, RunEntryContract.COL_DAY_OF_ENTRY));
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -137,6 +143,25 @@ public class RunEntryListFragment extends ExpandableListFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        menu.add(Menu.CATEGORY_CONTAINER, R.id.runentry_graph, 3, R.string.runentry_graph)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.runentry_graph:
+                parent.onGraphRequested();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void add() {
         ContentValues initialValues = new ContentValues();
         initialValues.put(JournalEntryContract.COL_DAY_OF_ENTRY, Utils.getDefaultDayOfEntry(getActivity()));
@@ -157,6 +182,8 @@ public class RunEntryListFragment extends ExpandableListFragment {
 
     public interface Parent {
         void onRunEntryItemSelected(Uri uri);
+
+        void onGraphRequested();
     }
 
     static class ViewHolder {
