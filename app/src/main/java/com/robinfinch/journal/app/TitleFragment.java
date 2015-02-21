@@ -228,7 +228,7 @@ public class TitleFragment extends DetailsFragment<Title> {
                     authorView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, AuthorContract.ITEM_URI_TYPE.uri(authorId));
+                    args.putParcelable(ARG_URI, AuthorContract.ITEM_URI_TYPE.uri(getActivity(), authorId));
                     getLoaderManager().initLoader(LOAD_AUTHOR, args, loaderCallbacks);
                 }
             }

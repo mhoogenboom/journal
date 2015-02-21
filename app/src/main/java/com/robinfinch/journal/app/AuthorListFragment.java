@@ -102,7 +102,7 @@ public class AuthorListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        AuthorContract.DIR_URI_TYPE.uri(),
+                        AuthorContract.DIR_URI_TYPE.uri(getActivity()),
                         AuthorContract.COLS, null, null,
                         alias(AuthorContract.NAME, AuthorContract.COL_NAME) + " ASC");
             }
@@ -133,12 +133,12 @@ public class AuthorListFragment extends ListFragment {
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_AUTHOR, null, AuthorContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_AUTHOR, null, AuthorContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onAuthorItemSelected(AuthorContract.ITEM_URI_TYPE.uri(id));
+        parent.onAuthorItemSelected(AuthorContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

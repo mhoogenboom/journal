@@ -6,8 +6,6 @@ package com.robinfinch.journal.app.util;
  */
 public abstract class UriType {
 
-    public static final String AUTHORITY = "com.robinfinch.journal.provider";
-
     private final String entityName;
     private final String joinedEntities;
 

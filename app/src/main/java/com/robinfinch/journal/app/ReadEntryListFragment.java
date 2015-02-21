@@ -106,7 +106,7 @@ public class ReadEntryListFragment extends ExpandableListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        ReadEntryContract.DIR_URI_TYPE.uri(),
+                        ReadEntryContract.DIR_URI_TYPE.uri(getActivity()),
                         ReadEntryContract.COLS, null, null,
                         alias(ReadEntryContract.NAME, ReadEntryContract.COL_DAY_OF_ENTRY) + " ASC");
             }
@@ -142,12 +142,12 @@ public class ReadEntryListFragment extends ExpandableListFragment {
         ContentValues initialValues = new ContentValues();
         initialValues.put(JournalEntryContract.COL_DAY_OF_ENTRY, Utils.getDefaultDayOfEntry(getActivity()));
 
-        queryHandler.startInsert(INSERT_READ_ENTRY, null, ReadEntryContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_READ_ENTRY, null, ReadEntryContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onReadEntryItemSelected(ReadEntryContract.ITEM_URI_TYPE.uri(id));
+        parent.onReadEntryItemSelected(ReadEntryContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

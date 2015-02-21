@@ -104,7 +104,7 @@ public class TitleListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        TitleContract.DIR_URI_TYPE.uri(),
+                        TitleContract.DIR_URI_TYPE.uri(getActivity()),
                         TitleContract.COLS, null, null,
                         alias(AuthorContract.NAME, AuthorContract.COL_NAME) + ", " +
                         alias(TitleContract.NAME, TitleContract.COL_YEAR) + " ASC");
@@ -136,12 +136,12 @@ public class TitleListFragment extends ListFragment {
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_TITLE, null, TitleContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_TITLE, null, TitleContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onTitleItemSelected(TitleContract.ITEM_URI_TYPE.uri(id));
+        parent.onTitleItemSelected(TitleContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

@@ -174,7 +174,7 @@ public class ApplicationFragment extends Fragment {
         initialValues.put(ApplicationEntryContract.COL_DAY_OF_ENTRY, Utils.getToday());
         initialValues.put(ApplicationEntryContract.COL_APPLICATION_ID, application.getId());
         initialValues.put(ApplicationEntryContract.COL_ACTION_ID, action.getId());
-        queryHandler.startInsert(INSERT_APPLICATION_ENTRY, action, ApplicationEntryContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_APPLICATION_ENTRY, action, ApplicationEntryContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
         return true;
     }
 
@@ -363,7 +363,7 @@ public class ApplicationFragment extends Fragment {
                     recruiterView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, RecruiterContract.ITEM_URI_TYPE.uri(recruiterId));
+                    args.putParcelable(ARG_URI, RecruiterContract.ITEM_URI_TYPE.uri(getActivity(), recruiterId));
                     getLoaderManager().initLoader(LOAD_RECRUITER, args, loaderCallbacks);
                 }
             }
@@ -378,7 +378,7 @@ public class ApplicationFragment extends Fragment {
                     clientView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, OrganisationContract.ITEM_URI_TYPE.uri(clientId));
+                    args.putParcelable(ARG_URI, OrganisationContract.ITEM_URI_TYPE.uri(getActivity(), clientId));
                     getLoaderManager().initLoader(LOAD_CLIENT, args, loaderCallbacks);
                 }
             }

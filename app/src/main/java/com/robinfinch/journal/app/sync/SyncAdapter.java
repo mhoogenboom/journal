@@ -555,7 +555,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                         db.insert(uriType.getEntityName(), null, values);
                     }
 
-                    getContext().getContentResolver().notifyChange(uriType.uri(), null);
+                    getContext().getContentResolver().notifyChange(uriType.uri(getContext()), null);
                 } else {
                     if (changes.size() == doubleSize) {
                         Log.d(LOG_TAG, "Every object has been postponed at least once, putting a stop to it.");
@@ -574,7 +574,7 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
                 db.delete(uriType.getEntityName(), SyncableObjectContract.COL_REMOTE_ID + "= ?",
                         new String[]{Long.toString(remoteId)});
 
-                getContext().getContentResolver().notifyChange(uriType.uri(), null);
+                getContext().getContentResolver().notifyChange(uriType.uri(getContext()), null);
             }
 
             values = new ContentValues();

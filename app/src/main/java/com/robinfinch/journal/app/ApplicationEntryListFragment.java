@@ -118,7 +118,7 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        ApplicationEntryContract.DIR_URI_TYPE.uri(),
+                        ApplicationEntryContract.DIR_URI_TYPE.uri(getActivity()),
                         ApplicationEntryContract.COLS, null, null, ApplicationEntryContract.COL_DAY_OF_ENTRY + " ASC");
             }
 
@@ -153,7 +153,7 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
         ContentValues initialValues = new ContentValues();
         initialValues.put(ApplicationContract.COL_STATE_ID, workflow.getInitialState().getId());
 
-        queryHandler.startInsert(INSERT_APPLICATION, null, ApplicationContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_APPLICATION, null, ApplicationContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class ApplicationEntryListFragment extends ExpandableListFragment {
 
     @Override
     protected void select(long id) {
-        parent.onApplicationItemSelected(ApplicationContract.ITEM_URI_TYPE.uri(id));
+        parent.onApplicationItemSelected(ApplicationContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

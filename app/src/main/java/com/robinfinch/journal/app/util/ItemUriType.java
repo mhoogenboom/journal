@@ -1,7 +1,10 @@
 package com.robinfinch.journal.app.util;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
+
+import com.robinfinch.journal.app.R;
 
 /**
  * Item type of uniform resource identifier of content.
@@ -19,10 +22,10 @@ public class ItemUriType extends UriType {
         return getEntityName() + "/#";
     }
 
-    public Uri uri(long id) {
+    public Uri uri(Context context, long id) {
         return new Uri.Builder()
                 .scheme("content")
-                .authority(AUTHORITY)
+                .authority(context.getString(R.string.content_authority))
                 .appendPath(getEntityName())
                 .appendPath(Long.toString(id))
                 .build();

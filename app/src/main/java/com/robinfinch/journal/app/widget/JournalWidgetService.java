@@ -54,7 +54,7 @@ public class JournalWidgetService extends IntentService {
         int[] widgetIds = intent.getIntArrayExtra(ARG_WIDGET_IDS);
 
         Cursor cursor = getContentResolver().query(
-                StudyEntryContract.DIR_URI_TYPE.uri(),
+                StudyEntryContract.DIR_URI_TYPE.uri(this),
                 StudyEntryContract.COLS, null, null,
                 StudyEntryContract.COL_DAY_OF_ENTRY + " DESC LIMIT 1");
         if (cursor.moveToNext()) {

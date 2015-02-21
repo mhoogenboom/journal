@@ -1,3 +1,10 @@
+#Scala
+-dontwarn scala.**
+# temporary workaround; see Scala issue SI-5397
+-keep class scala.collection.SeqLike {
+    public protected *;
+}
+
 #JSON classes
 -keep class com.robinfinch.journal.domain.** { *; }
 -keep class com.robinfinch.journal.app.rest.DiffResponse { *; }

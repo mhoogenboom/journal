@@ -10,7 +10,6 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -112,7 +111,7 @@ public class RunEntryListFragment extends ExpandableListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        RunEntryContract.DIR_URI_TYPE.uri(),
+                        RunEntryContract.DIR_URI_TYPE.uri(getActivity()),
                         RunEntryContract.COLS, null, null, RunEntryContract.COL_DAY_OF_ENTRY + " ASC");
             }
 
@@ -166,12 +165,12 @@ public class RunEntryListFragment extends ExpandableListFragment {
         ContentValues initialValues = new ContentValues();
         initialValues.put(JournalEntryContract.COL_DAY_OF_ENTRY, Utils.getDefaultDayOfEntry(getActivity()));
 
-        queryHandler.startInsert(INSERT_RUN_ENTRY, null, RunEntryContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_RUN_ENTRY, null, RunEntryContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onRunEntryItemSelected(RunEntryContract.ITEM_URI_TYPE.uri(id));
+        parent.onRunEntryItemSelected(RunEntryContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

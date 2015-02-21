@@ -3,28 +3,18 @@ package com.robinfinch.journal.app;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.LoaderManager;
-import android.content.AsyncQueryHandler;
-import android.content.ContentValues;
-import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CursorAdapter;
-import android.widget.TextView;
 
-import com.robinfinch.journal.app.persistence.JournalEntryContract;
 import com.robinfinch.journal.app.persistence.RunEntryContract;
-import com.robinfinch.journal.app.ui.ExpandableListFragment;
 import com.robinfinch.journal.app.ui.GraphView;
-import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Function;
-import com.robinfinch.journal.app.util.Utils;
 import com.robinfinch.journal.domain.RunEntry;
 
 import java.util.Date;
@@ -32,8 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-
-import static com.robinfinch.journal.app.util.Utils.alias;
 
 /**
  * Graph of run entries.
@@ -96,7 +84,7 @@ public class RunGraphFragment extends Fragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        RunEntryContract.DIR_URI_TYPE.uri(),
+                        RunEntryContract.DIR_URI_TYPE.uri(getActivity()),
                         RunEntryContract.COLS, null, null, RunEntryContract.COL_DAY_OF_ENTRY + " ASC");
             }
 
@@ -111,6 +99,11 @@ public class RunGraphFragment extends Fragment {
                             window[i - 1] = window[i];
                         }
                         window[i - 1] = RunEntry.from(cursor);
+
+                        if ((window[i - 1].getAvgPace() == 0) && (window[i - 2] != null)) {
+                            window[i - 1].setDistance(window[i - 2].getDistance());
+                            window[i - 1].setTimeTaken(window[i - 2].getTimeTaken());
+                        }
 
                         if (window[0] != null) {
                             int avg = (window[0].getAvgPace() * 1

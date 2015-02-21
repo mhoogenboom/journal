@@ -102,7 +102,7 @@ public class CourseListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        CourseContract.DIR_URI_TYPE.uri(),
+                        CourseContract.DIR_URI_TYPE.uri(getActivity()),
                         CourseContract.COLS, null, null,
                         alias(CourseContract.NAME, CourseContract.COL_NAME) + " ASC");
             }
@@ -133,12 +133,12 @@ public class CourseListFragment extends ListFragment {
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_COURSE, null, CourseContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_COURSE, null, CourseContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onCourseItemSelected(CourseContract.ITEM_URI_TYPE.uri(id));
+        parent.onCourseItemSelected(CourseContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

@@ -225,7 +225,7 @@ public class StudyEntryFragment extends DetailsFragment<StudyEntry> {
                     courseView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, CourseContract.ITEM_URI_TYPE.uri(courseId));
+                    args.putParcelable(ARG_URI, CourseContract.ITEM_URI_TYPE.uri(getActivity(), courseId));
                     getLoaderManager().initLoader(LOAD_COURSE, args, loaderCallbacks);
                 }
             }

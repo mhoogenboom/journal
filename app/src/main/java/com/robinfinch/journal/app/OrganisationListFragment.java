@@ -102,7 +102,7 @@ public class OrganisationListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        OrganisationContract.DIR_URI_TYPE.uri(),
+                        OrganisationContract.DIR_URI_TYPE.uri(getActivity()),
                         OrganisationContract.COLS, null, null,
                         alias(OrganisationContract.NAME, OrganisationContract.COL_NAME) + " ASC");
             }
@@ -133,12 +133,12 @@ public class OrganisationListFragment extends ListFragment {
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_ORGANISATION, null, OrganisationContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_ORGANISATION, null, OrganisationContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onOrganisationItemSelected(OrganisationContract.ITEM_URI_TYPE.uri(id));
+        parent.onOrganisationItemSelected(OrganisationContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

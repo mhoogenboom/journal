@@ -40,7 +40,7 @@ public class JournalWidgetProvider extends AppWidgetProvider {
                     onUpdate(context, appWidgetManager, appWidgetIds);
                 }
             };
-            context.getContentResolver().registerContentObserver(StudyEntryContract.DIR_URI_TYPE.uri(), true, observer);
+            context.getContentResolver().registerContentObserver(StudyEntryContract.DIR_URI_TYPE.uri(context), true, observer);
         }
     }
 

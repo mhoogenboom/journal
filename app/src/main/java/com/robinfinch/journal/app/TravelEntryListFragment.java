@@ -106,7 +106,7 @@ public class TravelEntryListFragment extends ExpandableListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        TravelEntryContract.DIR_URI_TYPE.uri(),
+                        TravelEntryContract.DIR_URI_TYPE.uri(getActivity()),
                         TravelEntryContract.COLS, null, null, TravelEntryContract.COL_DAY_OF_ENTRY + " ASC");
             }
 
@@ -142,12 +142,12 @@ public class TravelEntryListFragment extends ExpandableListFragment {
         initialValues.put(JournalEntryContract.COL_DAY_OF_ENTRY, Utils.getDefaultDayOfEntry(getActivity()));
         initialValues.put(TravelEntryContract.COL_PLACE, "");
 
-        queryHandler.startInsert(INSERT_TRAVEL_ENTRY, null, TravelEntryContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_TRAVEL_ENTRY, null, TravelEntryContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onTravelEntryItemSelected(TravelEntryContract.ITEM_URI_TYPE.uri(id));
+        parent.onTravelEntryItemSelected(TravelEntryContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

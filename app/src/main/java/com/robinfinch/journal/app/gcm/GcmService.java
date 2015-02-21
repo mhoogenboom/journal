@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.robinfinch.journal.app.ContextModule;
-import com.robinfinch.journal.app.util.UriType;
+import com.robinfinch.journal.app.R;
 
 import javax.inject.Inject;
 
@@ -62,6 +62,6 @@ public class GcmService extends IntentService {
 
         Bundle extras = new Bundle();
 
-        ContentResolver.requestSync(null, UriType.AUTHORITY, extras);
+        ContentResolver.requestSync(null, getString(R.string.content_authority), extras);
     }
 }

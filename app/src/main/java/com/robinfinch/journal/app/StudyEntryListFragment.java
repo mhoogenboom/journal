@@ -100,7 +100,7 @@ public class StudyEntryListFragment extends ExpandableListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        StudyEntryContract.DIR_URI_TYPE.uri(),
+                        StudyEntryContract.DIR_URI_TYPE.uri(getActivity()),
                         StudyEntryContract.COLS, null, null, StudyEntryContract.COL_DAY_OF_ENTRY + " ASC");
             }
 
@@ -135,12 +135,12 @@ public class StudyEntryListFragment extends ExpandableListFragment {
         ContentValues initialValues = new ContentValues();
         initialValues.put(JournalEntryContract.COL_DAY_OF_ENTRY, Utils.getDefaultDayOfEntry(getActivity()));
 
-        queryHandler.startInsert(INSERT_STUDY_ENTRY, null, StudyEntryContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_STUDY_ENTRY, null, StudyEntryContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onStudyEntryItemSelected(StudyEntryContract.ITEM_URI_TYPE.uri(id));
+        parent.onStudyEntryItemSelected(StudyEntryContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

@@ -103,7 +103,7 @@ public class RecruiterListFragment extends ListFragment {
 
                 return new CursorLoader(
                         getActivity(),
-                        RecruiterContract.DIR_URI_TYPE.uri(),
+                        RecruiterContract.DIR_URI_TYPE.uri(getActivity()),
                         RecruiterContract.COLS, null, null,
                         alias(RecruiterContract.NAME, RecruiterContract.COL_NAME) + " ASC");
             }
@@ -134,12 +134,12 @@ public class RecruiterListFragment extends ListFragment {
     protected void add() {
         ContentValues initialValues = new ContentValues();
 
-        queryHandler.startInsert(INSERT_RECRUITER, null, RecruiterContract.DIR_URI_TYPE.uri(), initialValues);
+        queryHandler.startInsert(INSERT_RECRUITER, null, RecruiterContract.DIR_URI_TYPE.uri(getActivity()), initialValues);
     }
 
     @Override
     protected void select(long id) {
-        parent.onRecruiterItemSelected(RecruiterContract.ITEM_URI_TYPE.uri(id));
+        parent.onRecruiterItemSelected(RecruiterContract.ITEM_URI_TYPE.uri(getActivity(), id));
     }
 
     @Override

@@ -1,7 +1,10 @@
 package com.robinfinch.journal.app.util;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
+
+import com.robinfinch.journal.app.R;
 
 /**
  * Directory type of uniform resource identifier of content.
@@ -19,10 +22,10 @@ public class DirUriType extends UriType {
         return getEntityName();
     }
 
-    public Uri uri() {
+    public Uri uri(Context context) {
         return new Uri.Builder()
                 .scheme("content")
-                .authority(AUTHORITY)
+                .authority(context.getString(R.string.content_authority))
                 .appendPath(getEntityName())
                 .build();
     }

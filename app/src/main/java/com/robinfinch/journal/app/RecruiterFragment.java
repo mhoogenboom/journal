@@ -294,7 +294,7 @@ public class RecruiterFragment extends DetailsFragment<Recruiter> {
                     organisationView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, OrganisationContract.ITEM_URI_TYPE.uri(organisationId));
+                    args.putParcelable(ARG_URI, OrganisationContract.ITEM_URI_TYPE.uri(getActivity(), organisationId));
                     getLoaderManager().initLoader(LOAD_ORGANISATION, args, loaderCallbacks);
                 }
             }

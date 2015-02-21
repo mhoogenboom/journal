@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <string name="app_name">Journal</string>
+
+    <string name="content_authority">com.robinfinch.journal.provider</string>
+
     <string name="server">   </string>
     <string name="port">   </string>
     <string name="gcm_sender_id">   </string>

@@ -137,7 +137,7 @@
 
         <provider
             android:name=".persistence.MyContentProvider"
-            android:authorities="com.robinfinch.journal.provider"
+            android:authorities="@string/content_authority"
             android:enabled="true"
             android:exported="false">
 		</provider>

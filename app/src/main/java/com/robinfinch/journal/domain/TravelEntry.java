@@ -7,8 +7,6 @@ import android.text.TextUtils;
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
 import com.robinfinch.journal.app.util.Formatter;
 
-import org.w3c.dom.Text;
-
 import java.util.Date;
 
 import static com.robinfinch.journal.app.util.Utils.alias;

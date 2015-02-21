@@ -23,6 +23,7 @@ import com.robinfinch.journal.app.notifications.MyNotificationManager;
 import com.robinfinch.journal.app.notifications.NotificationModule;
 import com.robinfinch.journal.app.ui.EmptyFragment;
 import com.robinfinch.journal.app.ui.settings.SettingsActivity;
+import com.robinfinch.journal.app.util.DebugUtils;
 
 import javax.inject.Inject;
 
@@ -150,6 +151,8 @@ public class MainActivity extends ActionBarActivity implements
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
+
+        DebugUtils.riseAndShine(this);
     }
 
     @Override

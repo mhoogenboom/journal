@@ -12,6 +12,7 @@ import android.provider.BaseColumns;
 import android.util.Log;
 
 import com.robinfinch.journal.app.ContextModule;
+import com.robinfinch.journal.app.R;
 import com.robinfinch.journal.app.util.DirUriType;
 import com.robinfinch.journal.app.util.ItemUriType;
 import com.robinfinch.journal.app.util.UriType;
@@ -56,12 +57,7 @@ public class MyContentProvider extends ContentProvider {
             RunEntryContract.ITEM_URI_TYPE
     };
 
-    private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-    static {
-        for (int code = 0; code < URI_TYPES.length; code++) {
-            URI_MATCHER.addURI(UriType.AUTHORITY, URI_TYPES[code].match(), code);
-        }
-    }
+    private final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     @Inject
     DbHelper dbHelper;
@@ -72,12 +68,17 @@ public class MyContentProvider extends ContentProvider {
                 new ContextModule(getContext()),
                 new PersistenceModule()
         ).inject(this);
+
+        for (int code = 0; code < URI_TYPES.length; code++) {
+            uriMatcher.addURI(getContext().getString(R.string.content_authority), URI_TYPES[code].match(), code);
+        }
+
         return true;
     }
 
     @Override
     public String getType(Uri uri) {
-        int code = URI_MATCHER.match(uri);
+        int code = uriMatcher.match(uri);
         return URI_TYPES[code].toString();
     }
 
@@ -88,7 +89,7 @@ public class MyContentProvider extends ContentProvider {
 
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 
-        int code = URI_MATCHER.match(uri);
+        int code = uriMatcher.match(uri);
 
         UriType type = URI_TYPES[code];
 
@@ -111,7 +112,7 @@ public class MyContentProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         Log.d(LOG_TAG, "Insert " + uri);
 
-        int code = URI_MATCHER.match(uri);
+        int code = uriMatcher.match(uri);
 
         DirUriType type = (DirUriType) URI_TYPES[code];
 
@@ -132,7 +133,7 @@ public class MyContentProvider extends ContentProvider {
         }
 
         getContext().getContentResolver().notifyChange(uri, null, true);
-        return type.toItemType().uri(id);
+        return type.toItemType().uri(getContext(), id);
     }
 
     @Override
@@ -140,7 +141,7 @@ public class MyContentProvider extends ContentProvider {
                       String[] selectionArgs) {
         Log.d(LOG_TAG, "Update " + uri);
 
-        int code = URI_MATCHER.match(uri);
+        int code = uriMatcher.match(uri);
 
         ItemUriType type = (ItemUriType) URI_TYPES[code];
 
@@ -171,7 +172,7 @@ public class MyContentProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.d(LOG_TAG, "Delete " + uri);
 
-        int code = URI_MATCHER.match(uri);
+        int code = uriMatcher.match(uri);
 
         ItemUriType type = (ItemUriType) URI_TYPES[code];
 

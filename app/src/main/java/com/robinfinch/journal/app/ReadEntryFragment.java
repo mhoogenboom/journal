@@ -223,7 +223,7 @@ public class ReadEntryFragment extends DetailsFragment<ReadEntry> {
                     titleView.setObject(null);
                 } else {
                     Bundle args = new Bundle();
-                    args.putParcelable(ARG_URI, TitleContract.ITEM_URI_TYPE.uri(titleId));
+                    args.putParcelable(ARG_URI, TitleContract.ITEM_URI_TYPE.uri(getActivity(), titleId));
                     getLoaderManager().initLoader(LOAD_TITLE, args, loaderCallbacks);
                 }
             }
