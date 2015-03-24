@@ -10,11 +10,14 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 
 import com.robinfinch.journal.app.persistence.TravelEntryContract;
 import com.robinfinch.journal.app.ui.DetailsFragment;
+import com.robinfinch.journal.app.ui.adapter.AutoCompleteAdapter;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.TravelEntry;
@@ -52,7 +55,7 @@ public class TravelEntryFragment extends DetailsFragment<TravelEntry> {
     protected Spinner awayView;
 
     @InjectView(R.id.travelentry_place)
-    protected EditText placeView;
+    protected AutoCompleteTextView placeView;
 
     private Parent parent;
 
@@ -71,13 +74,18 @@ public class TravelEntryFragment extends DetailsFragment<TravelEntry> {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(getActivity(),
+        ArrayAdapter<CharSequence> awayAdapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.add(getText(R.string.travelentry_away));
-        adapter.add(getText(R.string.travelentry_back));
+        awayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        awayAdapter.add(getText(R.string.travelentry_away));
+        awayAdapter.add(getText(R.string.travelentry_back));
 
-        awayView.setAdapter(adapter);
+        awayView.setAdapter(awayAdapter);
+
+        SimpleCursorAdapter placeAdapter = new AutoCompleteAdapter(getActivity(),
+                TravelEntryContract.DIR_URI_TYPE, TravelEntryContract.COL_PLACE);
+
+        placeView.setAdapter(placeAdapter);
 
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override

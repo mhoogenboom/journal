@@ -82,6 +82,14 @@ public class StudyEntryFragment extends DetailsFragment<StudyEntry> {
                 selectCourse();
             }
         });
+        courseView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    selectCourse();
+                }
+            }
+        });
     }
 
     @Override
@@ -173,7 +181,6 @@ public class StudyEntryFragment extends DetailsFragment<StudyEntry> {
 
     private void onCourseLoaded(Cursor cursor) {
         Course course = Course.from(cursor);
-
         courseView.setObject(course);
     }
 
@@ -229,6 +236,7 @@ public class StudyEntryFragment extends DetailsFragment<StudyEntry> {
                     getLoaderManager().initLoader(LOAD_COURSE, args, loaderCallbacks);
                 }
             }
+            descriptionView.requestFocus();
         }
     }
 

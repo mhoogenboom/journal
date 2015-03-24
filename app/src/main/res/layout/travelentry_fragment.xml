@@ -41,12 +41,12 @@
         android:text="@string/travelentry_place"
         style="@style/Label" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/travelentry_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:inputType="textCapWords" />
+        style="?android:editTextStyle"/>
 
     <View
         android:layout_width="match_parent"

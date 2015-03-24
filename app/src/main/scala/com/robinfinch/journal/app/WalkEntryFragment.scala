@@ -1,24 +1,18 @@
 package com.robinfinch.journal.app;
 
-import android.app.Activity
-import android.app.LoaderManager
-import android.content.AsyncQueryHandler
-import android.content.CursorLoader
-import android.content.Loader
+import android.app.{Activity, LoaderManager}
+import android.content.{AsyncQueryHandler, CursorLoader, Loader}
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
-
 import com.robinfinch.journal.app.persistence.WalkEntryContract
 import com.robinfinch.journal.app.ui.DetailsFragment
-import com.robinfinch.journal.app.util.Formatter
-import com.robinfinch.journal.app.util.Parser
-import com.robinfinch.journal.domain.WalkEntry
-
 import com.robinfinch.journal.app.util.Constants.ARG_URI
 import com.robinfinch.journal.app.util.ImplicitConversions._
+import com.robinfinch.journal.app.util.{Formatter, Parser}
+import com.robinfinch.journal.domain.WalkEntry
 
 /**
  * Walk entry details fragment.

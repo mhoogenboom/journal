@@ -56,7 +56,7 @@ public class Utils {
     public static String hash(String s, String algorithm) {
         byte[] digest = hash(s.getBytes(), algorithm);
 
-        StringBuffer digestHex = new StringBuffer();
+        StringBuilder digestHex = new StringBuilder();
         for (int i = 0; i < digest.length; i++) {
             String h = Integer.toHexString(0xff & digest[i]);
             if (h.length() == 1) {

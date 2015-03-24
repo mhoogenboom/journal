@@ -26,9 +26,9 @@
     <style name="ListItem.SecondaryField" parent="TextAppearance.AppCompat.Medium">
     </style>
 
-    <style name="Widget.NamedObjectView" parent="android:Widget.EditText">
+    <style name="Widget.NamedObjectView" parent="Widget.AppCompat.EditText">
         <item name="android:editable">false</item>
-        <item name="android:focusable">false</item>
+        <item name="android:focusable">true</item>
         <item name="android:singleLine">true</item>
         <item name="android:ellipsize">end</item>
     </style>

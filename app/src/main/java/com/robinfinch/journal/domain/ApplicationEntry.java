@@ -138,7 +138,7 @@ public class ApplicationEntry extends JournalEntry {
 
     @Override
     public String toString() {
-        return "com.robinfinch.journal.domain.Applicationentry[id=" + getId()
+        return "com.robinfinch.journal.domain.ApplicationEntry[id=" + getId()
                 + ";remoteId=" + getRemoteId()
                 + ";dayOfEntry=" + getDayOfEntry()
                 + ";applicationId=" + getApplicationId()

@@ -134,7 +134,7 @@ public class GraphView extends View {
         float cY = (gridTop - gridBottom) / (maxY - minY);
 
         PointF p1;
-        PointF p2 = null;
+        PointF p2;
 
         for (int i = 1; i < 12; i++) {
             long y = minY + (maxY - minY) * i / 12;

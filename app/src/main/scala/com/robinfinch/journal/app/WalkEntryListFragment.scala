@@ -1,31 +1,19 @@
 package com.robinfinch.journal.app;
 
-import android.app.Activity
-import android.app.LoaderManager
-import android.content.AsyncQueryHandler
-import android.content.ContentValues
-import android.content.Context
-import android.content.CursorLoader
-import android.content.Loader
+import android.app.{Activity, LoaderManager}
+import android.content.{AsyncQueryHandler, ContentValues, Context, CursorLoader, Loader}
 import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.CursorAdapter
-import android.widget.TextView
-
-import com.robinfinch.journal.app.persistence.JournalEntryContract
-import com.robinfinch.journal.app.persistence.WalkEntryContract
+import android.view.{LayoutInflater, View, ViewGroup}
+import android.widget.{CursorAdapter, TextView}
+import com.robinfinch.journal.app.persistence.{JournalEntryContract, WalkEntryContract}
 import com.robinfinch.journal.app.ui.ExpandableListFragment
 import com.robinfinch.journal.app.ui.adapter.JournalEntryListAdapter
-import com.robinfinch.journal.app.util.Formatter
-import com.robinfinch.journal.app.util.Utils
-import com.robinfinch.journal.domain.WalkEntry
-
-import com.robinfinch.journal.app.util.Utils.alias
 import com.robinfinch.journal.app.util.ImplicitConversions._
+import com.robinfinch.journal.app.util.{Formatter, Utils}
+import com.robinfinch.journal.app.util.Utils.alias
+import com.robinfinch.journal.domain.WalkEntry
 
 /**
  * List of walk entries fragment.

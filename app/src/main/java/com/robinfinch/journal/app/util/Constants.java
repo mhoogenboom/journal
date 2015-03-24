@@ -7,7 +7,7 @@ package com.robinfinch.journal.app.util;
  */
 public interface Constants {
 
-    String LOG_TAG = "com.robinfinch.journal.log";
+    String LOG_TAG = "robinfinch.journal.log";
 
     String ARG_AUTH_TOKEN_TYPE = "auth_token_type";
     String ARG_PASSWORD = "password";

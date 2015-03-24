@@ -12,6 +12,7 @@ import android.widget.CursorAdapter;
 import com.robinfinch.journal.app.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -37,41 +38,45 @@ public class JournalEntryListAdapter extends BaseExpandableListAdapter {
     public void swapCursor(Cursor cursor) {
         groups.clear();
 
-        if ((cursor != null) && cursor.moveToFirst()) {
-            int year = -1;
-            int month = -1;
-            int offset = 0;
-            int length = 0;
+        try {
+            if ((cursor != null) && cursor.moveToFirst()) {
+                int year = -1;
+                int month = -1;
+                int offset = 0;
+                int length = 0;
 
-            do {
-                int index = cursor.getColumnIndexOrThrow(dayOfEntryColumn);
-                long day = cursor.getLong(index);
+                do {
+                    int index = cursor.getColumnIndexOrThrow(dayOfEntryColumn);
+                    long day = cursor.getLong(index);
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTimeInMillis(day);
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(day);
 
-                if ((calendar.get(Calendar.YEAR) != year)
-                    || (calendar.get(Calendar.MONTH) != month)) {
+                    if ((calendar.get(Calendar.YEAR) != year)
+                            || (calendar.get(Calendar.MONTH) != month)) {
 
-                    if ((year != -1) && (month != -1)) {
-                        groups.add(new JournalEntryGroup(year, month, offset, length));
+                        if ((year != -1) && (month != -1)) {
+                            groups.add(new JournalEntryGroup(year, month, offset, length));
+                        }
+
+                        year = calendar.get(Calendar.YEAR);
+                        month = calendar.get(Calendar.MONTH);
+                        offset += length;
+                        length = 0;
                     }
 
-                    year = calendar.get(Calendar.YEAR);
-                    month = calendar.get(Calendar.MONTH);
-                    offset += length;
-                    length = 0;
+                    length++;
+                } while (cursor.moveToNext());
+
+                if ((year != -1) && (month != -1)) {
+                    groups.add(new JournalEntryGroup(year, month, offset, length));
                 }
-
-                length++;
-            } while (cursor.moveToNext());
-
-            if ((year != -1) && (month != -1)) {
-                groups.add(new JournalEntryGroup(year, month, offset, length));
             }
-        }
 
-        adapter.swapCursor(cursor);
+            adapter.swapCursor(cursor);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("Columns: " + Arrays.toString(cursor.getColumnNames()), e);
+        }
     }
 
     @Override

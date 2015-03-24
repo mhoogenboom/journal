@@ -1,7 +1,6 @@
 package com.robinfinch.journal.app;
 
 import android.net.Uri
-
 import com.robinfinch.journal.app.ui.DetailsActivity
 
 /**

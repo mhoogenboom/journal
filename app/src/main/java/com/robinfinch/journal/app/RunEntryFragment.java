@@ -9,10 +9,13 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 
 import com.robinfinch.journal.app.persistence.RunEntryContract;
 import com.robinfinch.journal.app.ui.DetailsFragment;
+import com.robinfinch.journal.app.ui.adapter.AutoCompleteAdapter;
 import com.robinfinch.journal.app.util.Formatter;
 import com.robinfinch.journal.app.util.Parser;
 import com.robinfinch.journal.domain.RunEntry;
@@ -50,7 +53,7 @@ public class RunEntryFragment extends DetailsFragment<RunEntry> {
     protected EditText distanceView;
 
     @InjectView(R.id.runentry_note)
-    protected EditText noteView;
+    protected AutoCompleteTextView noteView;
 
     @InjectView(R.id.runentry_timetaken)
     protected EditText timeTakenView;
@@ -71,6 +74,11 @@ public class RunEntryFragment extends DetailsFragment<RunEntry> {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        SimpleCursorAdapter noteAdapter = new AutoCompleteAdapter(getActivity(),
+                RunEntryContract.DIR_URI_TYPE, RunEntryContract.COL_NOTE);
+
+        noteView.setAdapter(noteAdapter);
 
         loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override

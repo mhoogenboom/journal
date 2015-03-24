@@ -2,7 +2,6 @@
 package com.robinfinch.journal.app.util
 
 import android.app.FragmentManager
-import android.text.style.ClickableSpan
 import android.view.View
 
 object ImplicitConversions {

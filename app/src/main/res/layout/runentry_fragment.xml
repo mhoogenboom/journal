@@ -42,11 +42,12 @@
         android:text="@string/runentry_note"
         style="@style/Label" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/runentry_note"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true" />
+        android:singleLine="true"
+        style="?android:editTextStyle"/>
 
     <TextView
         android:layout_width="wrap_content"
